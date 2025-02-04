@@ -1,0 +1,405 @@
+recordNumber:
+  call: 200 # 000
+  sms: 100 # 000
+  traffic: 300 # 000
+
+dateRange:
+  start: 2020-01-01
+  end: 2024-12-31
+
+patterns:
+  user:
+    - name: 正太分布的规律作息
+      weight: 0.3
+      call:
+        startTime:
+          distributionType: NORMAL
+          args:
+            - mean: 9.0
+              stddev: 1.0
+              min: 0.0
+              max: 24.0
+            - mean: 3.0
+              stddev: 1.0
+              min: 0.0
+              max: 24.0
+        duration:
+          distributionType: NORMAL
+          args:
+            - mean: 10.0
+              stddev: 2.0
+              min: 0.0
+              max: 3600.0
+            - mean: 300.0
+              stddev: 20.0
+              min: 0.0
+              max: 3600.0
+        statusWeight:
+          - name: CONNECTED
+            weight: 0.8
+          - name: MISSED
+            weight: 0.1
+          - name: BUSY
+            weight: 0.1
+      sms:
+        startTime:
+          distributionType: NORMAL
+          args:
+            - mean: 7.0
+              stddev: 0.5
+              min: 0.0
+              max: 24.0
+            - mean: 18.0
+              stddev: 0.5
+              min: 0.0
+              max: 24.0
+      traffic:
+        startTime:
+          distributionType: NORMAL
+          args:
+            - mean: 8.0
+              stddev: 0.5
+              min: 0.0
+              max: 24.0
+            - mean: 13.0
+              stddev: 0.5
+              min: 0.0
+              max: 24.0
+            - mean: 18.0
+              stddev: 0.5
+              min: 0.0
+              max: 24.0
+            - mean: 21.0
+              stddev: 1.0
+              min: 0.0
+              max: 24.0
+        duration:
+          distributionType: NORMAL
+          args:
+            - mean: 10.0
+              stddev: 2.0
+              min: 0.0
+              max: 120.0
+            - mean: 15.0
+              stddev: 3.0
+              min: 0.0
+              max: 120.0
+        upstreamRate:
+          distributionType: NORMAL
+          args:
+            - mean: 2048.0
+              stddev: 200.0
+              min: 0.0
+              max: 100000.0
+            - mean: 1024.0
+              stddev: 100.0
+              min: 0.0
+              max: 100000.0
+        downstreamRate:
+          distributionType: NORMAL
+          args:
+            - mean: 30720.0
+              stddev: 1000.0
+              min: 0.0
+              max: 1000000.0
+            - mean: 100000.0
+              stddev: 20000.0
+              min: 0.0
+              max: 1000000.0
+        preference:
+          - name: ONLINE_VIDE
+            weight: 0.2
+          - name: SOCIAL_MEDIA
+            weight: 0.5
+          - name: WEB_BROWSING
+            weight: 0.3
+    - name: 正太分布的相对规律作息
+      weight: 0.3
+      call:
+        startTime:
+          distributionType: NORMAL
+          args:
+            - mean: 10.0
+              stddev: 2.0
+              min: 0.0
+              max: 24.0
+            - mean: 4.0
+              stddev: 2.0
+              min: 0.0
+              max: 24.0
+        duration:
+          distributionType: NORMAL
+          args:
+            - mean: 10.0
+              stddev: 2.5
+              min: 0.0
+              max: 3600.0
+            - mean: 300.0
+              stddev: 25.0
+              min: 0.0
+              max: 3600.0
+        statusWeight:
+          - name: CONNECTED
+            weight: 0.7
+          - name: MISSED
+            weight: 0.2
+          - name: BUSY
+            weight: 0.1
+      sms:
+        startTime:
+          distributionType: NORMAL
+          args:
+            - mean: 9.0
+              stddev: 1.0
+              min: 0.0
+              max: 24.0
+            - mean: 15.0
+              stddev: 1.5
+              min: 0.0
+              max: 24.0
+      traffic:
+        startTime:
+          distributionType: NORMAL
+          args:
+            - mean: 9.0
+              stddev: 2.0
+              min: 0.0
+              max: 24.0
+            - mean: 17.0
+              stddev: 2.0
+              min: 0.0
+              max: 24.0
+            - mean: 20.0
+              stddev: 2.0
+              min: 0.0
+              max: 24.0
+        duration:
+          distributionType: NORMAL
+          args:
+            - mean: 12.0
+              stddev: 2.5
+              min: 0.0
+              max: 120.0
+            - mean: 18.0
+              stddev: 3.5
+              min: 0.0
+              max: 120.0
+        upstreamRate:
+          distributionType: NORMAL
+          args:
+            - mean: 2500.0
+              stddev: 210.0
+              min: 0.0
+              max: 100000.0
+            - mean: 1300.0
+              stddev: 120.0
+              min: 0.0
+              max: 100000.0
+        downstreamRate:
+          distributionType: NORMAL
+          args:
+            - mean: 31000.0
+              stddev: 1100.0
+              min: 0.0
+              max: 1000000.0
+            - mean: 120000.0
+              stddev: 21000.0
+              min: 0.0
+              max: 1000000.0
+        preference:
+          - name: ONLINE_VIDE
+            weight: 0.2
+          - name: SOCIAL_MEDIA
+            weight: 0.7
+          - name: WEB_BROWSING
+            weight: 0.1
+    - name: 均匀分布的规律作息
+      weight: 0.2
+      call:
+        startTime:
+          distributionType: UNIFORM
+          args:
+            - lower: 9.0
+              upper: 17.0
+        duration:
+          distributionType: UNIFORM
+          args:
+            - lower: 6.0
+              upper: 12.0
+            - lower: 120.0
+              upper: 400.0
+        statusWeight:
+          - name: CONNECTED
+            weight: 0.9
+          - name: MISSED
+            weight: 0.05
+          - name: BUSY
+            weight: 0.05
+      sms:
+        startTime:
+          distributionType: UNIFORM
+          args:
+            - lower: 9.0
+              upper: 11.0
+            - lower: 13.0
+              upper: 17.0
+      traffic:
+        startTime:
+          distributionType: UNIFORM
+          args:
+            - lower: 7.0
+              upper: 12.0
+            - lower: 13.0
+              upper: 16.0
+            - lower: 20.0
+              upper: 23.0
+        duration:
+          distributionType: UNIFORM
+          args:
+            - lower: 8.0
+              upper: 16.0
+            - lower: 16.0
+              upper: 30.0
+        upstreamRate:
+          distributionType: UNIFORM
+          args:
+            - lower: 800.0
+              upper: 1400.0
+            - lower: 1400.0
+              upper: 1600.0
+        downstreamRate:
+          distributionType: UNIFORM
+          args:
+            - lower: 20000.0
+              upper: 35000.0
+            - lower: 50000.0
+              upper: 160000.0
+        preference:
+          - name: ONLINE_VIDE
+            weight: 0.3
+          - name: SOCIAL_MEDIA
+            weight: 0.4
+          - name: WEB_BROWSING
+            weight: 0.3
+    - name: 均匀分布的夜猫子
+      weight: 0.1
+      call:
+        startTime:
+          distributionType: UNIFORM
+          args:
+            - lower: 20.0
+              upper: 24.0
+            - lower: 0.0
+              upper: 2.0
+        duration:
+          distributionType: UNIFORM
+          args:
+            - lower: 4.0
+              upper: 10.0
+            - lower: 50.0
+              upper: 100.0
+        statusWeight:
+          - name: CONNECTED
+            weight: 0.5
+          - name: MISSED
+            weight: 0.4
+          - name: BUSY
+            weight: 0.1
+      sms:
+        startTime:
+          distributionType: UNIFORM
+          args:
+            - lower: 21.0
+              upper: 24.0
+            - lower: 0.0
+              upper: 4.0
+      traffic:
+        startTime:
+          distributionType: UNIFORM
+          args:
+            - lower: 21.0
+              upper: 24.0
+            - lower: 0.0
+              upper: 8.0
+        duration:
+          distributionType: UNIFORM
+          args:
+            - lower: 10.0
+              upper: 20.0
+            - lower: 20.0
+              upper: 60.0
+        upstreamRate:
+          distributionType: UNIFORM
+          args:
+            - lower: 1000.0
+              upper: 1400.0
+            - lower: 1400.0
+              upper: 2000.0
+        downstreamRate:
+          distributionType: UNIFORM
+          args:
+            - lower: 30000.0
+              upper: 35000.0
+            - lower: 60000.0
+              upper: 180000.0
+        preference:
+          - name: ONLINE_VIDE
+            weight: 0.3
+          - name: SOCIAL_MEDIA
+            weight: 0.2
+          - name: WEB_BROWSING
+            weight: 0.5
+  station:
+    technologyWeight:
+      3G: 0.1
+      4G: 0.3
+      5G: 0.6
+    failureInfo:
+      - name: 低
+        weight: 0.2
+        probability: 0.01
+      - name: 中
+        weight: 0.6
+        probability: 0.03
+      - name: 高
+        weight: 0.2
+        probability: 0.05
+
+hadoop:
+  hdfsURI: hdfs://master:9000
+  user: root
+  outputPath: /user/root/telecom
+  config:
+    io.file.buffer.size: 131072
+
+csvHeader:
+    call:
+      - callId
+      - callerNumber
+      - receiverNumber
+      - callStartTime
+      - callEndTime
+      - callDurationMillis
+      - callDirection
+      - callStatus
+      - stationId
+    sms:
+      - smsId
+      - senderNumber
+      - receiverNumber
+      - smsContent
+      - sendTime
+      - sendDirection
+      - sendStatus
+      - stationId
+    traffic:
+      - sessionId
+      - userNumber
+      - sessionStartTime
+      - sessionEndTime
+      - sessionDurationMillis
+      - applicationType
+      - upstreamDataVolume
+      - downstreamDataVolume
+      - networkTechnology
+      - stationId
