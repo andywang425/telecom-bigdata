@@ -3,7 +3,7 @@ package com.example.telecom;
 import com.example.telecom.config.*;
 import com.example.telecom.generator.RandomTelecomDataGenerator;
 import com.example.telecom.model.StationInfo;
-import com.example.telecom.util.RandomGenerator;
+import com.example.telecom.util.RandomTools;
 import com.example.telecom.util.ResourceLoader;
 import com.example.telecom.writer.HdfsCsvWriter;
 import com.example.telecom.writer.HdfsCsvWriterFactory;
@@ -39,7 +39,7 @@ public class App {
 
         Map<String, UserPattern> userProfiles = new HashMap<>();
         for (String phone : phoneNumbers) {
-            UserPattern userPattern = RandomGenerator.weightedRandom(userPatternsPMF);
+            UserPattern userPattern = RandomTools.weightedRandom(userPatternsPMF);
             userProfiles.put(phone, userPattern);
             log.info("用户{}被分配为【{}】模式", phone, userPattern.getName());
         }
@@ -57,7 +57,7 @@ public class App {
         }
 
         for (String baseStation : baseStations) {
-            StationFailureInfo stationFailureInfo = RandomGenerator.weightedRandom(stationFailureProbabilityPMF);
+            StationFailureInfo stationFailureInfo = RandomTools.weightedRandom(stationFailureProbabilityPMF);
             StationInfo stationInfo = new StationInfo();
             stationInfo.setFailureProbability(stationFailureInfo.getProbability());
             baseStationInfos.put(baseStation, stationInfo);
@@ -73,7 +73,7 @@ public class App {
         }
 
         for (Map.Entry<String, StationInfo> entry : baseStationInfos.entrySet()) {
-            String technology = RandomGenerator.weightedRandom(stationTechnologyPMF);
+            String technology = RandomTools.weightedRandom(stationTechnologyPMF);
             StationInfo stationInfo = entry.getValue();
             stationInfo.setTechnology(technology);
             log.info("基站{}被分配为【{}】技术", entry.getKey(), technology);

@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class SmsRecord implements Record {
-
     private String smsId;                 // UUID
     private String senderNumber;
     private String receiverNumber;

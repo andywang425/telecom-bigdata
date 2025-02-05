@@ -54,12 +54,6 @@
       <version>1.18.26</version>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-client</artifactId>
-      <version>3.4.1</version>
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
   <properties>
     <maven.compiler.target>11</maven.compiler.target>

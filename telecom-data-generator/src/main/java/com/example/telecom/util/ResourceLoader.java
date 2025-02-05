@@ -11,6 +11,9 @@ import java.util.stream.Collectors;
 
 public class ResourceLoader {
 
+    /**
+     * 按行读取文本文件
+     */
     public static List<String> loadTextLines(String fileName) {
         try (InputStream inputStream = ResourceLoader.class.getResourceAsStream("/" + fileName)) {
             if (inputStream == null) {
@@ -25,6 +28,9 @@ public class ResourceLoader {
         }
     }
 
+    /**
+     * 读取YAML文件并解析为指定类型
+     */
     public static <T> T loadYaml(String fileName, Class<? super T> type) {
         try (InputStream inputStream = ResourceLoader.class.getResourceAsStream("/" + fileName)) {
             if (inputStream == null) {

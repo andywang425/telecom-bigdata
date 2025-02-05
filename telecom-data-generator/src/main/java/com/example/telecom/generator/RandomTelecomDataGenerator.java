@@ -7,7 +7,7 @@ import com.example.telecom.model.SmsRecord;
 import com.example.telecom.model.StationInfo;
 import com.example.telecom.model.TrafficRecord;
 import com.example.telecom.util.DateTimeUtils;
-import com.example.telecom.util.RandomGenerator;
+import com.example.telecom.util.RandomTools;
 import org.apache.commons.math3.util.Pair;
 
 import java.time.LocalDate;
@@ -38,25 +38,29 @@ public class RandomTelecomDataGenerator {
         this.smsMessages = smsMessages;
     }
 
+    /**
+     * 生成一对通话记录（来电和去电）
+     */
     public List<CallRecord> generateCallRecordPair() {
+        // 生成通话ID
         String callId = UUID.randomUUID().toString();
-
-        List<String> callerReceiver = RandomGenerator.getRandomElements(phoneNumbers, 2);
-
+        // 生成来电和去电号码
+        List<String> callerReceiver = RandomTools.getRandomElements(phoneNumbers, 2);
+        // 打电话的人
         String caller = callerReceiver.get(0);
-
-        LocalDateTime callStart = generateStartTimeForUser(caller);
-
+        // 生成通话开始时间
+        LocalDateTime callStart = generateCallStartTime(caller);
+        // 接电话的人
         String receiver = callerReceiver.get(1);
-
+        // 生成通话持续时间
         long durationMillis = generateCallDurationForUser(caller);
-
+        // 计算通话结束时间
         LocalDateTime callEnd = callStart.plus(durationMillis, ChronoUnit.MILLIS);
-
-        String callerStationId = RandomGenerator.getRandomElement(baseStations);
-        String receiverStationId = RandomGenerator.getRandomElement(baseStations);
-
-        CallStatus status = generateRealisticCallStatus(List.of(callerStationId, receiverStationId), receiver);
+        // 生成打电话的人和接电话的人所在的基站（可以是同一个）
+        String callerStationId = RandomTools.getRandomElement(baseStations);
+        String receiverStationId = RandomTools.getRandomElement(baseStations);
+        // 生成通话状态
+        CallStatus status = generateCallStatus(callerStationId, receiverStationId, receiver);
 
         CallRecord incomingCall = CallRecord.builder()
                 .callId(callId)
@@ -85,40 +89,55 @@ public class RandomTelecomDataGenerator {
         return List.of(incomingCall, outgoingCall);
     }
 
-    private CallStatus generateRealisticCallStatus(List<String> baseStations, String receiver) {
-        for (String baseStation : baseStations) {
-            if (RandomGenerator.rateTest(baseStationInfos.get(baseStation).getFailureProbability())) {
-                return CallStatus.FAILED;
-            }
+    /**
+     * 生成通话状态
+     *
+     * @param callerStationId   打电话的人所在基站ID
+     * @param receiverStationId 接电话的人所在基站ID
+     * @param receiver          去电手机号
+     */
+    private CallStatus generateCallStatus(String callerStationId, String receiverStationId, String receiver) {
+        // 若任一基站故障，返回失败
+        if (RandomTools.rateTest(baseStationInfos.get(callerStationId).getFailureProbability())) {
+            return CallStatus.FAILED;
         }
 
+        if (RandomTools.rateTest(baseStationInfos.get(receiverStationId).getFailureProbability())) {
+            return CallStatus.FAILED;
+        }
+
+        // 根据去电用户的模式，生成通话状态
         List<CallStatusWeight> callStatusWeights = userProfiles.get(receiver).getCall().getStatusWeight();
         List<Pair<CallStatus, Double>> callStatusWeightPMF = new ArrayList<>();
         for (CallStatusWeight callStatusWeight : callStatusWeights) {
             callStatusWeightPMF.add(new Pair<>(callStatusWeight.getName(), callStatusWeight.getWeight()));
         }
 
-        return RandomGenerator.weightedRandom(callStatusWeightPMF);
+        return RandomTools.weightedRandom(callStatusWeightPMF);
     }
 
+    /**
+     * 生成一对短信记录（发短信和收短信）
+     */
     public List<SmsRecord> generateSmsRecordPair() {
+        // 生成短信ID
         String smsId = UUID.randomUUID().toString();
-
-        List<String> callerReceiver = RandomGenerator.getRandomElements(phoneNumbers, 2);
-
+        // 生成发短信和收短信的手机号
+        List<String> callerReceiver = RandomTools.getRandomElements(phoneNumbers, 2);
+        // 发短信的人
         String sender = callerReceiver.get(0);
-
+        // 收短信的人
         String receiver = callerReceiver.get(1);
+        // 生成短信发送时间
+        LocalDateTime sendTime = generateSmsSendTime(sender);
+        // 生成发短信的人和收短信的人所在的基站（可以是同一个）
+        String callerStationId = RandomTools.getRandomElement(baseStations);
+        String receiverStationId = RandomTools.getRandomElement(baseStations);
+        // 生成短信状态
+        SmsStatus status = generateSmsStatus(callerStationId, receiverStationId);
+        // 生成短信内容
+        String smsContent = RandomTools.getRandomElement(smsMessages);
 
-        LocalDateTime sendTime = generateStartTimeForUser(sender);
-
-        String callerStationId = RandomGenerator.getRandomElement(baseStations);
-        String receiverStationId = RandomGenerator.getRandomElement(baseStations);
-
-        SmsStatus status = generateSmsStatus(List.of(callerStationId, receiverStationId));
-
-        String smsContent = RandomGenerator.getRandomElement(smsMessages);
-        
         SmsRecord sentSms = SmsRecord.builder()
                 .smsId(smsId)
                 .senderNumber(sender)
@@ -144,37 +163,48 @@ public class RandomTelecomDataGenerator {
         return List.of(sentSms, receivedSms);
     }
 
-    private SmsStatus generateSmsStatus(List<String> baseStations) {
-        if (RandomGenerator.rateTest(baseStationInfos.get(baseStations.get(0)).getFailureProbability())) {
+    /**
+     * 生成短信状态
+     *
+     * @param callerStationId   发短信的人所在基站ID
+     * @param receiverStationId 接短信的人所在基站ID
+     */
+    private SmsStatus generateSmsStatus(String callerStationId, String receiverStationId) {
+        if (RandomTools.rateTest(baseStationInfos.get(callerStationId).getFailureProbability())) {
             return SmsStatus.FAILED_TO_SEND;
         }
 
-        if (RandomGenerator.rateTest(baseStationInfos.get(baseStations.get(1)).getFailureProbability())) {
+        if (RandomTools.rateTest(baseStationInfos.get(receiverStationId).getFailureProbability())) {
             return SmsStatus.FAILED_TO_RECEIVE;
         }
 
         return SmsStatus.SUCCESSFUL;
     }
 
+    /**
+     * 生成一条随机流量记录（以会话为单位）
+     */
     public TrafficRecord generateRandomTrafficRecord() {
+        // 生成会话ID
         String sessionId = UUID.randomUUID().toString();
-
-        String userNumber = RandomGenerator.getRandomElement(phoneNumbers);
-
-        LocalDateTime sessionStart = generateStartTimeForUser(userNumber);
-
+        // 生成用户手机号
+        String userNumber = RandomTools.getRandomElement(phoneNumbers);
+        // 生成会话开始时间
+        LocalDateTime sessionStart = generateTrafficSessionStartTime(userNumber);
+        // 生成会话持续时间
         long durationMs = generateSessionDurationForUser(userNumber);
+        // 计算会话结束时间
         LocalDateTime sessionEnd = sessionStart.plus(durationMs, ChronoUnit.MILLIS);
-
+        // 生成会话的上行数据量
         long upstream = generateUpStreamDataVolumeForUser(userNumber, durationMs);
-
+        // 生成会话的下行数据量
         long downstream = generateDownStreamDataVolumeForUser(userNumber, durationMs);
-
-        String stationId = RandomGenerator.getRandomElement(baseStations);
-
+        // 生成用户所在基站ID
+        String stationId = RandomTools.getRandomElement(baseStations);
+        // 生成会话使用的应用类型
         ApplicationType applicationType = generateApplicationType(userNumber);
-
-        String networkTech =  baseStationInfos.get(stationId).getTechnology();
+        // 生成会话使用的网络技术
+        String networkTech = baseStationInfos.get(stationId).getTechnology();
 
         return TrafficRecord.builder()
                 .sessionId(sessionId)
@@ -190,6 +220,10 @@ public class RandomTelecomDataGenerator {
                 .build();
     }
 
+    /**
+     * 生成流量的应用类型
+     * @param phoneNumber 手机号
+     */
     private ApplicationType generateApplicationType(String phoneNumber) {
         List<UserPreference> preferences = userProfiles.get(phoneNumber).getTraffic().getPreference();
 
@@ -198,38 +232,84 @@ public class RandomTelecomDataGenerator {
             preferencesPMF.add(new Pair<>(preference.getName(), preference.getWeight()));
         }
 
-        return RandomGenerator.weightedRandom(preferencesPMF);
+        return RandomTools.weightedRandom(preferencesPMF);
     }
 
-    private LocalDateTime generateStartTimeForUser(String phoneNumber) {
+    /**
+     * 生成通话开始时间
+     * @param phoneNumber 手机号
+     */
+    private LocalDateTime generateCallStartTime(String phoneNumber) {
         Distribution distribution = userProfiles.get(phoneNumber).getCall().getStartTime();
-        double hour = RandomGenerator.getDistributionRandom(distribution);
+        double hour = RandomTools.getDistributionRandom(distribution);
         LocalTime localTime = DateTimeUtils.hourToLocalTime(hour);
         LocalDate localDate = DateTimeUtils.getRandomDate(startDate, endDate);
         return LocalDateTime.of(localDate, localTime);
     }
 
+    /**
+     * 生成短信发送时间
+     * @param phoneNumber 手机号
+     */
+    private LocalDateTime generateSmsSendTime(String phoneNumber) {
+        Distribution distribution = userProfiles.get(phoneNumber).getSms().getStartTime();
+        double hour = RandomTools.getDistributionRandom(distribution);
+        LocalTime localTime = DateTimeUtils.hourToLocalTime(hour);
+        LocalDate localDate = DateTimeUtils.getRandomDate(startDate, endDate);
+        return LocalDateTime.of(localDate, localTime);
+    }
+
+    /**
+     * 生成流量会话开始时间
+     * @param phoneNumber 手机号
+     */
+    private LocalDateTime generateTrafficSessionStartTime(String phoneNumber) {
+        Distribution distribution = userProfiles.get(phoneNumber).getTraffic().getStartTime();
+        double hour = RandomTools.getDistributionRandom(distribution);
+        LocalTime localTime = DateTimeUtils.hourToLocalTime(hour);
+        LocalDate localDate = DateTimeUtils.getRandomDate(startDate, endDate);
+        return LocalDateTime.of(localDate, localTime);
+    }
+
+    /**
+     * 生成通话持续时间
+     * @param phoneNumber 手机号
+     */
     private long generateCallDurationForUser(String phoneNumber) {
         Distribution distribution = userProfiles.get(phoneNumber).getCall().getDuration();
-        double seconds = RandomGenerator.getDistributionRandom(distribution);
+        double seconds = RandomTools.getDistributionRandom(distribution);
         return (long) (seconds * 1000);
     }
 
+    /**
+     * 生成流量会话持续时间
+     * @param phoneNumber 手机号
+     */
     private long generateSessionDurationForUser(String phoneNumber) {
         Distribution distribution = userProfiles.get(phoneNumber).getTraffic().getDuration();
-        double seconds = RandomGenerator.getDistributionRandom(distribution);
+        double seconds = RandomTools.getDistributionRandom(distribution);
         return (long) (seconds * 1000);
     }
 
+    /**
+     * 生成流量会话的上行数据量
+     * @param phoneNumber 手机号
+     * @param sessionDuration 会话持续时间
+     */
     private long generateUpStreamDataVolumeForUser(String phoneNumber, long sessionDuration) {
         Distribution distribution = userProfiles.get(phoneNumber).getTraffic().getUpstreamRate();
-        double bytesPerSecond  = RandomGenerator.getDistributionRandom(distribution);
+        double bytesPerSecond = RandomTools.getDistributionRandom(distribution);
         return (long) (bytesPerSecond * sessionDuration / 1000);
     }
 
+    /**
+     * 生成流量会话的下行数据量
+     * @param phoneNumber 手机号
+     * @param sessionDuration 会话持续时间
+     */
     private long generateDownStreamDataVolumeForUser(String phoneNumber, long sessionDuration) {
         Distribution distribution = userProfiles.get(phoneNumber).getTraffic().getDownstreamRate();
-        double bytesPerSecond  = RandomGenerator.getDistributionRandom(distribution);
+        double bytesPerSecond = RandomTools.getDistributionRandom(distribution);
         return (long) (bytesPerSecond * sessionDuration / 1000);
     }
 }

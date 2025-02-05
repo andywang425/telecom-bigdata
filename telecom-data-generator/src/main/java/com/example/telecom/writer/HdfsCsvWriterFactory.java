@@ -25,6 +25,11 @@ public class HdfsCsvWriterFactory {
         this.CONFIGURATION = CONFIGURATION;
     }
 
+    /**
+     * 获取一个 HdfsCsvWriter
+     * @param header csv表头
+     * @param fileName 文件名
+     */
     public HdfsCsvWriter getHdfsCsvWriter(List<String> header, String fileName) {
         try {
             FileSystem fs = FileSystem.get(HDFS_URI, CONFIGURATION, USER);

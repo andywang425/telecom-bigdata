@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class TrafficRecord implements Record {
-
     private String sessionId;
     private String userNumber;
     private LocalDateTime sessionStartTime;
@@ -24,7 +23,6 @@ public class TrafficRecord implements Record {
     private long downstreamDataVolume;       // bytes
     private String networkTechnology;
     private String stationId;
-
 
     @Override
     public Object[] getRecord() {

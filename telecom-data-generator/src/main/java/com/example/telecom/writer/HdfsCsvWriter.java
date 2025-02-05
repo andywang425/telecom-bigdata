@@ -17,6 +17,9 @@ public class HdfsCsvWriter {
     private PrintWriter printWriter;
     private CSVPrinter csvPrinter;
 
+    /**
+     * 写一条记录
+     */
     public void write(Record record) {
         try {
             csvPrinter.printRecord(record.getRecord());
@@ -25,6 +28,9 @@ public class HdfsCsvWriter {
         }
     }
 
+    /**
+     * 写多条记录
+     */
     public void write(List<? extends Record> records) {
         for (Record record : records) {
             write(record);

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecordNumber {
-    private int call;
-    private int sms;
-    private int traffic;
+    private long call;
+    private long sms;
+    private long traffic;
 }

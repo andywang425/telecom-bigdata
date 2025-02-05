@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class CallRecord implements Record {
-
     private String callId;                 // UUID
     private String callerNumber;
     private String receiverNumber;
