@@ -11,7 +11,6 @@ public class AppConfig {
     private RecordNumber recordNumber;
     private DateRange dateRange;
     private Patterns patterns;
-    private Hadoop hadoop;
-    private CsvHeader csvHeader;
+    private Output output;
 }
 

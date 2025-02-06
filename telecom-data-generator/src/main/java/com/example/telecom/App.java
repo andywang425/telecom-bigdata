@@ -5,13 +5,11 @@ import com.example.telecom.generator.RandomTelecomDataGenerator;
 import com.example.telecom.model.StationInfo;
 import com.example.telecom.util.RandomTools;
 import com.example.telecom.util.ResourceLoader;
-import com.example.telecom.writer.HdfsCsvWriter;
-import com.example.telecom.writer.HdfsCsvWriterFactory;
+import com.example.telecom.writer.CsvWriter;
+import com.example.telecom.writer.CsvWriterFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.math3.util.Pair;
-import org.apache.hadoop.conf.Configuration;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +23,7 @@ public class App {
 
         RecordNumber recordNumber = config.getRecordNumber();
         DateRange dateRange = config.getDateRange();
-        log.info("配置已读取，将输出{}条数据，日期范围{} ~ {}", recordNumber.getCall() + recordNumber.getSms() + recordNumber.getTraffic(), dateRange.getStart(), dateRange.getEnd());
+        log.info("配置已读取，将输出{}条数据，日期范围{} ~ {}", recordNumber.getCall() * 2 + recordNumber.getSms() * 2 + recordNumber.getTraffic(), dateRange.getStart(), dateRange.getEnd());
 
         List<String> phoneNumbers = ResourceLoader.loadTextLines("phone_numbers.txt");
         List<String> baseStations = ResourceLoader.loadTextLines("base_stations.txt");
@@ -81,34 +79,30 @@ public class App {
 
         log.info("开始生成随机电信数据");
 
-        // 生成随机电信数据并写入HDFS
+        // 生成随机电信数据并写入CSV
         RandomTelecomDataGenerator generator = new RandomTelecomDataGenerator(dateRange, userProfiles, baseStationInfos, smsMessages);
 
-        Hadoop hadoop = config.getHadoop();
+        CsvWriterFactory csvWriterFactory = new CsvWriterFactory();
+        Output output = config.getOutput();
+        Path path = output.getPath();
 
-        Map<String, String> hadoopConfig = hadoop.getConfig();
-        Configuration configuration = new Configuration();
-        for (Map.Entry<String, String> entry : hadoopConfig.entrySet()) {
-            configuration.set(entry.getKey(), entry.getValue());
-        }
+        CsvWriter callWriter = csvWriterFactory.getCsvWriter(path.getCall(), output.isAppend());
+        CsvWriter smsWriter = csvWriterFactory.getCsvWriter(path.getSms(), output.isAppend());
+        CsvWriter trafficWriter = csvWriterFactory.getCsvWriter(path.getTraffic(), output.isAppend());
 
-        HdfsCsvWriterFactory hdfsCsvWriterFactory = new HdfsCsvWriterFactory(URI.create(hadoop.getHdfsURI()), hadoop.getUser(), hadoop.getOutputPath(), configuration);
-        CsvHeader csvHeader = config.getCsvHeader();
-
-        HdfsCsvWriter callWriter = hdfsCsvWriterFactory.getHdfsCsvWriter(csvHeader.getCall(), "calls.csv");
-        HdfsCsvWriter smsWriter = hdfsCsvWriterFactory.getHdfsCsvWriter(csvHeader.getSms(), "sms.csv");
-        HdfsCsvWriter trafficWriter = hdfsCsvWriterFactory.getHdfsCsvWriter(csvHeader.getTraffic(), "traffic.csv");
-
+        log.info("开始写入通话记录");
         for (int i = 0; i < recordNumber.getCall(); i++) {
             callWriter.write(generator.generateCallRecordPair());
         }
         callWriter.close();
 
+        log.info("开始写入短信记录");
         for (int i = 0; i < recordNumber.getSms(); i++) {
             smsWriter.write(generator.generateSmsRecordPair());
         }
         smsWriter.close();
 
+        log.info("开始写入流量记录");
         for (int i = 0; i < recordNumber.getTraffic(); i++) {
             trafficWriter.write(generator.generateRandomTrafficRecord());
         }

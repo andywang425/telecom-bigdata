@@ -1,7 +1,7 @@
 recordNumber:
-  call: 200 # 000
-  sms: 100 # 000
-  traffic: 300 # 000
+  call: 200 # 每次生成时都会生成一对记录（来电和去电），实际生成的记录数为设置值的2倍
+  sms: 100 # 每次生成时都会生成一对记录（发短信和收短信），实际生成的记录数为设置值的2倍
+  traffic: 300
 
 dateRange:
   start: 2020-01-01
@@ -365,41 +365,9 @@ patterns:
         weight: 0.2
         probability: 0.05
 
-hadoop:
-  hdfsURI: hdfs://master:9000
-  user: root
-  outputPath: /user/root/telecom
-  config:
-    io.file.buffer.size: 131072
-
-csvHeader:
-    call:
-      - callId
-      - callerNumber
-      - receiverNumber
-      - callStartTime
-      - callEndTime
-      - callDurationMillis
-      - callDirection
-      - callStatus
-      - stationId
-    sms:
-      - smsId
-      - senderNumber
-      - receiverNumber
-      - smsContent
-      - sendTime
-      - sendDirection
-      - sendStatus
-      - stationId
-    traffic:
-      - sessionId
-      - userNumber
-      - sessionStartTime
-      - sessionEndTime
-      - sessionDurationMillis
-      - applicationType
-      - upstreamDataVolume
-      - downstreamDataVolume
-      - networkTechnology
-      - stationId
+output:
+  append: true
+  path:
+    call: ./output/call.csv
+    sms: ./output/sms.csv
+    traffic: ./output/traffic.csv
