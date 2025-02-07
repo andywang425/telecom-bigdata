@@ -42,8 +42,9 @@ public class RandomTelecomDataGenerator {
      * 生成一对通话记录（来电和去电）
      */
     public List<CallRecord> generateCallRecordPair() {
-        // 生成通话ID
-        String callId = UUID.randomUUID().toString();
+        // 生成一对通话ID
+        String incomingCallId = UUID.randomUUID().toString();
+        String outgoingCallId = UUID.randomUUID().toString();
         // 生成来电和去电号码
         List<String> callerReceiver = RandomTools.getRandomElements(phoneNumbers, 2);
         // 打电话的人
@@ -63,7 +64,7 @@ public class RandomTelecomDataGenerator {
         CallStatus status = generateCallStatus(callerStationId, receiverStationId, receiver);
 
         CallRecord incomingCall = CallRecord.builder()
-                .callId(callId)
+                .callId(incomingCallId)
                 .callerNumber(caller)
                 .receiverNumber(receiver)
                 .callStartTime(callStart)
@@ -75,7 +76,7 @@ public class RandomTelecomDataGenerator {
                 .build();
 
         CallRecord outgoingCall = CallRecord.builder()
-                .callId(callId)
+                .callId(outgoingCallId)
                 .callerNumber(receiver)
                 .receiverNumber(caller)
                 .callStartTime(callStart)
@@ -120,8 +121,9 @@ public class RandomTelecomDataGenerator {
      * 生成一对短信记录（发短信和收短信）
      */
     public List<SmsRecord> generateSmsRecordPair() {
-        // 生成短信ID
-        String smsId = UUID.randomUUID().toString();
+        // 生成一对短信ID
+        String sentSmsId = UUID.randomUUID().toString();
+        String receivedSmsId = UUID.randomUUID().toString();
         // 生成发短信和收短信的手机号
         List<String> callerReceiver = RandomTools.getRandomElements(phoneNumbers, 2);
         // 发短信的人
@@ -139,7 +141,7 @@ public class RandomTelecomDataGenerator {
         String smsContent = RandomTools.getRandomElement(smsMessages);
 
         SmsRecord sentSms = SmsRecord.builder()
-                .smsId(smsId)
+                .smsId(sentSmsId)
                 .senderNumber(sender)
                 .receiverNumber(receiver)
                 .smsContent(smsContent)
@@ -150,7 +152,7 @@ public class RandomTelecomDataGenerator {
                 .build();
 
         SmsRecord receivedSms = SmsRecord.builder()
-                .smsId(smsId)
+                .smsId(receivedSmsId)
                 .senderNumber(sender)
                 .receiverNumber(receiver)
                 .smsContent(smsContent)
