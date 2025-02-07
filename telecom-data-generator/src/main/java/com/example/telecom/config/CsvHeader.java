@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Output {
-    private boolean append;
-    private Path path;
-    private CsvHeader csvHeader;
+public class CsvHeader {
+    private List<String> call;
+    private List<String> sms;
+    private List<String> traffic;
 }

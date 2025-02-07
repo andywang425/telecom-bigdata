@@ -366,8 +366,39 @@ patterns:
         probability: 0.05
 
 output:
-  append: true
+  append: false
   path:
     call: ./output/call.csv
     sms: ./output/sms.csv
     traffic: ./output/traffic.csv
+  csvHeader:
+    call:
+      - callId
+      - callerNumber
+      - receiverNumber
+      - callStartTime
+      - callEndTime
+      - callDurationMillis
+      - callDirection
+      - callStatus
+      - stationId
+    sms:
+      - smsId
+      - senderNumber
+      - receiverNumber
+      - smsContent
+      - sendTime
+      - sendDirection
+      - sendStatus
+      - stationId
+    traffic:
+      - sessionId
+      - userNumber
+      - sessionStartTime
+      - sessionEndTime
+      - sessionDurationMillis
+      - applicationType
+      - upstreamDataVolume
+      - downstreamDataVolume
+      - networkTechnology
+      - stationId

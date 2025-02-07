@@ -85,10 +85,11 @@ public class App {
         CsvWriterFactory csvWriterFactory = new CsvWriterFactory();
         Output output = config.getOutput();
         Path path = output.getPath();
+        CsvHeader csvHeader = output.getCsvHeader();
 
-        CsvWriter callWriter = csvWriterFactory.getCsvWriter(path.getCall(), output.isAppend());
-        CsvWriter smsWriter = csvWriterFactory.getCsvWriter(path.getSms(), output.isAppend());
-        CsvWriter trafficWriter = csvWriterFactory.getCsvWriter(path.getTraffic(), output.isAppend());
+        CsvWriter callWriter = csvWriterFactory.getCsvWriter(csvHeader.getCall(), path.getCall(), output.isAppend());
+        CsvWriter smsWriter = csvWriterFactory.getCsvWriter(csvHeader.getSms(), path.getSms(), output.isAppend());
+        CsvWriter trafficWriter = csvWriterFactory.getCsvWriter(csvHeader.getTraffic(), path.getTraffic(), output.isAppend());
 
         log.info("开始写入通话记录");
         for (int i = 0; i < recordNumber.getCall(); i++) {
