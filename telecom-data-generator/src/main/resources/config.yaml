@@ -107,7 +107,7 @@ patterns:
               min: 0.0
               max: 1000000.0
         preference:
-          - name: ONLINE_VIDE
+          - name: ONLINE_VIDEO
             weight: 0.2
           - name: SOCIAL_MEDIA
             weight: 0.5
@@ -207,7 +207,7 @@ patterns:
               min: 0.0
               max: 1000000.0
         preference:
-          - name: ONLINE_VIDE
+          - name: ONLINE_VIDEO
             weight: 0.2
           - name: SOCIAL_MEDIA
             weight: 0.7
@@ -275,7 +275,7 @@ patterns:
             - lower: 50000.0
               upper: 160000.0
         preference:
-          - name: ONLINE_VIDE
+          - name: ONLINE_VIDEO
             weight: 0.3
           - name: SOCIAL_MEDIA
             weight: 0.4
@@ -343,7 +343,7 @@ patterns:
             - lower: 60000.0
               upper: 180000.0
         preference:
-          - name: ONLINE_VIDE
+          - name: ONLINE_VIDEO
             weight: 0.3
           - name: SOCIAL_MEDIA
             weight: 0.2
@@ -366,7 +366,7 @@ patterns:
         probability: 0.05
 
 output:
-  append: false
+  append: true
   path:
     call: ./output/call.csv
     sms: ./output/sms.csv
