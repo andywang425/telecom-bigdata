@@ -87,23 +87,22 @@ public class App {
         Path path = output.getPath();
         CsvHeader csvHeader = output.getCsvHeader();
 
-        CsvWriter callWriter = csvWriterFactory.getCsvWriter(csvHeader.getCall(), path.getCall(), output.isAppend());
-        CsvWriter smsWriter = csvWriterFactory.getCsvWriter(csvHeader.getSms(), path.getSms(), output.isAppend());
-        CsvWriter trafficWriter = csvWriterFactory.getCsvWriter(csvHeader.getTraffic(), path.getTraffic(), output.isAppend());
-
         log.info("开始写入通话记录");
+        CsvWriter callWriter = csvWriterFactory.getCsvWriter(csvHeader.getCall(), path.getCall(), output.isAppend());
         for (int i = 0; i < recordNumber.getCall(); i++) {
             callWriter.write(generator.generateCallRecordPair());
         }
         callWriter.close();
 
         log.info("开始写入短信记录");
+        CsvWriter smsWriter = csvWriterFactory.getCsvWriter(csvHeader.getSms(), path.getSms(), output.isAppend());
         for (int i = 0; i < recordNumber.getSms(); i++) {
             smsWriter.write(generator.generateSmsRecordPair());
         }
         smsWriter.close();
 
         log.info("开始写入流量记录");
+        CsvWriter trafficWriter = csvWriterFactory.getCsvWriter(csvHeader.getTraffic(), path.getTraffic(), output.isAppend());
         for (int i = 0; i < recordNumber.getTraffic(); i++) {
             trafficWriter.write(generator.generateRandomTrafficRecord());
         }
