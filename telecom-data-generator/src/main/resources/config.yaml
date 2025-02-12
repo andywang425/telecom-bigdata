@@ -366,7 +366,7 @@ patterns:
         probability: 0.05
 
 output:
-  append: true
+  append: false
   path:
     call: ./output/call.csv
     sms: ./output/sms.csv

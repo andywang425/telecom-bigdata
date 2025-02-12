@@ -77,8 +77,8 @@ public class RandomTelecomDataGenerator {
 
         CallRecord outgoingCall = CallRecord.builder()
                 .callId(outgoingCallId)
-                .callerNumber(receiver)
-                .receiverNumber(caller)
+                .callerNumber(caller)
+                .receiverNumber(receiver)
                 .callStartTime(callStart)
                 .callEndTime(callEnd)
                 .callDuration(durationMillis)
