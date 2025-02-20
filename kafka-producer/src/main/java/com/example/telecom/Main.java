@@ -77,6 +77,8 @@ public class Main {
      * @param producer KafkaProducer
      */
     public static void processCsvFile(String filePath, KafkaProducer<String, String> producer) {
+        log.info("Processing CSV file: {}", filePath);
+
         try (CSVParser csvParser = CSVFormat.DEFAULT.builder().setHeader()
                 .setSkipHeaderRecord(true).get().parse(new FileReader(filePath, StandardCharsets.UTF_8))) {
             // 获取 CSV 文件的表头

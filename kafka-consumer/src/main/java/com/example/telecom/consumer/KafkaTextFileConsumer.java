@@ -15,7 +15,7 @@ public class KafkaTextFileConsumer {
         // Kafka Consumer properties
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "slave1:9092,slave2:9092,slave3:9092"); // Kafka broker address
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "test-consumer-group"); // Consumer group ID
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "telecom-consumer-group"); // Consumer group ID
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest"); // Read from the beginning of the topic if no offset is committed
@@ -25,7 +25,7 @@ public class KafkaTextFileConsumer {
 
         // Subscribe to the topic (same topic you used in the FileStreamSource connector)
         try (consumer) {
-            consumer.subscribe(Collections.singletonList("connect-file-pulse-quickstart-csv"));
+            consumer.subscribe(Collections.singletonList("telecom-data"));
             System.out.println("Consuming messages from Kafka topic...");
             while (true) {
                 // Poll for new records (messages)
