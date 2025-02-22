@@ -1,6 +1,7 @@
 package com.example.telecom.model;
 
 import com.example.telecom.enums.ApplicationType;
+import com.example.telecom.util.DateTimeUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +27,6 @@ public class TrafficRecord implements Record {
 
     @Override
     public Object[] getRecord() {
-        return new Object[]{sessionId, userNumber, sessionStartTime, sessionEndTime, sessionDuration, applicationType, upstreamDataVolume, downstreamDataVolume, networkTechnology, stationId};
+        return new Object[]{sessionId, userNumber, DateTimeUtils.localDateTimeToMillis(sessionStartTime), DateTimeUtils.localDateTimeToMillis(sessionEndTime), sessionDuration, applicationType, upstreamDataVolume, downstreamDataVolume, networkTechnology, stationId};
     }
 }

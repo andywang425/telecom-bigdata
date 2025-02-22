@@ -2,6 +2,7 @@ package com.example.telecom.model;
 
 import com.example.telecom.enums.CallDirection;
 import com.example.telecom.enums.CallStatus;
+import com.example.telecom.util.DateTimeUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +27,6 @@ public class CallRecord implements Record {
 
     @Override
     public Object[] getRecord() {
-        return new Object[]{callId, callerNumber, receiverNumber, callStartTime, callEndTime, callDuration, callDirection, callStatus, stationId};
+        return new Object[]{callId, callerNumber, receiverNumber, DateTimeUtils.localDateTimeToMillis(callStartTime), DateTimeUtils.localDateTimeToMillis(callEndTime), callDuration, callDirection, callStatus, stationId};
     }
 }

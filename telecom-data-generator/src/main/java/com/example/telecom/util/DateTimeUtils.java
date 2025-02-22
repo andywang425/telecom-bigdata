@@ -1,7 +1,6 @@
 package com.example.telecom.util;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
 
 public class DateTimeUtils {
@@ -28,5 +27,13 @@ public class DateTimeUtils {
      */
     public static LocalTime hourToLocalTime(double hour) {
         return LocalTime.ofNanoOfDay((long) (hour * NANOS_PER_HOUR));
+    }
+
+    /**
+     * LocalDateTime转毫秒时间戳
+     * @param localDateTime 假设为东八区时间
+     */
+    public static long localDateTimeToMillis(LocalDateTime localDateTime) {
+        return localDateTime.atZone(ZoneId.of("Asia/Shanghai")).toInstant().toEpochMilli();
     }
 }

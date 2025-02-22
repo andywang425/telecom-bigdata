@@ -2,6 +2,7 @@ package com.example.telecom.model;
 
 import com.example.telecom.enums.SmsDirection;
 import com.example.telecom.enums.SmsStatus;
+import com.example.telecom.util.DateTimeUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +26,6 @@ public class SmsRecord implements Record {
 
     @Override
     public Object[] getRecord() {
-        return new Object[]{smsId, senderNumber, receiverNumber, smsContent, sendTime, sendDirection, sendStatus, stationId};
+        return new Object[]{smsId, senderNumber, receiverNumber, smsContent, DateTimeUtils.localDateTimeToMillis(sendTime), sendDirection, sendStatus, stationId};
     }
 }
