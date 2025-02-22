@@ -25,9 +25,27 @@ public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private static final int THREAD_POOL_SIZE = 8;
+    private static final int THREAD_POOL_SIZE = 3;
+    private static final Map<String, Class<?>> FIELD_TYPE_MAP = new HashMap<>();
+
+    static {
+        FIELD_TYPE_MAP.put("callStartTime", Long.class);
+        FIELD_TYPE_MAP.put("callEndTime", Long.class);
+        FIELD_TYPE_MAP.put("callDurationMillis", Long.class);
+        FIELD_TYPE_MAP.put("sendTime", Long.class);
+        FIELD_TYPE_MAP.put("sessionStartTime", Long.class);
+        FIELD_TYPE_MAP.put("sessionEndTime", Long.class);
+        FIELD_TYPE_MAP.put("sessionDurationMillis", Long.class);
+        FIELD_TYPE_MAP.put("upstreamDataVolume", Long.class);
+        FIELD_TYPE_MAP.put("downstreamDataVolume", Long.class);
+    }
 
     public static void main(String[] args) {
+        if (args.length != 3) {
+            log.error("Usage: <call.csv> <sms.csv> <traffic.csv>");
+            System.exit(1);
+        }
+
         // 初始化 Kafka 生产者
         KafkaProducer<String, String> producer = new KafkaProducer<>(getKafkaProperties());
 
@@ -35,9 +53,9 @@ public class Main {
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
         // 多线程处理 CSV 文件（每个线程处理一个文件）
-        for (String arg : args) {
-            executorService.submit(() -> processCsvFile(arg, producer));
-        }
+        executorService.submit(() -> processCsvFile("telecom-data-call", args[0], producer));
+        executorService.submit(() -> processCsvFile("telecom-data-sms", args[1], producer));
+        executorService.submit(() -> processCsvFile("telecom-data-traffic", args[2], producer));
 
         executorService.shutdown();
         try {
@@ -73,10 +91,12 @@ public class Main {
 
     /**
      * 处理 CSV 文件
+     *
+     * @param topic    kafka topic
      * @param filePath 文件路径
      * @param producer KafkaProducer
      */
-    public static void processCsvFile(String filePath, KafkaProducer<String, String> producer) {
+    public static void processCsvFile(String topic, String filePath, KafkaProducer<String, String> producer) {
         log.info("Processing CSV file: {}", filePath);
 
         try (CSVParser csvParser = CSVFormat.DEFAULT.builder().setHeader()
@@ -84,14 +104,31 @@ public class Main {
             // 获取 CSV 文件的表头
             List<String> header = csvParser.getHeaderNames();
 
-            Map<String, String> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             // 使用流处理遍历 CSV 文件，将每行数据转换为 JSON 并发送到 Kafka
             csvParser.stream().forEach(record -> {
                 for (String name : header) {
-                    map.put(name, record.get(name));
+                    String value = record.get(name);
+
+                    // 判断是否需要类型转换
+                    if (FIELD_TYPE_MAP.containsKey(name) && value != null && !value.isEmpty()) {
+                        // 获取字段类型
+                        Class<?> fieldType = FIELD_TYPE_MAP.get(name);
+                        // 类型转换
+                        if (fieldType.equals(Long.class)) {
+                            map.put(name, Long.parseLong(value));
+                        } else if (fieldType.equals(Integer.class)) {
+                            map.put(name, Integer.parseInt(value));
+                        } else if (fieldType.equals(Double.class)) {
+                            map.put(name, Double.parseDouble(value));
+                        }
+                    } else {
+                        // 保持字符串类型
+                        map.put(name, value);
+                    }
                 }
 
-                sendToKafka(convertToJson(map), producer);
+                sendToKafka(topic, convertToJson(map), producer);
                 map.clear();
             });
 
@@ -102,9 +139,10 @@ public class Main {
 
     /**
      * 将 Map 转换为 JSON 字符串
+     *
      * @param record Map
      */
-    private static String convertToJson(Map<String, String> record) {
+    private static String convertToJson(Map<String, Object> record) {
         try {
             return OBJECT_MAPPER.writeValueAsString(record);
         } catch (IOException e) {
@@ -115,11 +153,12 @@ public class Main {
 
     /**
      * 发送消息到 Kafka
-     * @param message 消息
+     *
+     * @param message  消息
      * @param producer KafkaProducer
      */
-    private static void sendToKafka(String message, KafkaProducer<String, String> producer) {
-        ProducerRecord<String, String> record = new ProducerRecord<>("telecom-data", message);
+    private static void sendToKafka(String topic, String message, KafkaProducer<String, String> producer) {
+        ProducerRecord<String, String> record = new ProducerRecord<>(topic, message);
 
         producer.send(record, (metadata, exception) -> {
             if (exception != null) {
