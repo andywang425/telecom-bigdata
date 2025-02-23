@@ -58,7 +58,17 @@
            <artifactId>spark-hive_2.13</artifactId>
            <version>3.5.4</version>
        </dependency>
+       <dependency>
+           <groupId>org.apache.spark</groupId>
+           <artifactId>spark-streaming_2.13</artifactId>
+           <version>3.5.4</version>
+       </dependency>
        <!-- Kafka Spark Structured Streaming (optional, for streaming) -->
+       <dependency>
+           <groupId>org.apache.kafka</groupId>
+           <artifactId>kafka-clients</artifactId>
+           <version>3.8.1</version>
+       </dependency>
        <dependency>
            <groupId>org.apache.spark</groupId>
            <artifactId>spark-streaming-kafka-0-10_2.13</artifactId>
