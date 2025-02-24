@@ -12,9 +12,10 @@ public class Deepseek2 {
         // 创建SparkSession并启用Hive支持
         SparkSession spark = SparkSession.builder()
                 .appName("TelecomDataProcessor")
-                .config("hive.metastore.uris", "thrift://master:9083")
+                .config("hive.metastore.uris", "thrift://master:9083") // 可能没用，改为放配置文件
                 .enableHiveSupport()
                 .getOrCreate();
+        // 缺一个配置spark.sql.warehouse.dir
 
         // 创建数据库和表
         spark.sql("CREATE DATABASE IF NOT EXISTS `telecom-data`");
@@ -110,7 +111,7 @@ public class Deepseek2 {
         // 启动三个流式写入任务
         StreamingQuery callQuery = callData.writeStream()
                 .outputMode("append")
-                .option("checkpointLocation", "/tmp/checkpoint/call")
+                .option("checkpointLocation", "/tmp/checkpoint/call") // checkpointLocation 可能没用
                 .foreachBatch((batchDF, batchId) -> {
                     batchDF.write().mode("append").saveAsTable("telecom-data.call");
                 })
