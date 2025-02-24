@@ -12,36 +12,37 @@ public class Deepseek2 {
         // 创建SparkSession并启用Hive支持
         SparkSession spark = SparkSession.builder()
                 .appName("TelecomDataProcessor")
-                .config("hive.metastore.uris", "thrift://master:9083") // 可能没用，改为放配置文件
+                //.config("hive.metastore.uris", "thrift://master:9083") // 可能没用，改为放配置文件
+                .config("spark.sql.warehouse.dir", "/user/hive/warehouse")
+                .config("spark.sql.hive.metastore.version", "4.0.0") // max 3.1.3
                 .enableHiveSupport()
                 .getOrCreate();
-        // 缺一个配置spark.sql.warehouse.dir
 
-        // 创建数据库和表
-        spark.sql("CREATE DATABASE IF NOT EXISTS `telecom-data`");
-        spark.sql("USE `telecom-data`");
-
-        // 创建通话记录表
-        spark.sql("CREATE TABLE IF NOT EXISTS call (" +
-                "callId STRING, callerNumber STRING, receiverNumber STRING, " +
-                "callStartTime BIGINT, callEndTime BIGINT, callDurationMillis BIGINT, " +
-                "callDirection STRING, callStatus STRING, stationId STRING) " +
-                "STORED AS ORC");
-
-        // 创建短信记录表
-        spark.sql("CREATE TABLE IF NOT EXISTS sms (" +
-                "smsId STRING, senderNumber STRING, receiverNumber STRING, " +
-                "smsContent STRING, sendTime BIGINT, sendDirection STRING, " +
-                "sendStatus STRING, stationId STRING) " +
-                "STORED AS ORC");
-
-        // 创建流量记录表
-        spark.sql("CREATE TABLE IF NOT EXISTS traffic (" +
-                "sessionId STRING, userNumber STRING, sessionStartTime BIGINT, " +
-                "sessionEndTime BIGINT, sessionDurationMillis BIGINT, applicationType STRING, " +
-                "upstreamDataVolume DOUBLE, downstreamDataVolume DOUBLE, networkTechnology STRING, " +
-                "stationId STRING) " +
-                "STORED AS ORC");
+//        // 创建数据库和表
+//        spark.sql("CREATE DATABASE IF NOT EXISTS `telecom-data`");
+//        spark.sql("USE `telecom-data`");
+//
+//        // 创建通话记录表
+//        spark.sql("CREATE TABLE IF NOT EXISTS call (" +
+//                "callId STRING, callerNumber STRING, receiverNumber STRING, " +
+//                "callStartTime BIGINT, callEndTime BIGINT, callDurationMillis BIGINT, " +
+//                "callDirection STRING, callStatus STRING, stationId STRING) " +
+//                "STORED AS ORC");
+//
+//        // 创建短信记录表
+//        spark.sql("CREATE TABLE IF NOT EXISTS sms (" +
+//                "smsId STRING, senderNumber STRING, receiverNumber STRING, " +
+//                "smsContent STRING, sendTime BIGINT, sendDirection STRING, " +
+//                "sendStatus STRING, stationId STRING) " +
+//                "STORED AS ORC");
+//
+//        // 创建流量记录表
+//        spark.sql("CREATE TABLE IF NOT EXISTS traffic (" +
+//                "sessionId STRING, userNumber STRING, sessionStartTime BIGINT, " +
+//                "sessionEndTime BIGINT, sessionDurationMillis BIGINT, applicationType STRING, " +
+//                "upstreamDataVolume DOUBLE, downstreamDataVolume DOUBLE, networkTechnology STRING, " +
+//                "stationId STRING) " +
+//                "STORED AS ORC");
 
         // 定义各主题的Schema
         StructType callSchema = new StructType()
@@ -72,8 +73,8 @@ public class Deepseek2 {
                 .add("sessionEndTime", DataTypes.LongType)
                 .add("sessionDurationMillis", DataTypes.LongType)
                 .add("applicationType", DataTypes.StringType)
-                .add("upstreamDataVolume", DataTypes.DoubleType)
-                .add("downstreamDataVolume", DataTypes.DoubleType)
+                .add("upstreamDataVolume", DataTypes.LongType)
+                .add("downstreamDataVolume", DataTypes.LongType)
                 .add("networkTechnology", DataTypes.StringType)
                 .add("stationId", DataTypes.StringType);
 
@@ -111,7 +112,7 @@ public class Deepseek2 {
         // 启动三个流式写入任务
         StreamingQuery callQuery = callData.writeStream()
                 .outputMode("append")
-                .option("checkpointLocation", "/tmp/checkpoint/call") // checkpointLocation 可能没用
+//                .option("checkpointLocation", "/tmp/checkpoint/call") // checkpointLocation 可能没用
                 .foreachBatch((batchDF, batchId) -> {
                     batchDF.write().mode("append").saveAsTable("telecom-data.call");
                 })
@@ -119,7 +120,7 @@ public class Deepseek2 {
 
         StreamingQuery smsQuery = smsData.writeStream()
                 .outputMode("append")
-                .option("checkpointLocation", "/tmp/checkpoint/sms")
+//                .option("checkpointLocation", "/tmp/checkpoint/sms")
                 .foreachBatch((batchDF, batchId) -> {
                     batchDF.write().mode("append").saveAsTable("telecom-data.sms");
                 })
@@ -127,7 +128,7 @@ public class Deepseek2 {
 
         StreamingQuery trafficQuery = trafficData.writeStream()
                 .outputMode("append")
-                .option("checkpointLocation", "/tmp/checkpoint/traffic")
+//                .option("checkpointLocation", "/tmp/checkpoint/traffic")
                 .foreachBatch((batchDF, batchId) -> {
                     batchDF.write().mode("append").saveAsTable("telecom-data.traffic");
                 })
