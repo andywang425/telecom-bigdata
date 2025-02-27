@@ -1,4 +1,4 @@
-package com.example.telecom.consumer;
+package consumer;
 
 import org.apache.spark.sql.*;
 import org.apache.spark.sql.streaming.*;

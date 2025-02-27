@@ -1,4 +1,4 @@
-package com.example.telecom.consumer;
+package consumer;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;

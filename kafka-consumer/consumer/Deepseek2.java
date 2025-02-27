@@ -1,4 +1,4 @@
-package com.example.telecom.consumer;
+package consumer;
 
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.Dataset;
