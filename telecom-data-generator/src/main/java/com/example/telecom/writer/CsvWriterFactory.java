@@ -6,7 +6,6 @@ import org.apache.commons.csv.CSVPrinter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class CsvWriterFactory {
@@ -20,7 +19,7 @@ public class CsvWriterFactory {
     public CsvWriter getCsvWriter(List<String> header, String fileName, boolean isAppend) {
         try {
             boolean isFileExist = new File(fileName).exists();
-            FileWriter fileWriter = new FileWriter(fileName, StandardCharsets.UTF_8, isAppend);
+            FileWriter fileWriter = new FileWriter(fileName, isAppend);
             CSVFormat.Builder builder = CSVFormat.DEFAULT.builder().setAutoFlush(true);
 
             if (!isAppend || !isFileExist) {

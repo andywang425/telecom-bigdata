@@ -14,10 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class RandomTelecomDataGenerator {
     private final LocalDate startDate;
@@ -87,7 +84,7 @@ public class RandomTelecomDataGenerator {
                 .stationId(receiverStationId)
                 .build();
 
-        return List.of(incomingCall, outgoingCall);
+        return Arrays.asList(incomingCall, outgoingCall);
     }
 
     /**
@@ -162,7 +159,7 @@ public class RandomTelecomDataGenerator {
                 .stationId(receiverStationId)
                 .build();
 
-        return List.of(sentSms, receivedSms);
+        return Arrays.asList(sentSms, receivedSms);
     }
 
     /**
@@ -224,6 +221,7 @@ public class RandomTelecomDataGenerator {
 
     /**
      * 生成流量的应用类型
+     *
      * @param phoneNumber 手机号
      */
     private ApplicationType generateApplicationType(String phoneNumber) {
@@ -239,6 +237,7 @@ public class RandomTelecomDataGenerator {
 
     /**
      * 生成通话开始时间
+     *
      * @param phoneNumber 手机号
      */
     private LocalDateTime generateCallStartTime(String phoneNumber) {
@@ -251,6 +250,7 @@ public class RandomTelecomDataGenerator {
 
     /**
      * 生成短信发送时间
+     *
      * @param phoneNumber 手机号
      */
     private LocalDateTime generateSmsSendTime(String phoneNumber) {
@@ -263,6 +263,7 @@ public class RandomTelecomDataGenerator {
 
     /**
      * 生成流量会话开始时间
+     *
      * @param phoneNumber 手机号
      */
     private LocalDateTime generateTrafficSessionStartTime(String phoneNumber) {
@@ -275,6 +276,7 @@ public class RandomTelecomDataGenerator {
 
     /**
      * 生成通话持续时间
+     *
      * @param phoneNumber 手机号
      */
     private long generateCallDurationForUser(String phoneNumber) {
@@ -285,6 +287,7 @@ public class RandomTelecomDataGenerator {
 
     /**
      * 生成流量会话持续时间
+     *
      * @param phoneNumber 手机号
      */
     private long generateSessionDurationForUser(String phoneNumber) {
@@ -295,7 +298,8 @@ public class RandomTelecomDataGenerator {
 
     /**
      * 生成流量会话的上行数据量
-     * @param phoneNumber 手机号
+     *
+     * @param phoneNumber     手机号
      * @param sessionDuration 会话持续时间
      */
     private long generateUpStreamDataVolumeForUser(String phoneNumber, long sessionDuration) {
@@ -306,7 +310,8 @@ public class RandomTelecomDataGenerator {
 
     /**
      * 生成流量会话的下行数据量
-     * @param phoneNumber 手机号
+     *
+     * @param phoneNumber     手机号
      * @param sessionDuration 会话持续时间
      */
     private long generateDownStreamDataVolumeForUser(String phoneNumber, long sessionDuration) {

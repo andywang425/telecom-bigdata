@@ -21,10 +21,10 @@ public class KafkaTextFileConsumer {
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest"); // Read from the beginning of the topic if no offset is committed
 
         // Create the consumer
-        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
+
 
         // Subscribe to the topic (same topic you used in the FileStreamSource connector)
-        try (consumer) {
+        try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);) {
             consumer.subscribe(Collections.singletonList("telecom-data"));
             System.out.println("Consuming messages from Kafka topic...");
             while (true) {

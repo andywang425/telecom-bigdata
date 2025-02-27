@@ -22,7 +22,8 @@ public class Main {
                 //.config("hive.metastore.uris", "thrift://master:9083") // 可能没用，改为放配置文件
                 .config("spark.sql.warehouse.dir", "/user/hive/warehouse")
                 .config("spark.sql.hive.metastore.version", "3.1.3") // max 3.1.3
-                .config("spark.sql.hive.metastore.jars", "maven")
+                .config("spark.sql.hive.metastore.jars", "path")
+                .config("spark.sql.hive.metastore.jars.path", "file:///usr/local/hive/lib/*.jar") // /usr/local/hadoop/lib/native/*
                 .enableHiveSupport()
                 .getOrCreate();
 
@@ -93,26 +94,29 @@ public class Main {
 
         // 启动三个流式写入任务
         StreamingQuery callQuery = callData.writeStream()
+                .format("Hive")
                 .outputMode("append")
 //                .option("checkpointLocation", "/tmp/checkpoint/call") // checkpointLocation 可能没用
                 .foreachBatch((batchDF, batchId) -> {
-                    batchDF.write().mode("append").saveAsTable("`telecom-data`.`call`");
+                    batchDF.write().format("Hive").mode("append").saveAsTable("`telecom_data`.`call`");
                 })
                 .start();
 
         StreamingQuery smsQuery = smsData.writeStream()
+                .format("Hive")
                 .outputMode("append")
 //                .option("checkpointLocation", "/tmp/checkpoint/sms")
                 .foreachBatch((batchDF, batchId) -> {
-                    batchDF.write().mode("append").saveAsTable("`telecom-data`.`sms`");
+                    batchDF.write().format("Hive").mode("append").saveAsTable("`telecom_data`.`sms`");
                 })
                 .start();
 
         StreamingQuery trafficQuery = trafficData.writeStream()
+                .format("Hive")
                 .outputMode("append")
 //                .option("checkpointLocation", "/tmp/checkpoint/traffic")
                 .foreachBatch((batchDF, batchId) -> {
-                    batchDF.write().mode("append").saveAsTable("`telecom-data`.`traffic`");
+                    batchDF.write().format("Hive").mode("append").saveAsTable("`telecom_data`.`traffic`");
                 })
                 .start();
 

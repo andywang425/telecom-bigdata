@@ -100,7 +100,7 @@ public class Main {
         log.info("Processing CSV file: {}", filePath);
 
         try (CSVParser csvParser = CSVFormat.DEFAULT.builder().setHeader()
-                .setSkipHeaderRecord(true).get().parse(new FileReader(filePath, StandardCharsets.UTF_8))) {
+                .setSkipHeaderRecord(true).get().parse(new FileReader(filePath))) {
             // 获取 CSV 文件的表头
             List<String> header = csvParser.getHeaderNames();
 
