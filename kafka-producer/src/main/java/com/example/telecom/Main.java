@@ -58,14 +58,15 @@ public class Main {
 
         executorService.shutdown();
         try {
-            while (!executorService.awaitTermination(1, TimeUnit.MINUTES)) {
+            do {
                 log.info("Waiting for remaining tasks...");
-            }
+            } while (!executorService.awaitTermination(1, TimeUnit.MINUTES));
         } catch (InterruptedException e) {
             log.info("Interrupted while waiting for tasks to finish");
         }
 
         producer.close();
+        log.info("All tasks completed.");
     }
 
     /**
