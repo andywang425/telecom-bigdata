@@ -7,126 +7,131 @@ import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.streaming.OutputMode;
 import org.apache.spark.sql.streaming.StreamingQuery;
 import org.apache.spark.sql.streaming.StreamingQueryException;
-import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import static org.apache.spark.sql.functions.col;
 import static org.apache.spark.sql.functions.from_json;
 
 public class Main {
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
+    private static final Logger log = LoggerFactory.getLogger("TelecomDataProcessor");
+    private static final List<StreamingQuery> activeQueries = new ArrayList<>();
+    private static SparkSession spark;
 
     public static void main(String[] args) {
         log.info("Starting Telecom Data Processor...");
 
-        // 创建SparkSession并启用Hive支持
-        SparkSession spark = SparkSession.builder()
+        try {
+            // 初始化 SparkSession
+            spark = createSparkSession();
+
+            // 从 Kafka 获取输入流
+            Dataset<Row> kafkaDF = readFromKafka(spark);
+
+            // 处理并启动流式查询
+            startStreamingQueries(kafkaDF);
+
+            // 阻塞主线程，等待流式任务终止
+            waitForQueriesTermination();
+
+        } catch (Exception e) {
+            log.error("Unexpected error:", e);
+        } finally {
+            cleanupResources();
+        }
+    }
+
+    // 创建 SparkSession（分离初始化逻辑）
+    private static SparkSession createSparkSession() {
+        return SparkSession.builder()
                 .appName("TelecomDataProcessor")
                 .config("spark.sql.warehouse.dir", "/user/hive/warehouse")
-//                .config("spark.sql.hive.metastore.version", "3.1.3") // 可能可以写道配置文件里？
-//                .config("spark.sql.hive.metastore.jars", "path")
-//                .config("spark.sql.hive.metastore.jars.path", "file:///usr/local/hive/lib/*.jar") // /usr/local/hadoop/lib/native/*
                 .enableHiveSupport()
                 .getOrCreate();
+    }
 
-        // 定义各主题的Schema
-        StructType callSchema = new StructType()
-                .add("callId", DataTypes.StringType)
-                .add("callerNumber", DataTypes.StringType)
-                .add("receiverNumber", DataTypes.StringType)
-                .add("callStartTime", DataTypes.LongType)
-                .add("callEndTime", DataTypes.LongType)
-                .add("callDurationMillis", DataTypes.LongType)
-                .add("callDirection", DataTypes.StringType)
-                .add("callStatus", DataTypes.StringType)
-                .add("stationId", DataTypes.StringType);
-
-        StructType smsSchema = new StructType()
-                .add("smsId", DataTypes.StringType)
-                .add("senderNumber", DataTypes.StringType)
-                .add("receiverNumber", DataTypes.StringType)
-                .add("smsContent", DataTypes.StringType)
-                .add("sendTime", DataTypes.LongType)
-                .add("sendDirection", DataTypes.StringType)
-                .add("sendStatus", DataTypes.StringType)
-                .add("stationId", DataTypes.StringType);
-
-        StructType trafficSchema = new StructType()
-                .add("sessionId", DataTypes.StringType)
-                .add("userNumber", DataTypes.StringType)
-                .add("sessionStartTime", DataTypes.LongType)
-                .add("sessionEndTime", DataTypes.LongType)
-                .add("sessionDurationMillis", DataTypes.LongType)
-                .add("applicationType", DataTypes.StringType)
-                .add("upstreamDataVolume", DataTypes.LongType)
-                .add("downstreamDataVolume", DataTypes.LongType)
-                .add("networkTechnology", DataTypes.StringType)
-                .add("stationId", DataTypes.StringType);
-
-        // 从Kafka读取数据流
-        Dataset<Row> kafkaDF = spark.readStream()
+    private static Dataset<Row> readFromKafka(SparkSession spark) {
+        return spark.readStream()
                 .format("kafka")
                 .option("kafka.bootstrap.servers", "slave1:9092,slave2:9092,slave3:9092")
                 .option("subscribe", "telecom-data-call,telecom-data-sms,telecom-data-traffic")
                 .load();
+    }
 
-        // 处理通话数据
-        Dataset<Row> callData = kafkaDF
-                .filter("topic = 'telecom-data-call'")
+    // 启动所有流式查询
+    private static void startStreamingQueries(Dataset<Row> kafkaDF)
+            throws TimeoutException {
+        StreamingQuery callQuery = processAndWriteStream(kafkaDF, "telecom-data-call", Schemas.CALL, "call");
+        StreamingQuery smsQuery = processAndWriteStream(kafkaDF, "telecom-data-sms", Schemas.SMS, "sms");
+        StreamingQuery trafficQuery = processAndWriteStream(kafkaDF, "telecom-data-traffic", Schemas.TRAFFIC, "traffic");
+
+        activeQueries.add(callQuery);
+        activeQueries.add(smsQuery);
+        activeQueries.add(trafficQuery);
+
+        log.info("All streaming queries started.");
+    }
+
+    // 通用方法：处理数据并启动流式写入
+    private static StreamingQuery processAndWriteStream(Dataset<Row> kafkaDF, String topic, StructType schema, String tableName)
+            throws TimeoutException {
+        Dataset<Row> data = kafkaDF
+                .filter("topic = '" + topic + "'")
                 .selectExpr("CAST(value AS STRING) as json")
-                .select(from_json(col("json"), callSchema).alias("data"))
+                .select(from_json(col("json"), schema).alias("data"))
                 .select("data.*");
 
-        // 处理短信数据
-        Dataset<Row> smsData = kafkaDF
-                .filter("topic = 'telecom-data-sms'")
-                .selectExpr("CAST(value AS STRING) as json")
-                .select(from_json(col("json"), smsSchema).alias("data"))
-                .select("data.*");
+        return data.writeStream()
+                .outputMode(OutputMode.Append())
+                .foreachBatch((batchDF, batchId) -> {
+                    batchDF.write()
+                            .format("hive")
+                            .mode(SaveMode.Append)
+                            .saveAsTable("`telecom_data`.`" + tableName + "`");
+                })
+                .start();
+    }
 
-        // 处理流量数据
-        Dataset<Row> trafficData = kafkaDF
-                .filter("topic = 'telecom-data-traffic'")
-                .selectExpr("CAST(value AS STRING) as json")
-                .select(from_json(col("json"), trafficSchema).alias("data"))
-                .select("data.*");
+    // 等待所有查询终止
+    private static void waitForQueriesTermination() {
+        activeQueries.forEach(query -> {
+            try {
+                query.awaitTermination(20000);
+            } catch (StreamingQueryException e) {
+                log.error("Streaming query failed:", e);
+            }
+        });
+    }
 
+    // 资源清理逻辑（停止查询并关闭 SparkSession）
+    private static void cleanupResources() {
+        log.info("Cleaning up resources...");
 
-        try {
-            // 启动三个流式写入任务
-            StreamingQuery callQuery = callData.writeStream()
-                    .outputMode(OutputMode.Append())
-                    .foreachBatch((batchDF, batchId) -> {
-                        batchDF.write().format("hive").mode(SaveMode.Append).saveAsTable("`telecom_data`.`call`");
-                    })
-                    .start();
+        // 停止所有活跃的流式查询
+        activeQueries.forEach(query -> {
+            try {
+                if (query != null && query.isActive()) {
+                    query.stop();
+                }
+            } catch (Exception e) {
+                log.error("Error stopping query:", e);
+            }
+        });
+        activeQueries.clear();
 
-            StreamingQuery smsQuery = smsData.writeStream()
-                    .outputMode(OutputMode.Append())
-                    .foreachBatch((batchDF, batchId) -> {
-                        batchDF.write().format("hive").mode(SaveMode.Append).saveAsTable("`telecom_data`.`sms`");
-                    })
-                    .start();
-
-            StreamingQuery trafficQuery = trafficData.writeStream()
-                    .outputMode(OutputMode.Append())
-                    .foreachBatch((batchDF, batchId) -> {
-                        batchDF.write().format("hive").mode(SaveMode.Append).saveAsTable("`telecom_data`.`traffic`");
-                    })
-                    .start();
-
-            log.info("Streaming queries started.");
-
-            // 保持程序运行
-            callQuery.awaitTermination();
-            smsQuery.awaitTermination();
-            trafficQuery.awaitTermination();
-        } catch (StreamingQueryException | TimeoutException e) {
-            log.error("Error while writing to Hive:", e);
+        // 关闭 SparkSession
+        if (spark != null) {
+            try {
+                spark.close();
+                log.info("SparkSession closed successfully.");
+            } catch (Exception e) {
+                log.error("Error closing SparkSession:", e);
+            }
         }
     }
 }
