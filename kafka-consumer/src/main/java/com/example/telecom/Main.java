@@ -46,7 +46,9 @@ public class Main {
         }
     }
 
-    // 创建 SparkSession（分离初始化逻辑）
+    /**
+     * 创建 SparkSession
+     */
     private static SparkSession createSparkSession() {
         return SparkSession.builder()
                 .appName("TelecomDataProcessor")
@@ -55,6 +57,11 @@ public class Main {
                 .getOrCreate();
     }
 
+    /**
+     * 从 Kafka 读取数据
+     *
+     * @param spark SparkSession
+     */
     private static Dataset<Row> readFromKafka(SparkSession spark) {
         return spark.readStream()
                 .format("kafka")
@@ -63,7 +70,11 @@ public class Main {
                 .load();
     }
 
-    // 启动所有流式查询
+    /**
+     * 启动所有流式查询
+     *
+     * @param kafkaDF Kafka输入流
+     */
     private static void startStreamingQueries(Dataset<Row> kafkaDF)
             throws TimeoutException {
         StreamingQuery callQuery = processAndWriteStream(kafkaDF, "telecom-data-call", Schemas.CALL, "call");
@@ -77,11 +88,18 @@ public class Main {
         log.info("All streaming queries started.");
     }
 
-    // 通用方法：处理数据并启动流式写入
+    /**
+     * 处理数据并启动流式写入
+     *
+     * @param kafkaDF   Kafka输入流
+     * @param topic     kafka主题
+     * @param schema    json模式
+     * @param tableName hive表名
+     */
     private static StreamingQuery processAndWriteStream(Dataset<Row> kafkaDF, String topic, StructType schema, String tableName)
             throws TimeoutException {
         Dataset<Row> data = kafkaDF
-                .filter("topic = '" + topic + "'")
+                .filter(col("topic").equalTo(topic))
                 .selectExpr("CAST(value AS STRING) as json")
                 .select(from_json(col("json"), schema).alias("data"))
                 .select("data.*");
@@ -97,18 +115,24 @@ public class Main {
                 .start();
     }
 
-    // 等待所有查询终止
+    /**
+     * 等待所有查询终止
+     * <p>
+     * 如果没有异常，查询永远不会自己终止
+     */
     private static void waitForQueriesTermination() {
         activeQueries.forEach(query -> {
             try {
-                query.awaitTermination(20000);
+                query.awaitTermination();
             } catch (StreamingQueryException e) {
                 log.error("Streaming query failed:", e);
             }
         });
     }
 
-    // 资源清理逻辑（停止查询并关闭 SparkSession）
+    /**
+     * 清理资源
+     */
     private static void cleanupResources() {
         log.info("Cleaning up resources...");
 
