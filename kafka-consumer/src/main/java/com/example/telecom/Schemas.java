@@ -18,15 +18,6 @@ public class Schemas {
             new StructField("stationId", DataTypes.StringType, true, Metadata.empty())
 
     });
-//            .add("callId", DataTypes.StringType)
-//            .add("callerNumber", DataTypes.StringType)
-//            .add("receiverNumber", DataTypes.StringType)
-//            .add("callStartTime", DataTypes.LongType)
-//            .add("callEndTime", DataTypes.LongType)
-//            .add("callDurationMillis", DataTypes.LongType)
-//            .add("callDirection", DataTypes.StringType)
-//            .add("callStatus", DataTypes.StringType)
-//            .add("stationId", DataTypes.StringType);
 
     public static final StructType SMS = new StructType(new StructField[]{
             new StructField("smsId", DataTypes.StringType, true, Metadata.empty()),
@@ -38,14 +29,6 @@ public class Schemas {
             new StructField("sendStatus", DataTypes.StringType, true, Metadata.empty()),
             new StructField("stationId", DataTypes.StringType, true, Metadata.empty())
     });
-//            .add("smsId", DataTypes.StringType)
-//            .add("senderNumber", DataTypes.StringType)
-//            .add("receiverNumber", DataTypes.StringType)
-//            .add("smsContent", DataTypes.StringType)
-//            .add("sendTime", DataTypes.LongType)
-//            .add("sendDirection", DataTypes.StringType)
-//            .add("sendStatus", DataTypes.StringType)
-//            .add("stationId", DataTypes.StringType);
 
     public static final StructType TRAFFIC = new StructType(new StructField[]{
             new StructField("sessionId", DataTypes.StringType, true, Metadata.empty()),
@@ -59,15 +42,4 @@ public class Schemas {
             new StructField("networkTechnology", DataTypes.StringType, true, Metadata.empty()),
             new StructField("stationId", DataTypes.StringType, true, Metadata.empty())
     });
-//            .add("sessionId", DataTypes.StringType)
-//            .add("userNumber", DataTypes.StringType)
-//            .add("sessionStartTime", DataTypes.LongType)
-//            .add("sessionEndTime", DataTypes.LongType)
-//            .add("sessionDurationMillis", DataTypes.LongType)
-//            .add("applicationType", DataTypes.StringType)
-//            .add("upstreamDataVolume", DataTypes.LongType)
-//            .add("downstreamDataVolume", DataTypes.LongType)
-//            .add("networkTechnology", DataTypes.StringType)
-//            .add("stationId", DataTypes.StringType);
-
 }

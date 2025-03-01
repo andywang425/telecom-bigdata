@@ -1,3 +1,4 @@
+-- 清空表
 USE `telecom_data`;
 
 TRUNCATE TABLE `call`;

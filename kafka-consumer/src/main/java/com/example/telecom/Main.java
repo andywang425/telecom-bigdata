@@ -27,18 +27,10 @@ public class Main {
         log.info("Starting Telecom Data Processor...");
 
         try {
-            // 初始化 SparkSession
             spark = createSparkSession();
-
-            // 从 Kafka 获取输入流
             Dataset<Row> kafkaDF = readFromKafka(spark);
-
-            // 处理并启动流式查询
             startStreamingQueries(kafkaDF);
-
-            // 阻塞主线程，等待流式任务终止
             waitForQueriesTermination();
-
         } catch (Exception e) {
             log.error("Unexpected error:", e);
         } finally {
