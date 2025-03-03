@@ -16,7 +16,6 @@ public class Schemas {
             new StructField("callDirection", DataTypes.StringType, true, Metadata.empty()),
             new StructField("callStatus", DataTypes.StringType, true, Metadata.empty()),
             new StructField("stationId", DataTypes.StringType, true, Metadata.empty())
-
     });
 
     public static final StructType SMS = new StructType(new StructField[]{

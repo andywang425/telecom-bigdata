@@ -15,34 +15,13 @@
     </properties>
 
    <dependencies>
-<!--       <dependency>-->
-<!--           <groupId>org.apache.kafka</groupId>-->
-<!--           <artifactId>kafka-clients</artifactId>-->
-<!--           <version>3.8.1</version>-->
-<!--       </dependency>-->
        <!-- 日志 -->
        <dependency>
            <groupId>org.slf4j</groupId>
            <artifactId>slf4j-api</artifactId>
            <version>2.0.16</version>
        </dependency>
-<!--       <dependency>-->
-<!--           <groupId>org.slf4j</groupId>-->
-<!--           <artifactId>slf4j-reload4j</artifactId>-->
-<!--           <version>2.0.16</version>-->
-<!--       </dependency>-->
-<!--       <dependency>-->
-<!--           <groupId>ch.qos.reload4j</groupId>-->
-<!--           <artifactId>reload4j</artifactId>-->
-<!--           <version>1.2.26</version>-->
-<!--       </dependency>-->
-       <!-- json -->
-<!--       <dependency>-->
-<!--           <groupId>com.fasterxml.jackson.core</groupId>-->
-<!--           <artifactId>jackson-databind</artifactId>-->
-<!--           <version>2.18.2</version>-->
-<!--       </dependency>-->
-       <!-- Apache Spark with Hive support -->
+       <!-- Apache Spark with Hive and Kafka support -->
        <dependency>
            <groupId>org.apache.spark</groupId>
            <artifactId>spark-core_2.13</artifactId>
@@ -58,17 +37,6 @@
            <artifactId>spark-hive_2.13</artifactId>
            <version>3.5.4</version>
        </dependency>
-<!--       <dependency>-->
-<!--           <groupId>org.apache.spark</groupId>-->
-<!--           <artifactId>spark-streaming_2.13</artifactId>-->
-<!--           <version>3.5.4</version>-->
-<!--       </dependency>-->
-       <!-- Kafka Spark Structured Streaming (optional, for streaming) -->
-<!--       <dependency>-->
-<!--           <groupId>org.apache.kafka</groupId>-->
-<!--           <artifactId>kafka-clients</artifactId>-->
-<!--           <version>3.8.1</version>-->
-<!--       </dependency>-->
        <dependency>
            <groupId>org.apache.spark</groupId>
            <artifactId>spark-sql-kafka-0-10_2.13</artifactId>
