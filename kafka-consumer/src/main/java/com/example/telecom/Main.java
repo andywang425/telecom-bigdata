@@ -102,7 +102,7 @@ public class Main {
                     batchDF.write()
                             .format("hive")
                             .mode(SaveMode.Append)
-                            .saveAsTable("`telecom_data`.`" + tableName + "`");
+                            .saveAsTable("telecom_data." + tableName);
                 })
                 .start();
     }
