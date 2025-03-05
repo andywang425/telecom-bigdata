@@ -1,6 +1,7 @@
 package com.example.telecom.util;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class DateTimeUtils {
@@ -8,6 +9,9 @@ public class DateTimeUtils {
      * 一小时的纳秒数
      */
     private static final long NANOS_PER_HOUR = 3600000000000L;
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+
 
     /**
      * 获取指定范围内的一个随机日期
@@ -30,10 +34,10 @@ public class DateTimeUtils {
     }
 
     /**
-     * LocalDateTime转毫秒时间戳
+     * 转换为 yyyy-MM-dd HH:mm:ss.SSS 的格式（Hive的TIMESTAMP类型）
      * @param localDateTime 假设为东八区时间
      */
-    public static long localDateTimeToMillis(LocalDateTime localDateTime) {
-        return localDateTime.atZone(ZoneId.of("Asia/Shanghai")).toInstant().toEpochMilli();
+    public static String formatDateTime(LocalDateTime localDateTime) {
+        return localDateTime.format(formatter);
     }
 }

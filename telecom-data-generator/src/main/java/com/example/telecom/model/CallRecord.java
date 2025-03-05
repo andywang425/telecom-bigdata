@@ -27,6 +27,6 @@ public class CallRecord implements Record {
 
     @Override
     public Object[] getRecord() {
-        return new Object[]{callId, callerNumber, receiverNumber, DateTimeUtils.localDateTimeToMillis(callStartTime), DateTimeUtils.localDateTimeToMillis(callEndTime), callDuration, callDirection, callStatus, stationId};
+        return new Object[]{callId, callerNumber, receiverNumber, DateTimeUtils.formatDateTime(callStartTime), DateTimeUtils.formatDateTime(callEndTime), callDuration, callDirection, callStatus, stationId};
     }
 }

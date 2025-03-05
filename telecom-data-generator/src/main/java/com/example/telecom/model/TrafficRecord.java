@@ -27,6 +27,6 @@ public class TrafficRecord implements Record {
 
     @Override
     public Object[] getRecord() {
-        return new Object[]{sessionId, userNumber, DateTimeUtils.localDateTimeToMillis(sessionStartTime), DateTimeUtils.localDateTimeToMillis(sessionEndTime), sessionDuration, applicationType, upstreamDataVolume, downstreamDataVolume, networkTechnology, stationId};
+        return new Object[]{sessionId, userNumber, DateTimeUtils.formatDateTime(sessionStartTime), DateTimeUtils.formatDateTime(sessionEndTime), sessionDuration, applicationType, upstreamDataVolume, downstreamDataVolume, networkTechnology, stationId};
     }
 }

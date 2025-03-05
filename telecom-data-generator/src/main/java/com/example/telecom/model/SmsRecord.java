@@ -26,6 +26,6 @@ public class SmsRecord implements Record {
 
     @Override
     public Object[] getRecord() {
-        return new Object[]{smsId, senderNumber, receiverNumber, smsContent, DateTimeUtils.localDateTimeToMillis(sendTime), sendDirection, sendStatus, stationId};
+        return new Object[]{smsId, senderNumber, receiverNumber, smsContent, DateTimeUtils.formatDateTime(sendTime), sendDirection, sendStatus, stationId};
     }
 }
