@@ -28,12 +28,7 @@ public class Main {
     private static final Map<String, Class<?>> FIELD_TYPE_MAP = new HashMap<>();
 
     static {
-        FIELD_TYPE_MAP.put("callStartTime", Long.class);
-        FIELD_TYPE_MAP.put("callEndTime", Long.class);
         FIELD_TYPE_MAP.put("callDurationMillis", Long.class);
-        FIELD_TYPE_MAP.put("sendTime", Long.class);
-        FIELD_TYPE_MAP.put("sessionStartTime", Long.class);
-        FIELD_TYPE_MAP.put("sessionEndTime", Long.class);
         FIELD_TYPE_MAP.put("sessionDurationMillis", Long.class);
         FIELD_TYPE_MAP.put("upstreamDataVolume", Long.class);
         FIELD_TYPE_MAP.put("downstreamDataVolume", Long.class);

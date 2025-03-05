@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `call`
     receiverNumber     STRING,
     callStartTime      TIMESTAMP,
     callEndTime        TIMESTAMP,
-    callDurationMillis TIMESTAMP,
+    callDurationMillis BIGINT,
     callDirection      STRING,
     callStatus         STRING,
     stationId          STRING
