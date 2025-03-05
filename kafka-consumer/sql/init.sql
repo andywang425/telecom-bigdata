@@ -1,7 +1,7 @@
 -- 创建数据库
-CREATE DATABASE IF NOT EXISTS `telecom-data`;
+CREATE DATABASE IF NOT EXISTS `telecom_data`;
 
-USE `telecom-data`;
+USE `telecom_data`;
 
 -- 通话记录表
 CREATE TABLE IF NOT EXISTS `call`
@@ -9,9 +9,9 @@ CREATE TABLE IF NOT EXISTS `call`
     callId             STRING,
     callerNumber       STRING,
     receiverNumber     STRING,
-    callStartTime      BIGINT,
-    callEndTime        BIGINT,
-    callDurationMillis BIGINT,
+    callStartTime      TIMESTAMP,
+    callEndTime        TIMESTAMP,
+    callDurationMillis TIMESTAMP,
     callDirection      STRING,
     callStatus         STRING,
     stationId          STRING
@@ -24,19 +24,20 @@ CREATE TABLE IF NOT EXISTS `sms`
     senderNumber   STRING,
     receiverNumber STRING,
     smsContent     STRING,
-    sendTime       BIGINT,
+    sendTime       TIMESTAMP,
     sendDirection  STRING,
     sendStatus     STRING,
     stationId      STRING
-) STORED AS ORC;
+)
+STORED AS ORC;
 
 -- 流量记录表
 CREATE TABLE IF NOT EXISTS `traffic`
 (
     sessionId             STRING,
     userNumber            STRING,
-    sessionStartTime      BIGINT,
-    sessionEndTime        BIGINT,
+    sessionStartTime      TIMESTAMP,
+    sessionEndTime        TIMESTAMP,
     sessionDurationMillis BIGINT,
     applicationType       STRING,
     upstreamDataVolume    BIGINT,
