@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class TrafficRecord implements Record {
-    private String sessionId;
+    private String sessionId;                // UUID
     private String userNumber;
     private LocalDateTime sessionStartTime;
     private LocalDateTime sessionEndTime;

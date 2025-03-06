@@ -50,15 +50,24 @@ public class RandomTelecomDataGenerator {
         LocalDateTime callStart = generateCallStartTime(caller);
         // 接电话的人
         String receiver = callerReceiver.get(1);
-        // 生成通话持续时间
-        long durationMillis = generateCallDurationForUser(caller);
-        // 计算通话结束时间
-        LocalDateTime callEnd = callStart.plus(durationMillis, ChronoUnit.MILLIS);
         // 生成打电话的人和接电话的人所在的基站（可以是同一个）
         String callerStationId = RandomTools.getRandomElement(baseStations);
         String receiverStationId = RandomTools.getRandomElement(baseStations);
         // 生成通话状态
         CallStatus status = generateCallStatus(callerStationId, receiverStationId, receiver);
+        // 通话持续时间
+        long durationMillis;
+        // 通话结束时间
+        LocalDateTime callEnd;
+        // 根据通话状态生成通话持续时间
+        if (status == CallStatus.CONNECTED) {
+            // 电话拨通，生成通话持续时间
+            durationMillis = generateCallDurationForUser(caller);
+        } else {
+            // 如果没有拨通，通话持续时间为0
+            durationMillis = 0;
+        }
+        callEnd = callStart.plus(durationMillis, ChronoUnit.MILLIS);
 
         CallRecord incomingCall = CallRecord.builder()
                 .callId(incomingCallId)
@@ -134,8 +143,16 @@ public class RandomTelecomDataGenerator {
         String receiverStationId = RandomTools.getRandomElement(baseStations);
         // 生成短信状态
         SmsStatus status = generateSmsStatus(callerStationId, receiverStationId);
-        // 生成短信内容
-        String smsContent = RandomTools.getRandomElement(smsMessages);
+        // 短信内容
+        String smsContent;
+        // 根据短信状态生成短信内容
+        if (status == SmsStatus.SUCCESSFUL || status == SmsStatus.FAILED_TO_RECEIVE) {
+            // 短信发送成功（接收可以失败），随机取一条短信内容
+            smsContent = RandomTools.getRandomElement(smsMessages);
+        } else {
+            // 短信发送失败，短信内容为空字符串
+            smsContent = "";
+        }
 
         SmsRecord sentSms = SmsRecord.builder()
                 .smsId(sentSmsId)
