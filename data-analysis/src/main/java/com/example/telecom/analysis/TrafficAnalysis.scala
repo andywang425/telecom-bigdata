@@ -8,14 +8,14 @@ object TrafficAnalysis {
 
   def main(args: Array[String]): Unit = {
     val spark = SparkSession.builder()
-      .appName("SmsAnalysis")
+      .appName("TrafficAnalysis")
       .enableHiveSupport()
       .getOrCreate()
 
     import spark.implicits._
 
     // Load Hive tables into DataFrames
-    val trafficTable = spark.table("telecom_data.sms")
+    val trafficTable = spark.table("telecom_data.traffic")
 
     val trafficDF = trafficTable.withColumn("year", year($"sessionStartTime"))
       .withColumn("month", month($"sessionStartTime"))
