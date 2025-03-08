@@ -40,8 +40,8 @@ object CallAnalysis {
       .withColumn("userNumber", $"callerNumber")
       .groupBy($"year", $"month", $"userNumber")
       .agg(
-        count($"callId").as("caller_call_count") / 2,
-        sum("callDurationMillis").as("caller_total_call_duration") / 2
+        count($"callId").divide(2).alias("caller_call_count"),
+        sum("callDurationMillis").divide(2).alias("caller_total_call_duration")
       )
       .orderBy($"year", $"month", $"userNumber")
 
@@ -52,8 +52,8 @@ object CallAnalysis {
       .withColumn("userNumber", $"receiverNumber")
       .groupBy($"year", $"month", $"userNumber")
       .agg(
-        count($"callId").as("receiver_call_count") / 2,
-        sum("callDurationMillis").as("receiver_total_call_duration") / 2
+        count($"callId").divide(2).alias("receiver_call_count"),
+        sum("callDurationMillis").divide(2).alias("receiver_total_call_duration")
       )
       .orderBy($"year", $"month", $"userNumber")
 
