@@ -28,8 +28,9 @@ object CallAnalysis {
       .groupBy($"year", $"month")
       .agg(
         sum($"callDurationMillis").alias("total_duration_millis"),
-        count("*").alias("total_calls")
+        count($"callId").alias("total_calls")
       )
+      .orderBy($"year", $"month")
 
     log.info("按月总通话时长和数量")
     monthlyCallSummary.show(1024, truncate = false)
@@ -39,7 +40,7 @@ object CallAnalysis {
       .withColumn("userNumber", $"callerNumber")
       .groupBy($"year", $"month", $"userNumber")
       .agg(
-        count("*").as("caller_call_count") / 2,
+        count($"callId").as("caller_call_count") / 2,
         sum("callDurationMillis").as("caller_total_call_duration") / 2
       )
       .orderBy($"year", $"month", $"userNumber")
@@ -51,7 +52,7 @@ object CallAnalysis {
       .withColumn("userNumber", $"receiverNumber")
       .groupBy($"year", $"month", $"userNumber")
       .agg(
-        count("*").as("receiver_call_count") / 2,
+        count($"callId").as("receiver_call_count") / 2,
         sum("callDurationMillis").as("receiver_total_call_duration") / 2
       )
       .orderBy($"year", $"month", $"userNumber")
@@ -71,6 +72,7 @@ object CallAnalysis {
     val monthlyCallStatus = callDF
       .groupBy($"year", $"month", $"callStatus")
       .agg(count("*").alias("call_count"))
+      .orderBy($"year", $"month", $"callStatus")
 
     log.info("每月通话状态统计")
     monthlyCallStatus.show(1024, truncate = false)
@@ -79,6 +81,7 @@ object CallAnalysis {
     val hourlyCallDistribution = callDF
       .groupBy($"year", $"month", $"hour")
       .agg(count($"callId").alias("call_count"))
+      .orderBy($"year", $"month", $"hour")
 
     log.info("按月每日小时通话分布统计")
     hourlyCallDistribution.show(1024, truncate = false)
