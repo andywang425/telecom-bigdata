@@ -79,6 +79,7 @@ object StationAnalysis {
       )
       .orderBy("year", "month", "stationId")
     log.info("Base Station SMS Stats:")
+    baseStationSmsStats.show()
 
     // 4. 以月为单位计算每个基站的会话数量和上行/下行流量
     val baseStationTrafficStats = trafficDF

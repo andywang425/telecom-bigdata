@@ -32,7 +32,7 @@ object CallAnalysis {
       )
       .orderBy($"year", $"month")
 
-    log.info("按月总通话时长和数量")
+    log.info("Monthly call summary")
     monthlyCallSummary.show(1024, truncate = false)
 
     // 2. 每月用户通话时长和数量（包含主被叫双方）
@@ -45,7 +45,7 @@ object CallAnalysis {
       )
       .orderBy($"year", $"month", $"userNumber")
 
-    log.info("每月用户通话时长和数量（主叫）")
+    log.info("Monthly caller call summary")
     monthlyCallerCallSummary.show(1024, truncate = false)
 
     val monthlyReceiverCallSummary = callDF
@@ -57,7 +57,7 @@ object CallAnalysis {
       )
       .orderBy($"year", $"month", $"userNumber")
 
-    log.info("每月用户通话时长和数量（被叫）")
+    log.info("Monthly receiver call summary")
     monthlyReceiverCallSummary.show(1024, truncate = false)
 
     val monthlyUserCallSummary = monthlyCallerCallSummary
@@ -65,7 +65,7 @@ object CallAnalysis {
       .withColumn("total_call_count", $"caller_call_count" + $"receiver_call_count")
       .withColumn("total_call_duration", $"caller_total_call_duration" + $"receiver_total_call_duration")
 
-    log.info("每月用户通话时长和数量（主被叫方合并）")
+    log.info("Monthly user call summary")
     monthlyUserCallSummary.show(1024, truncate = false)
 
     // 3. 每月通话状态统计
@@ -74,7 +74,7 @@ object CallAnalysis {
       .agg(count("*").alias("call_count"))
       .orderBy($"year", $"month", $"callStatus")
 
-    log.info("每月通话状态统计")
+    log.info("Monthly call status summary")
     monthlyCallStatus.show(1024, truncate = false)
 
     // 4. 按月每日小时通话分布统计
@@ -83,7 +83,7 @@ object CallAnalysis {
       .agg(count($"callId").alias("call_count"))
       .orderBy($"year", $"month", $"hour")
 
-    log.info("按月每日小时通话分布统计")
+    log.info("Hourly call distribution summary")
     hourlyCallDistribution.show(1024, truncate = false)
 
     spark.stop()

@@ -32,7 +32,7 @@ object TrafficAnalysis {
         sum($"downstreamDataVolume").alias("total_downstream")
       )
       .orderBy($"year", $"month")
-    log.info("按月会话数量、持续时间、上行流量、下行流量统计")
+    log.info("Monthly session summary")
     monthlySessionSummary.show(1024, truncate = false)
 
     // 2. 按月按用户会话数量、持续时间、上行流量、下行流量统计
@@ -45,7 +45,7 @@ object TrafficAnalysis {
         sum($"downstreamDataVolume").alias("total_downstream")
       )
       .orderBy($"year", $"month", $"userNumber")
-    log.info("按月按用户会话数量、持续时间、上行流量、下行流量统计")
+    log.info("Monthly user traffic summary")
     monthlyUserTrafficSummary.show(1024, truncate = false)
 
     // 3. 按月统计每种会话状态的数量
@@ -64,7 +64,7 @@ object TrafficAnalysis {
         sum("downstreamDataVolume").alias("totalDownstreamDataVolume")
       )
       .orderBy($"year", $"month", $"applicationType")
-    log.info("按月统计花费在不同种类应用上的上行/下行流量")
+    log.info("Traffic summary by APP type")
     trafficByAppType.show(1024, truncate = false)
 
     // 5. 按月统计计算花费在不同网络技术上的上行/下行流量
@@ -75,7 +75,7 @@ object TrafficAnalysis {
         sum("downstreamDataVolume").alias("totalDownstreamDataVolume")
       )
       .orderBy($"year", $"month", $"networkTechnology")
-    log.info("按月统计计算花费在不同网络技术上的上行/下行流量")
+    log.info("Traffic summary by network technology")
     trafficByNetworkTech.show(1024, truncate = false)
 
     // 6. 计算每个月，一天中每个小时的总上行/下行流量（流量在一天内的分布情况）
@@ -86,7 +86,7 @@ object TrafficAnalysis {
         sum("downstreamDataVolume").alias("totalDownstreamDataVolume")
       )
       .orderBy($"year", $"month", $"hour")
-    log.info("计算每个月，一天中每个小时的总上行/下行流量（流量在一天内的分布情况）")
+    log.info("Monthly traffic day distribution per hour")
     trafficByMonthHour.show(1024, truncate = false)
 
     spark.stop()
