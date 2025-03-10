@@ -1,32 +1,60 @@
 package com.example.telecom
 
-import org.apache.spark.rdd.RDD
-import org.apache.spark.{SparkConf, SparkContext}
+import com.example.telecom.analysis.{CallAnalysis, SmsAnalysis, StationAnalysis, TrafficAnalysis}
+import com.example.telecom.utils.{MyLogger, SparkUtils}
+import org.apache.spark.sql.functions.{day, hour, month, year}
 
-object Main {
-
+object Main extends MyLogger {
   def main(args: Array[String]): Unit = {
-    // 创建sparkContext  --- 本地模式运行
-    val conf = new SparkConf().setAppName("test").setMaster("local[*]")
-    val sc = new SparkContext(conf)
+    val spark = SparkUtils.getSession("telecom-data-analysis")
 
-    // 加载文件
-    val context: RDD[String] = sc.textFile("D:\\Documents\\毕业设计\\telecom-bigdata\\telecom-data-generator\\output\\call.csv")
+    import spark.implicits._
 
-    val temp: Array[String] = context.collect().drop(1)
-    val data: RDD[String] = sc.parallelize(temp)
+    val callTable = spark.table("telecom_data.call")
+    val smsTable = spark.table("telecom_data.sms")
+    val trafficTable = spark.table("telecom_data.traffic")
 
-    val r1: RDD[(String, String)] = data.keyBy(_.split(",")(0))
-    val r2 = r1.map(item => (item._1, item._2.split(",").drop(1)))
+    val callDF = callTable
+      .withColumn("year", year($"callStartTime"))
+      .withColumn("month", month($"callStartTime"))
+      .withColumn("day", day($"callStartTime"))
+      .withColumn("hour", hour($"callStartTime"))
+      .cache()
+    val smsDF = smsTable.withColumn("year", year($"sendTime"))
+      .withColumn("month", month($"sendTime"))
+      .withColumn("day", day($"sendTime"))
+      .withColumn("hour", hour($"sendTime"))
+      .cache()
+    val trafficDF = trafficTable.withColumn("year", year($"sessionStartTime"))
+      .withColumn("month", month($"sessionStartTime"))
+      .withColumn("day", day($"sessionStartTime"))
+      .withColumn("hour", hour($"sessionStartTime"))
+      .cache()
 
-    println(r2.collect().mkString("\n"))
+    callTable.unpersist()
+    smsTable.unpersist()
+    trafficTable.unpersist()
 
-    // 数据处理
-    //    val split: RDD[String] = context.flatMap(item => item.split(" "))
-    //    val count: RDD[(String, Int)] = split.map(item => (item, 1))
-    //    val reduce = count.reduceByKey((curr, agg) => curr + agg)
-    //    val result = reduce.collect()
-    //    result.foreach(println(_))
+    try {
+      info("Starting Call Analysis...")
+      CallAnalysis.run(spark, callDF)
+
+      info("Starting SMS Analysis...")
+      SmsAnalysis.run(spark, smsDF)
+
+      info("Starting Traffic Analysis...")
+      TrafficAnalysis.run(spark, trafficDF)
+
+      info("Starting Station Analysis...")
+      StationAnalysis.run(spark, callDF, smsDF, trafficDF)
+
+      info("All analysis tasks completed successfully.")
+    } catch {
+      case e: Exception =>
+        error(s"Error during analysis: ${e.getMessage}")
+        e.printStackTrace()
+    } finally {
+      spark.stop()
+    }
   }
-
 }

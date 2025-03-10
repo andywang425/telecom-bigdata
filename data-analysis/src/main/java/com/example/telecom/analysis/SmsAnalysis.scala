@@ -1,26 +1,12 @@
 package com.example.telecom.analysis
 
-import org.apache.spark.sql.SparkSession
+import com.example.telecom.utils.MyLogger
 import org.apache.spark.sql.functions._
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
-object SmsAnalysis {
-  private val log = org.slf4j.LoggerFactory.getLogger(this.getClass)
-
-  def main(args: Array[String]): Unit = {
-    val spark = SparkSession.builder()
-      .appName("SmsAnalysis")
-      .enableHiveSupport()
-      .getOrCreate()
-
+object SmsAnalysis extends MyLogger {
+  def run(spark: SparkSession, smsDF: DataFrame): Unit = {
     import spark.implicits._
-
-    // Load Hive tables into DataFrames
-    val smsTable = spark.table("telecom_data.sms")
-
-    val smsDF = smsTable.withColumn("year", year($"sendTime"))
-      .withColumn("month", month($"sendTime"))
-      .withColumn("day", day($"sendTime"))
-      .withColumn("hour", hour($"sendTime"))
 
     // 1. 按月短信条数/长度统计
     val monthlySmsSummery = smsDF
@@ -30,7 +16,7 @@ object SmsAnalysis {
         sum(length($"smsContent")).alias("total_length")
       )
       .orderBy($"year", $"month")
-    log.info("Monthly SMS summary")
+    info("Monthly SMS summary")
     monthlySmsSummery.show(1024, truncate = false)
 
     // 2. 按月按用户短信发送/接收条数和长度统计
@@ -40,7 +26,7 @@ object SmsAnalysis {
       .groupBy($"year", $"month", $"senderNumber")
       .agg(count($"smsId").alias("total_sent_count"), sum(length($"smsContent")).alias("total_sent_length"))
       .orderBy($"year", $"month", $"senderNumber")
-    log.info("Monthly SMS sent per user")
+    info("Monthly SMS sent per user")
     smsSentPerUser.show(1024, truncate = false)
 
     // 按用户短信接收条数和长度统计
@@ -49,7 +35,7 @@ object SmsAnalysis {
       .groupBy($"year", $"month", $"receiverNumber")
       .agg(count($"smsId").alias("total_received_count"), sum(length($"smsContent")).alias("total_received_length"))
       .orderBy($"year", $"month", $"receiverNumber")
-    log.info("Monthly SMS received per user")
+    info("Monthly SMS received per user")
     smsReceivedPerUser.show(1024, truncate = false)
 
     // 3. 按月短信状态统计
@@ -57,7 +43,7 @@ object SmsAnalysis {
       .groupBy($"year", $"month", $"sendStatus")
       .agg(count($"smsId").alias("smsStatusCount"))
       .orderBy($"year", $"month", $"sendStatus")
-    log.info("Monthly SMS status")
+    info("Monthly SMS status")
     monthlySmsStatus.show(1024, truncate = false)
 
     // 4. 按月每日小时短信分布统计
@@ -65,9 +51,7 @@ object SmsAnalysis {
       .groupBy($"year", $"month", $"hour")
       .agg(count($"smsId").alias("sms_count"))
       .orderBy($"year", $"month", $"hour")
-    log.info("Hourly SMS distribution")
+    info("Hourly SMS distribution")
     hourlySmsDistribution.show(1024, truncate = false)
-
-    spark.stop()
   }
 }

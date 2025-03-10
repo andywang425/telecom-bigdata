@@ -1,37 +1,12 @@
 package com.example.telecom.analysis
 
-import org.apache.spark.sql.SparkSession
+import com.example.telecom.utils.{MyLogger, SparkUtils}
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions._
 
-object StationAnalysis {
-  private val log = org.slf4j.LoggerFactory.getLogger(this.getClass)
-
-  def main(args: Array[String]): Unit = {
-    val spark = SparkSession.builder()
-      .appName("StationAnalysis")
-      .enableHiveSupport()
-      .getOrCreate()
-
+object StationAnalysis extends MyLogger {
+  def run(spark: SparkSession, callDF: DataFrame, smsDF: DataFrame, trafficDF: DataFrame): Unit = {
     import spark.implicits._
-
-    // Load Hive tables into DataFrames
-    val callTable = spark.table("telecom_data.call")
-    val smsTable = spark.table("telecom_data.sms")
-    val trafficTable = spark.table("telecom_data.traffic")
-
-    val callDF = callTable
-      .withColumn("year", year($"callStartTime"))
-      .withColumn("month", month($"callStartTime"))
-      .withColumn("day", day($"callStartTime"))
-      .withColumn("hour", hour($"callStartTime"))
-    val smsDF = smsTable.withColumn("year", year($"sendTime"))
-      .withColumn("month", month($"sendTime"))
-      .withColumn("day", day($"sendTime"))
-      .withColumn("hour", hour($"sendTime"))
-    val trafficDF = trafficTable.withColumn("year", year($"sessionStartTime"))
-      .withColumn("month", month($"sessionStartTime"))
-      .withColumn("day", day($"sessionStartTime"))
-      .withColumn("hour", hour($"sessionStartTime"))
 
     // 1. 基站的通话和短信故障率
     // A. Calculate call failure rate per base station (failed when callStatus = 'FAILED')
@@ -92,7 +67,5 @@ object StationAnalysis {
       .orderBy("year", "month", "stationId")
     println("Base Station Traffic Stats:")
     baseStationTrafficStats.show()
-
-    spark.stop()
   }
 }
