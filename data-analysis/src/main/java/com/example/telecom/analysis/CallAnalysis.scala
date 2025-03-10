@@ -26,7 +26,7 @@ object CallAnalysis extends MyLogger {
       .groupBy($"year", $"month", $"userNumber")
       .agg(
         count($"callId").divide(2).alias("caller_call_count"),
-        sum("callDurationMillis").divide(2).alias("caller_total_call_duration")
+        sum($"callDurationMillis").divide(2).alias("caller_total_call_duration")
       )
       .orderBy($"year", $"month", $"userNumber")
 
@@ -38,7 +38,7 @@ object CallAnalysis extends MyLogger {
       .groupBy($"year", $"month", $"userNumber")
       .agg(
         count($"callId").divide(2).alias("receiver_call_count"),
-        sum("callDurationMillis").divide(2).alias("receiver_total_call_duration")
+        sum($"callDurationMillis").divide(2).alias("receiver_total_call_duration")
       )
       .orderBy($"year", $"month", $"userNumber")
 
@@ -56,7 +56,7 @@ object CallAnalysis extends MyLogger {
     // 3. 每月通话状态统计
     val monthlyCallStatus = callDF
       .groupBy($"year", $"month", $"callStatus")
-      .agg(count("*").alias("call_count"))
+      .agg(count($"callId").alias("call_count"))
       .orderBy($"year", $"month", $"callStatus")
 
     info("Monthly call status summary")

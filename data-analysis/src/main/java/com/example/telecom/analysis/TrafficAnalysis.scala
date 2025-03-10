@@ -46,8 +46,8 @@ object TrafficAnalysis extends MyLogger {
     val trafficByAppType = trafficDF
       .groupBy($"year", $"month", $"applicationType")
       .agg(
-        sum("upstreamDataVolume").alias("totalUpstreamDataVolume"),
-        sum("downstreamDataVolume").alias("totalDownstreamDataVolume")
+        sum($"upstreamDataVolume").alias("total_upstream_data_volume"),
+        sum($"downstreamDataVolume").alias("total_downstream_data_volume")
       )
       .orderBy($"year", $"month", $"applicationType")
     info("Traffic summary by APP type")
@@ -57,8 +57,8 @@ object TrafficAnalysis extends MyLogger {
     val trafficByNetworkTech = trafficDF
       .groupBy($"year", $"month", $"networkTechnology")
       .agg(
-        sum("upstreamDataVolume").alias("totalUpstreamDataVolume"),
-        sum("downstreamDataVolume").alias("totalDownstreamDataVolume")
+        sum($"upstreamDataVolume").alias("total_upstream_data_volume"),
+        sum($"downstreamDataVolume").alias("total_downstream_data_volume")
       )
       .orderBy($"year", $"month", $"networkTechnology")
     info("Traffic summary by network technology")
@@ -68,8 +68,8 @@ object TrafficAnalysis extends MyLogger {
     val trafficByMonthHour = trafficDF
       .groupBy($"year", $"month", $"hour")
       .agg(
-        sum("upstreamDataVolume").alias("totalUpstreamDataVolume"),
-        sum("downstreamDataVolume").alias("totalDownstreamDataVolume")
+        sum($"upstreamDataVolume").alias("total_upstream_data_volume"),
+        sum($"downstreamDataVolume").alias("total_downstream_data_volume")
       )
       .orderBy($"year", $"month", $"hour")
     info("Monthly traffic day distribution per hour")
