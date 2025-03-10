@@ -1,0 +1,103 @@
+package com.example.telecom.analysis
+
+import com.example.telecom.utils.{MyLogger, SparkUtils}
+import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.functions._
+
+object CallAnalysis extends MyLogger {
+  def run(spark: SparkSession, callDF: DataFrame): Unit = {
+    import spark.implicits._
+
+    // 1. 按月总通话时长和数量
+    val monthlyCallSummary = callDF
+      .groupBy($"year", $"month")
+      .agg(
+        sum($"callDurationMillis").alias("total_duration_millis"),
+        count($"callId").alias("total_calls")
+      )
+      .orderBy($"year", $"month")
+
+    info("Monthly call summary")
+    monthlyCallSummary.show(1024, truncate = false)
+
+    // 2. 每月用户通话时长和数量（包含主被叫双方）
+    val monthlyCallerCallSummary = callDF
+      .withColumn("userNumber", $"callerNumber")
+      .groupBy($"year", $"month", $"userNumber")
+      .agg(
+        count($"callId").divide(2).alias("caller_call_count"),
+        sum($"callDurationMillis").divide(2).alias("caller_total_call_duration")
+      )
+      .orderBy($"year", $"month", $"userNumber")
+
+    info("Monthly caller call summary")
+    monthlyCallerCallSummary.show(1024, truncate = false)
+
+    val monthlyReceiverCallSummary = callDF
+      .withColumn("userNumber", $"receiverNumber")
+      .groupBy($"year", $"month", $"userNumber")
+      .agg(
+        count($"callId").divide(2).alias("receiver_call_count"),
+        sum($"callDurationMillis").divide(2).alias("receiver_total_call_duration")
+      )
+      .orderBy($"year", $"month", $"userNumber")
+
+    info("Monthly receiver call summary")
+    monthlyReceiverCallSummary.show(1024, truncate = false)
+
+    val monthlyUserCallSummary = monthlyCallerCallSummary
+      .join(monthlyReceiverCallSummary, Seq("year", "month", "userNumber"))
+      .withColumn("total_call_count", $"caller_call_count" + $"receiver_call_count")
+      .withColumn("total_call_duration", $"caller_total_call_duration" + $"receiver_total_call_duration")
+
+    info("Monthly user call summary")
+    monthlyUserCallSummary.show(1024, truncate = false)
+
+    // 3. 每月通话状态统计
+    val monthlyCallStatus = callDF
+      .groupBy($"year", $"month", $"callStatus")
+      .agg(count($"callId").alias("call_count"))
+      .orderBy($"year", $"month", $"callStatus")
+
+    info("Monthly call status summary")
+    monthlyCallStatus.show(1024, truncate = false)
+
+    // 4. 按月每日小时通话分布统计
+    val hourlyCallDistribution = callDF
+      .groupBy($"year", $"month", $"hour")
+      .agg(count($"callId").alias("call_count"))
+      .orderBy($"year", $"month", $"hour")
+
+    info("Hourly call distribution summary")
+    hourlyCallDistribution.show(1024, truncate = false)
+
+    // Save results to MySQL
+    monthlyCallSummary.write.mode("overwrite").format("jdbc")
+      .option("url", "jdbc:mysql://localhost:3306/telecom_analysis")
+      .option("dbtable", "monthly_call_summary")
+      .option("user", "root")
+      .option("password", "password")
+      .save() // 除了save，还可以用jdbc
+
+    monthlyUserCallSummary.write.mode("overwrite").format("jdbc")
+      .option("url", "jdbc:mysql://localhost:3306/telecom_analysis")
+      .option("dbtable", "monthly_user_call_summary")
+      .option("user", "root")
+      .option("password", "password")
+      .save()
+
+    monthlyCallStatus.write.mode("overwrite").format("jdbc")
+      .option("url", "jdbc:mysql://localhost:3306/telecom_analysis")
+      .option("dbtable", "monthly_call_status")
+      .option("user", "root")
+      .option("password", "password")
+      .save()
+
+    hourlyCallDistribution.write.mode("overwrite").format("jdbc")
+      .option("url", "jdbc:mysql://localhost:3306/telecom_analysis")
+      .option("dbtable", "hourly_call_distribution")
+      .option("user", "root")
+      .option("password", "password")
+      .save()
+  }
+}
