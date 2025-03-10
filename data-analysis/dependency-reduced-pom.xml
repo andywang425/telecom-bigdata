@@ -43,7 +43,7 @@
               <transformers>
                 <transformer>
                   <manifestEntries>
-                    <Main-Class>com.example.telecom.analysis.CallAnalysis</Main-Class>
+                    <Main-Class>com.example.telecom.Main</Main-Class>
                   </manifestEntries>
                 </transformer>
               </transformers>

@@ -16,7 +16,7 @@ object SmsAnalysis extends MyLogger {
         sum(length($"smsContent")).alias("total_length")
       )
       .orderBy($"year", $"month")
-    info("Monthly SMS summary")
+    info("Monthly SMS count and length summary")
     monthlySmsSummery.show(1024, truncate = false)
 
     // 2. 按月按用户短信发送/接收条数和长度统计
@@ -26,7 +26,7 @@ object SmsAnalysis extends MyLogger {
       .groupBy($"year", $"month", $"senderNumber")
       .agg(count($"smsId").alias("total_sent_count"), sum(length($"smsContent")).alias("total_sent_length"))
       .orderBy($"year", $"month", $"senderNumber")
-    info("Monthly SMS sent per user")
+    info("Monthly SMS sent count and length per user")
     smsSentPerUser.show(1024, truncate = false)
 
     // 按用户短信接收条数和长度统计
@@ -35,15 +35,15 @@ object SmsAnalysis extends MyLogger {
       .groupBy($"year", $"month", $"receiverNumber")
       .agg(count($"smsId").alias("total_received_count"), sum(length($"smsContent")).alias("total_received_length"))
       .orderBy($"year", $"month", $"receiverNumber")
-    info("Monthly SMS received per user")
+    info("Monthly SMS received count and length per user")
     smsReceivedPerUser.show(1024, truncate = false)
 
     // 3. 按月短信状态统计
     val monthlySmsStatus = smsDF
       .groupBy($"year", $"month", $"sendStatus")
-      .agg(count($"smsId").alias("smsStatusCount"))
+      .agg(count($"smsId").alias("sms_status_count"))
       .orderBy($"year", $"month", $"sendStatus")
-    info("Monthly SMS status")
+    info("Monthly SMS status summary")
     monthlySmsStatus.show(1024, truncate = false)
 
     // 4. 按月每日小时短信分布统计
@@ -51,7 +51,7 @@ object SmsAnalysis extends MyLogger {
       .groupBy($"year", $"month", $"hour")
       .agg(count($"smsId").alias("sms_count"))
       .orderBy($"year", $"month", $"hour")
-    info("Hourly SMS distribution")
+    info("Monthly (and hourly) SMS distribution summary")
     hourlySmsDistribution.show(1024, truncate = false)
   }
 }

@@ -18,8 +18,8 @@ object StationAnalysis extends MyLogger {
       )
       .withColumn("call_failure_rate", $"failed_call" / $"total_call")
       .orderBy($"year", $"month", $"stationId")
-    println("Call Failure Rate Per Base Station:")
-    callFailures.show()
+    println("Call Failure Rate Per Base Station")
+    callFailures.show(1024, truncate = false)
 
     // 短信故障率
     val smsFailures = smsDF
@@ -30,8 +30,8 @@ object StationAnalysis extends MyLogger {
       )
       .withColumn("sms_failure_rate", $"failed_sms" / $"total_sms")
       .orderBy($"year", $"month", $"stationId")
-    println("SMS Failure Rate Per Base Station:")
-    smsFailures.show()
+    println("SMS Failure Rate Per Base Station")
+    smsFailures.show(1024, truncate = false)
 
     // 2. 以月为单位计算每个基站的通话数量和通话时长
     val baseStationCallStats = callDF
@@ -41,8 +41,8 @@ object StationAnalysis extends MyLogger {
         sum("callDurationMillis").alias("total_call_duration_millis")
       )
       .orderBy($"year", $"month", $"stationId")
-    println("Base Station Call Stats:")
-    baseStationCallStats.show()
+    println("Base Station Call count and duration summary")
+    baseStationCallStats.show(1024, truncate = false)
 
     // 3. 以月为单位计算每个基站的短信数量和短信内容长度
     val baseStationSmsStats = smsDF
@@ -52,8 +52,8 @@ object StationAnalysis extends MyLogger {
         sum(length($"smsContent")).alias("total_sms_content_length")
       )
       .orderBy($"year", $"month", $"stationId")
-    println("Base Station SMS Stats:")
-    baseStationSmsStats.show()
+    println("Base Station SMS count and length summary")
+    baseStationSmsStats.show(1024, truncate = false)
 
     // 4. 以月为单位计算每个基站的会话数量和上行/下行流量
     val baseStationTrafficStats = trafficDF
@@ -64,7 +64,7 @@ object StationAnalysis extends MyLogger {
         sum($"downstreamDataVolume").alias("total_downstream_data_volume")
       )
       .orderBy($"year", $"month", $"stationId")
-    println("Base Station Traffic Stats:")
-    baseStationTrafficStats.show()
+    println("Base Station Traffic count and data volume summary")
+    baseStationTrafficStats.show(1024, truncate = false)
   }
 }
