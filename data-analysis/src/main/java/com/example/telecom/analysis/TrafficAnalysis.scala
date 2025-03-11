@@ -1,8 +1,8 @@
 package com.example.telecom.analysis
 
-import com.example.telecom.utils.{MyLogger, SparkUtils}
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import com.example.telecom.utils.MyLogger
 import org.apache.spark.sql.functions._
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object TrafficAnalysis extends MyLogger {
   def run(spark: SparkSession, trafficDF: DataFrame): Unit = {
