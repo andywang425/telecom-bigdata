@@ -43,7 +43,7 @@ object TrafficAnalysis extends MyLogger {
         sum($"downstreamDataVolume").alias("total_downstream_data_volume")
       )
       .orderBy($"year", $"month", $"applicationType")
-    info("Monthly session count and data volume summary by APP type")
+    info("Monthly session count and data volume summary per APP summary")
     monthlyDataVolumeByAppType.show(1024, truncate = false)
 
     // 4. 按月统计不同网络技术上的会话数量和上行/下行流量
@@ -55,11 +55,11 @@ object TrafficAnalysis extends MyLogger {
         sum($"downstreamDataVolume").alias("total_downstream_data_volume")
       )
       .orderBy($"year", $"month", $"networkTechnology")
-    info("Monthly session count and data volume summary by network technology")
+    info("Monthly session count and data volume per network technology summary")
     trafficByNetworkTech.show(1024, truncate = false)
 
     // 5. 计算每个月，一天中每个小时的会话数量和总上行/下行流量（流量在一天内的分布情况）
-    val trafficByMonthHour = trafficDF
+    val hourlyTrafficDistributionByStation = trafficDF
       .groupBy($"year", $"month", $"hour")
       .agg(
         count($"sessionId").alias("session_count"),
@@ -67,7 +67,7 @@ object TrafficAnalysis extends MyLogger {
         sum($"downstreamDataVolume").alias("total_downstream_data_volume")
       )
       .orderBy($"year", $"month", $"hour")
-    info("Monthly traffic day distribution per hour")
-    trafficByMonthHour.show(1024, truncate = false)
+    info("Monthly (and hourly) traffic day distribution per station")
+    hourlyTrafficDistributionByStation.show(1024, truncate = false)
   }
 }

@@ -18,7 +18,7 @@ object StationAnalysis extends MyLogger {
       )
       .withColumn("call_failure_rate", $"failed_call" / $"total_call")
       .orderBy($"year", $"month", $"stationId")
-    info("Call Failure Rate Per Base Station")
+    info("Base Station Call Failure Rate Summary")
     callFailures.show(1024, truncate = false)
 
     // 短信故障率
@@ -30,7 +30,7 @@ object StationAnalysis extends MyLogger {
       )
       .withColumn("sms_failure_rate", $"failed_sms" / $"total_sms")
       .orderBy($"year", $"month", $"stationId")
-    info("SMS Failure Rate Per Base Station")
+    info("Base Station SMS Failure Rate Summary")
     smsFailures.show(1024, truncate = false)
 
     // 2. 以月为单位计算每个基站的通话数量和通话时长
@@ -41,7 +41,7 @@ object StationAnalysis extends MyLogger {
         sum("callDurationMillis").alias("total_call_duration_millis")
       )
       .orderBy($"year", $"month", $"stationId")
-    info("Base Station Call count and duration summary")
+    info("Base Station Call Summary")
     baseStationCallStats.show(1024, truncate = false)
 
     // 3. 以月为单位计算每个基站的短信数量和短信内容长度
@@ -52,7 +52,7 @@ object StationAnalysis extends MyLogger {
         sum(length($"smsContent")).alias("total_sms_content_length")
       )
       .orderBy($"year", $"month", $"stationId")
-    info("Base Station SMS count and length summary")
+    info("Base Station SMS Summary")
     baseStationSmsStats.show(1024, truncate = false)
 
     // 4. 以月为单位计算每个基站的会话数量和上行/下行流量
@@ -64,7 +64,7 @@ object StationAnalysis extends MyLogger {
         sum($"downstreamDataVolume").alias("total_downstream_data_volume")
       )
       .orderBy($"year", $"month", $"stationId")
-    info("Base Station Traffic count and data volume summary")
+    info("Base Station Traffic Summary")
     baseStationTrafficStats.show(1024, truncate = false)
   }
 }

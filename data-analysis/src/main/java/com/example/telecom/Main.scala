@@ -20,12 +20,14 @@ object Main extends MyLogger {
       .withColumn("day", day($"callStartTime"))
       .withColumn("hour", hour($"callStartTime"))
       .cache()
-    val smsDF = smsTable.withColumn("year", year($"sendTime"))
+    val smsDF = smsTable
+      .withColumn("year", year($"sendTime"))
       .withColumn("month", month($"sendTime"))
       .withColumn("day", day($"sendTime"))
       .withColumn("hour", hour($"sendTime"))
       .cache()
-    val trafficDF = trafficTable.withColumn("year", year($"sessionStartTime"))
+    val trafficDF = trafficTable
+      .withColumn("year", year($"sessionStartTime"))
       .withColumn("month", month($"sessionStartTime"))
       .withColumn("day", day($"sessionStartTime"))
       .withColumn("hour", hour($"sessionStartTime"))

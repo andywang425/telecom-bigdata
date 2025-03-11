@@ -68,7 +68,7 @@ object CallAnalysis extends MyLogger {
       .agg(count($"callId").alias("call_count"))
       .orderBy($"year", $"month", $"hour")
 
-    info("Monthly (and hourly) call distribution summary")
+    info("Monthly (and hourly) call day distribution summary")
     hourlyCallDistribution.show(1024, truncate = false)
   }
 }
