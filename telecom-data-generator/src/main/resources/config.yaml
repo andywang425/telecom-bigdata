@@ -1,7 +1,7 @@
 recordNumber:
-  call: 1000 # 每次生成时都会生成一对记录（来电和去电），实际生成的记录数为设置值的2倍
-  sms: 1200 # 每次生成时都会生成一对记录（发短信和收短信），实际生成的记录数为设置值的2倍
-  traffic: 1400
+  call: 10000 # 每次生成时都会生成一对记录（来电和去电），实际生成的记录数为设置值的2倍
+  sms: 12000 # 每次生成时都会生成一对记录（发短信和收短信），实际生成的记录数为设置值的2倍
+  traffic: 14000
 
 dateRange:
   start: 2020-01-01
@@ -213,46 +213,22 @@ patterns:
             weight: 0.7
           - name: WEB_BROWSING
             weight: 0.1
-    - name: 正太分布的规律作息3
+    - name: 正太分布的夜猫子
       weight: 0.3
       call:
         startTime:
           distributionType: NORMAL
           args:
-            - mean: 7.0
+            - mean: 22.5
               stddev: 1.0
               min: 0.0
               max: 24.0
-            - mean: 8.0
+            - mean: 2.5
               stddev: 1.0
               min: 0.0
               max: 24.0
-            - mean: 9.0
+            - mean: 4.5
               stddev: 1.0
-              min: 0.0
-              max: 24.0
-            - mean: 10.0
-              stddev: 1.0
-              min: 0.0
-              max: 24.0
-            - mean: 11.0
-              stddev: 1.0
-              min: 0.0
-              max: 24.0
-            - mean: 13.0
-              stddev: 2.0
-              min: 0.0
-              max: 24.0
-            - mean: 14.0
-              stddev: 1.0
-              min: 0.0
-              max: 24.0
-            - mean: 15.0
-              stddev: 2.0
-              min: 0.0
-              max: 24.0
-            - mean: 16.0
-              stddev: 2.5
               min: 0.0
               max: 24.0
         duration:
@@ -277,43 +253,35 @@ patterns:
         startTime:
           distributionType: NORMAL
           args:
-            - mean: 9.0
+            - mean: 23.0
               stddev: 1.5
               min: 0.0
               max: 24.0
-            - mean: 10.0
+            - mean: 1.0
               stddev: 1.0
               min: 0.0
               max: 24.0
-            - mean: 11.0
+            - mean: 3.0
               stddev: 1.5
-              min: 0.0
-              max: 24.0
-            - mean: 14.0
-              stddev: 2.5
-              min: 0.0
-              max: 24.0
-            - mean: 15.5
-              stddev: 2.0
               min: 0.0
               max: 24.0
       traffic:
         startTime:
           distributionType: NORMAL
           args:
-            - mean: 9.0
-              stddev: 2.5
+            - mean: 22.0
+              stddev: 1.0
               min: 0.0
               max: 24.0
-            - mean: 10.0
+            - mean: 1.0
+              stddev: 1.5
+              min: 0.0
+              max: 24.0
+            - mean: 4.0
               stddev: 2.0
               min: 0.0
               max: 24.0
-            - mean: 17.0
-              stddev: 2.0
-              min: 0.0
-              max: 24.0
-            - mean: 21.0
+            - mean: 6.0
               stddev: 1.5
               min: 0.0
               max: 24.0
