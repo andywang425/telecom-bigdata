@@ -1,6 +1,6 @@
 package com.example.telecom.analysis
 
-import com.example.telecom.utils.MyLogger
+import com.example.telecom.utils.{MyLogger, SparkUtils}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
@@ -18,6 +18,8 @@ object SmsAnalysis extends MyLogger {
       .orderBy($"year", $"month")
     info("Monthly SMS summary")
     monthlySmsSummery.show(1024, truncate = false)
+    SparkUtils.saveToMySQL(monthlySmsSummery, "monthly_sms_summary")
+    monthlySmsSummery.unpersist()
 
     // 2. 按月按用户短信发送/接收条数和长度统计
     // 按用户短信发送条数和长度统计
@@ -28,6 +30,8 @@ object SmsAnalysis extends MyLogger {
       .orderBy($"year", $"month", $"senderNumber")
     info("Monthly SMS sent user summary")
     monthlySmsSentPerUser.show(1024, truncate = false)
+    SparkUtils.saveToMySQL(monthlySmsSentPerUser, "monthly_sms_sent_user_summary")
+    monthlySmsSentPerUser.unpersist()
 
     // 按用户短信接收条数和长度统计
     val monthlySmsReceivedPerUser = smsDF
@@ -37,6 +41,8 @@ object SmsAnalysis extends MyLogger {
       .orderBy($"year", $"month", $"receiverNumber")
     info("Monthly SMS received user summary")
     monthlySmsReceivedPerUser.show(1024, truncate = false)
+    SparkUtils.saveToMySQL(monthlySmsReceivedPerUser, "monthly_sms_received_user_summary")
+    monthlySmsReceivedPerUser.unpersist()
 
     // 3. 按月短信状态统计
     val monthlySmsStatus = smsDF
@@ -45,6 +51,8 @@ object SmsAnalysis extends MyLogger {
       .orderBy($"year", $"month", $"sendStatus")
     info("Monthly SMS status summary")
     monthlySmsStatus.show(1024, truncate = false)
+    SparkUtils.saveToMySQL(monthlySmsStatus, "monthly_sms_status_summary")
+    monthlySmsStatus.unpersist()
 
     // 4. 按月每日小时短信分布统计
     val hourlySmsDistribution = smsDF
@@ -53,5 +61,7 @@ object SmsAnalysis extends MyLogger {
       .orderBy($"year", $"month", $"hour")
     info("Monthly (and hourly) SMS day distribution summary")
     hourlySmsDistribution.show(1024, truncate = false)
+    SparkUtils.saveToMySQL(hourlySmsDistribution, "monthly_sms_day_distribution_summary")
+    hourlySmsDistribution.unpersist()
   }
 }

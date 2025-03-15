@@ -1,6 +1,6 @@
 package com.example.telecom.analysis
 
-import com.example.telecom.utils.MyLogger
+import com.example.telecom.utils.{MyLogger, SparkUtils}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
@@ -19,6 +19,8 @@ object CallAnalysis extends MyLogger {
 
     info("Monthly call summary")
     monthlyCallSummary.show(1024, truncate = false)
+    SparkUtils.saveToMySQL(monthlyCallSummary, "monthly_call_summary")
+    monthlyCallSummary.unpersist()
 
     // 2. 每月用户通话时长和数量（包含主被叫双方）
     val monthlyCallerCallSummary = callDF
@@ -52,6 +54,10 @@ object CallAnalysis extends MyLogger {
 
     info("Monthly user call summary")
     monthlyUserCallSummary.show(1024, truncate = false)
+    SparkUtils.saveToMySQL(monthlyUserCallSummary, "monthly_user_call_summary")
+    monthlyCallerCallSummary.unpersist()
+    monthlyReceiverCallSummary.unpersist()
+    monthlyUserCallSummary.unpersist()
 
     // 3. 每月通话状态统计
     val monthlyCallStatus = callDF
@@ -61,6 +67,8 @@ object CallAnalysis extends MyLogger {
 
     info("Monthly call status summary")
     monthlyCallStatus.show(1024, truncate = false)
+    SparkUtils.saveToMySQL(monthlyCallStatus, "monthly_call_status_summary")
+    monthlyCallStatus.unpersist()
 
     // 4. 按月每日小时通话分布统计
     val hourlyCallDistribution = callDF
@@ -70,5 +78,7 @@ object CallAnalysis extends MyLogger {
 
     info("Monthly (and hourly) call day distribution summary")
     hourlyCallDistribution.show(1024, truncate = false)
+    SparkUtils.saveToMySQL(hourlyCallDistribution, "monthly_call_day_distribution_summary")
+    hourlyCallDistribution.unpersist()
   }
 }

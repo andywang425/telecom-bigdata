@@ -1,6 +1,6 @@
 package com.example.telecom.analysis
 
-import com.example.telecom.utils.MyLogger
+import com.example.telecom.utils.{MyLogger, SparkUtils}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
@@ -20,6 +20,8 @@ object StationAnalysis extends MyLogger {
       .orderBy($"year", $"month", $"stationId")
     info("Base Station Call Failure Rate Summary")
     callFailures.show(1024, truncate = false)
+    SparkUtils.saveToMySQL(callFailures, "monthly_station_call_failure_rate")
+    callFailures.unpersist()
 
     // 短信故障率
     val smsFailures = smsDF
@@ -32,6 +34,8 @@ object StationAnalysis extends MyLogger {
       .orderBy($"year", $"month", $"stationId")
     info("Base Station SMS Failure Rate Summary")
     smsFailures.show(1024, truncate = false)
+    SparkUtils.saveToMySQL(smsFailures, "monthly_station_sms_failure_rate")
+    smsFailures.unpersist()
 
     // 2. 以月为单位计算每个基站的通话数量和通话时长
     val baseStationCallStats = callDF
@@ -43,6 +47,8 @@ object StationAnalysis extends MyLogger {
       .orderBy($"year", $"month", $"stationId")
     info("Base Station Call Summary")
     baseStationCallStats.show(1024, truncate = false)
+    SparkUtils.saveToMySQL(baseStationCallStats, "monthly_station_call_stats")
+    baseStationCallStats.unpersist()
 
     // 3. 以月为单位计算每个基站的短信数量和短信内容长度
     val baseStationSmsStats = smsDF
@@ -54,6 +60,8 @@ object StationAnalysis extends MyLogger {
       .orderBy($"year", $"month", $"stationId")
     info("Base Station SMS Summary")
     baseStationSmsStats.show(1024, truncate = false)
+    SparkUtils.saveToMySQL(baseStationSmsStats, "monthly_station_sms_stats")
+    baseStationSmsStats.unpersist()
 
     // 4. 以月为单位计算每个基站的会话数量和上行/下行流量
     val baseStationTrafficStats = trafficDF
@@ -66,5 +74,7 @@ object StationAnalysis extends MyLogger {
       .orderBy($"year", $"month", $"stationId")
     info("Base Station Traffic Summary")
     baseStationTrafficStats.show(1024, truncate = false)
+    SparkUtils.saveToMySQL(baseStationTrafficStats, "monthly_station_traffic_stats")
+    baseStationTrafficStats.unpersist()
   }
 }
