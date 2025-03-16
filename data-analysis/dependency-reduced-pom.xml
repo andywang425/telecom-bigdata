@@ -90,12 +90,6 @@
       <version>3.5.4</version>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>com.mysql</groupId>
-      <artifactId>mysql-connector-j</artifactId>
-      <version>9.1.0</version>
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
   <properties>
     <scala.version>2.13.14</scala.version>

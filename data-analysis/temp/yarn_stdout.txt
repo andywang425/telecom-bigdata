@@ -1,12 +1,12 @@
 
 
-Logs for container_1741934970227_0008_01_000001
+Logs for container_1742108323428_0002_01_000001
 ResourceManager
 RM Home
 NodeManager
 Tools
-2025/03/14 15:54:49 INFO Main$: Starting Call Analysis...
-2025/03/14 15:54:49 INFO CallAnalysis$: Monthly call summary
+2025/03/16 15:26:02 INFO Main$: Starting Call Analysis...
+2025/03/16 15:26:02 INFO CallAnalysis$: Monthly call summary
 +----+-----+---------------------+-----------+
 |year|month|total_duration_millis|total_calls|
 +----+-----+---------------------+-----------+
@@ -72,7 +72,7 @@ Tools
 |2024|12   |27176626             |312        |
 +----+-----+---------------------+-----------+
 
-2025/03/14 15:54:58 INFO CallAnalysis$: Monthly caller call summary
+2025/03/16 15:26:15 INFO CallAnalysis$: Monthly caller call summary
 +----+-----+-----------+-----------------+--------------------------+
 |year|month|userNumber |caller_call_count|caller_total_call_duration|
 +----+-----+-----------+-----------------+--------------------------+
@@ -1103,7 +1103,7 @@ Tools
 +----+-----+-----------+-----------------+--------------------------+
 only showing top 1024 rows
 
-2025/03/14 15:54:59 INFO CallAnalysis$: Monthly receiver call summary
+2025/03/16 15:26:16 INFO CallAnalysis$: Monthly receiver call summary
 +----+-----+-----------+-------------------+----------------------------+
 |year|month|userNumber |receiver_call_count|receiver_total_call_duration|
 +----+-----+-----------+-------------------+----------------------------+
@@ -2134,7 +2134,7 @@ only showing top 1024 rows
 +----+-----+-----------+-------------------+----------------------------+
 only showing top 1024 rows
 
-2025/03/14 15:55:00 INFO CallAnalysis$: Monthly user call summary
+2025/03/16 15:26:16 INFO CallAnalysis$: Monthly user call summary
 +----+-----+-----------+-----------------+--------------------------+-------------------+----------------------------+----------------+-------------------+
 |year|month|userNumber |caller_call_count|caller_total_call_duration|receiver_call_count|receiver_total_call_duration|total_call_count|total_call_duration|
 +----+-----+-----------+-----------------+--------------------------+-------------------+----------------------------+----------------+-------------------+
@@ -3165,7 +3165,7 @@ only showing top 1024 rows
 +----+-----+-----------+-----------------+--------------------------+-------------------+----------------------------+----------------+-------------------+
 only showing top 1024 rows
 
-2025/03/14 15:55:01 INFO CallAnalysis$: Monthly call status summary
+2025/03/16 15:26:22 INFO CallAnalysis$: Monthly call status summary
 +----+-----+----------+----------+
 |year|month|callStatus|call_count|
 +----+-----+----------+----------+
@@ -3411,7 +3411,7 @@ only showing top 1024 rows
 |2024|12   |MISSED    |54        |
 +----+-----+----------+----------+
 
-2025/03/14 15:55:02 INFO CallAnalysis$: Monthly (and hourly) call day distribution summary
+2025/03/16 15:26:25 INFO CallAnalysis$: Monthly (and hourly) call day distribution summary
 +----+-----+----+----------+
 |year|month|hour|call_count|
 +----+-----+----+----------+
@@ -4442,8 +4442,8 @@ only showing top 1024 rows
 +----+-----+----+----------+
 only showing top 1024 rows
 
-2025/03/14 15:55:02 INFO Main$: Starting SMS Analysis...
-2025/03/14 15:55:03 INFO SmsAnalysis$: Monthly SMS summary
+2025/03/16 15:26:27 INFO Main$: Starting SMS Analysis...
+2025/03/16 15:26:27 INFO SmsAnalysis$: Monthly SMS summary
 +----+-----+-----------+------------+
 |year|month|total_count|total_length|
 +----+-----+-----------+------------+
@@ -4509,7 +4509,7 @@ only showing top 1024 rows
 |2024|12   |426        |6892        |
 +----+-----+-----------+------------+
 
-2025/03/14 15:55:04 INFO SmsAnalysis$: Monthly SMS sent user summary
+2025/03/16 15:26:29 INFO SmsAnalysis$: Monthly SMS sent user summary
 +----+-----+------------+----------------+-----------------+
 |year|month|senderNumber|total_sent_count|total_sent_length|
 +----+-----+------------+----------------+-----------------+
@@ -5540,7 +5540,7 @@ only showing top 1024 rows
 +----+-----+------------+----------------+-----------------+
 only showing top 1024 rows
 
-2025/03/14 15:55:04 INFO SmsAnalysis$: Monthly SMS received user summary
+2025/03/16 15:26:32 INFO SmsAnalysis$: Monthly SMS received user summary
 +----+-----+--------------+--------------------+---------------------+
 |year|month|receiverNumber|total_received_count|total_received_length|
 +----+-----+--------------+--------------------+---------------------+
@@ -6571,7 +6571,7 @@ only showing top 1024 rows
 +----+-----+--------------+--------------------+---------------------+
 only showing top 1024 rows
 
-2025/03/14 15:55:05 INFO SmsAnalysis$: Monthly SMS status summary
+2025/03/16 15:26:35 INFO SmsAnalysis$: Monthly SMS status summary
 +----+-----+-----------------+----------------+
 |year|month|sendStatus       |sms_status_count|
 +----+-----+-----------------+----------------+
@@ -6756,7 +6756,7 @@ only showing top 1024 rows
 |2024|12   |SUCCESSFUL       |408             |
 +----+-----+-----------------+----------------+
 
-2025/03/14 15:55:05 INFO SmsAnalysis$: Monthly (and hourly) SMS day distribution summary
+2025/03/16 15:26:36 INFO SmsAnalysis$: Monthly (and hourly) SMS day distribution summary
 +----+-----+----+---------+
 |year|month|hour|sms_count|
 +----+-----+----+---------+
@@ -7787,8 +7787,8 @@ only showing top 1024 rows
 +----+-----+----+---------+
 only showing top 1024 rows
 
-2025/03/14 15:55:05 INFO Main$: Starting Traffic Analysis...
-2025/03/14 15:55:05 INFO TrafficAnalysis$: Monthly session count, duration and data volume summary
+2025/03/16 15:26:38 INFO Main$: Starting Traffic Analysis...
+2025/03/16 15:26:38 INFO TrafficAnalysis$: Monthly session count, duration and data volume summary
 +----+-----+--------------+--------------+--------------+----------------+
 |year|month|total_sessions|total_duration|total_upstream|total_downstream|
 +----+-----+--------------+--------------+--------------+----------------+
@@ -7854,7 +7854,7 @@ only showing top 1024 rows
 |2024|12   |241           |4217463       |6510330       |298011360       |
 +----+-----+--------------+--------------+--------------+----------------+
 
-2025/03/14 15:55:06 INFO TrafficAnalysis$: Monthly session count, duration and data volume per user summary
+2025/03/16 15:26:39 INFO TrafficAnalysis$: Monthly session count, duration and data volume per user summary
 +----+-----+-----------+--------------+--------------+--------------+----------------+
 |year|month|userNumber |total_sessions|total_duration|total_upstream|total_downstream|
 +----+-----+-----------+--------------+--------------+--------------+----------------+
@@ -8885,7 +8885,7 @@ only showing top 1024 rows
 +----+-----+-----------+--------------+--------------+--------------+----------------+
 only showing top 1024 rows
 
-2025/03/14 15:55:07 INFO TrafficAnalysis$: Monthly session count and data volume summary per APP summary
+2025/03/16 15:26:42 INFO TrafficAnalysis$: Monthly session count and data volume summary per APP summary
 +----+-----+---------------+-------------+--------------------------+----------------------------+
 |year|month|applicationType|session_count|total_upstream_data_volume|total_downstream_data_volume|
 +----+-----+---------------+-------------+--------------------------+----------------------------+
@@ -9071,7 +9071,7 @@ only showing top 1024 rows
 |2024|12   |WEB_BROWSING   |67           |2055038                   |89004321                    |
 +----+-----+---------------+-------------+--------------------------+----------------------------+
 
-2025/03/14 15:55:07 INFO TrafficAnalysis$: Monthly session count and data volume per network technology summary
+2025/03/16 15:26:43 INFO TrafficAnalysis$: Monthly session count and data volume per network technology summary
 +----+-----+-----------------+-------------+--------------------------+----------------------------+
 |year|month|networkTechnology|session_count|total_upstream_data_volume|total_downstream_data_volume|
 +----+-----+-----------------+-------------+--------------------------+----------------------------+
@@ -9197,7 +9197,7 @@ only showing top 1024 rows
 |2024|12   |5G               |198          |5226908                   |234627679                   |
 +----+-----+-----------------+-------------+--------------------------+----------------------------+
 
-2025/03/14 15:55:08 INFO TrafficAnalysis$: Monthly (and hourly) traffic day distribution per station
+2025/03/16 15:26:44 INFO TrafficAnalysis$: Monthly (and hourly) traffic day distribution
 +----+-----+----+-------------+--------------------------+----------------------------+
 |year|month|hour|session_count|total_upstream_data_volume|total_downstream_data_volume|
 +----+-----+----+-------------+--------------------------+----------------------------+
@@ -10228,8 +10228,8 @@ only showing top 1024 rows
 +----+-----+----+-------------+--------------------------+----------------------------+
 only showing top 1024 rows
 
-2025/03/14 15:55:08 INFO Main$: Starting Station Analysis...
-2025/03/14 15:55:08 INFO StationAnalysis$: Base Station Call Failure Rate Summary
+2025/03/16 15:26:46 INFO Main$: Starting Station Analysis...
+2025/03/16 15:26:46 INFO StationAnalysis$: Base Station Call Failure Rate Summary
 +----+-----+---------+----------+-----------+--------------------+
 |year|month|stationId|total_call|failed_call|call_failure_rate   |
 +----+-----+---------+----------+-----------+--------------------+
@@ -10775,7 +10775,7 @@ only showing top 1024 rows
 |2024|12   |9169     |34        |3          |0.08823529411764706 |
 +----+-----+---------+----------+-----------+--------------------+
 
-2025/03/14 15:55:09 INFO StationAnalysis$: Base Station SMS Failure Rate Summary
+2025/03/16 15:26:47 INFO StationAnalysis$: Base Station SMS Failure Rate Summary
 +----+-----+---------+---------+----------+--------------------+
 |year|month|stationId|total_sms|failed_sms|sms_failure_rate    |
 +----+-----+---------+---------+----------+--------------------+
@@ -11321,7 +11321,7 @@ only showing top 1024 rows
 |2024|12   |9169     |49       |3         |0.061224489795918366|
 +----+-----+---------+---------+----------+--------------------+
 
-2025/03/14 15:55:09 INFO StationAnalysis$: Base Station Call Summary
+2025/03/16 15:26:48 INFO StationAnalysis$: Base Station Call Summary
 +----+-----+---------+----------+--------------------------+
 |year|month|stationId|call_count|total_call_duration_millis|
 +----+-----+---------+----------+--------------------------+
@@ -11867,7 +11867,7 @@ only showing top 1024 rows
 |2024|12   |9169     |34        |3195613                   |
 +----+-----+---------+----------+--------------------------+
 
-2025/03/14 15:55:10 INFO StationAnalysis$: Base Station SMS Summary
+2025/03/16 15:26:50 INFO StationAnalysis$: Base Station SMS Summary
 +----+-----+---------+---------+------------------------+
 |year|month|stationId|sms_count|total_sms_content_length|
 +----+-----+---------+---------+------------------------+
@@ -12413,7 +12413,7 @@ only showing top 1024 rows
 |2024|12   |9169     |49       |741                     |
 +----+-----+---------+---------+------------------------+
 
-2025/03/14 15:55:10 INFO StationAnalysis$: Base Station Traffic Summary
+2025/03/16 15:26:51 INFO StationAnalysis$: Base Station Traffic Summary
 +----+-----+---------+------------+--------------------------+----------------------------+
 |year|month|stationId|sessionCount|total_upstream_data_volume|total_downstream_data_volume|
 +----+-----+---------+------------+--------------------------+----------------------------+
@@ -12959,4 +12959,4 @@ only showing top 1024 rows
 |2024|12   |9169     |32          |912252                    |31676092                    |
 +----+-----+---------+------------+--------------------------+----------------------------+
 
-2025/03/14 15:55:10 INFO Main$: All analysis tasks completed successfully.
+2025/03/16 15:26:52 INFO Main$: All analysis tasks completed successfully.
