@@ -5,7 +5,7 @@ import com.example.telecom.model.{ClusteringModel, PCATransformer}
 import com.example.telecom.utils.{Config, DBUtils}
 import org.apache.spark.sql.SparkSession
 
-object KMeansJob {
+object Main {
   def main(args: Array[String]): Unit = {
     implicit val spark: SparkSession = SparkSession.builder()
       .appName("UserClustering")
@@ -32,7 +32,7 @@ object KMeansJob {
 
     // 结果处理
     PCATransformer.run(predictions)
-    DBUtils.saveToDatabase(predictions)
+    DBUtils.saveToDatabase(predictions.select("phone", "cluster"))
 
     spark.stop()
   }
