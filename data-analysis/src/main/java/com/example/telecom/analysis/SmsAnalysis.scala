@@ -5,7 +5,7 @@ import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object SmsAnalysis extends MyLogger {
-  def run(spark: SparkSession, smsDF: DataFrame): Unit = {
+  def run(smsDF: DataFrame)(implicit spark: SparkSession): Unit = {
     import spark.implicits._
 
     // 1. 按月短信条数/长度统计

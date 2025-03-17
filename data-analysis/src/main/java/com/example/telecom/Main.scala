@@ -2,11 +2,12 @@ package com.example.telecom
 
 import com.example.telecom.analysis.{CallAnalysis, SmsAnalysis, StationAnalysis, TrafficAnalysis}
 import com.example.telecom.utils.{MyLogger, SparkUtils}
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.{day, hour, month, year}
 
 object Main extends MyLogger {
   def main(args: Array[String]): Unit = {
-    val spark = SparkUtils.getSession("telecom-data-analysis")
+    implicit val spark: SparkSession = SparkUtils.getSession("telecom-data-analysis")
 
     import spark.implicits._
 
@@ -39,16 +40,16 @@ object Main extends MyLogger {
 
     try {
       info("Starting Call Analysis...")
-      CallAnalysis.run(spark, callDF)
+      CallAnalysis.run(callDF)
 
       info("Starting SMS Analysis...")
-      SmsAnalysis.run(spark, smsDF)
+      SmsAnalysis.run(smsDF)
 
       info("Starting Traffic Analysis...")
-      TrafficAnalysis.run(spark, trafficDF)
+      TrafficAnalysis.run(trafficDF)
 
       info("Starting Station Analysis...")
-      StationAnalysis.run(spark, callDF, smsDF, trafficDF)
+      StationAnalysis.run(callDF, smsDF, trafficDF)
 
       info("All analysis tasks completed successfully.")
     } catch {

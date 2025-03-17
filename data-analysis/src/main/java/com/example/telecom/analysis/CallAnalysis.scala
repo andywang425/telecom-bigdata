@@ -5,7 +5,7 @@ import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object CallAnalysis extends MyLogger {
-  def run(spark: SparkSession, callDF: DataFrame): Unit = {
+  def run(callDF: DataFrame)(implicit spark: SparkSession): Unit = {
     import spark.implicits._
 
     // 1. 按月总通话时长和数量

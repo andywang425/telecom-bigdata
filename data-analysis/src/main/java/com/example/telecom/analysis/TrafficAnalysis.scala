@@ -5,7 +5,7 @@ import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object TrafficAnalysis extends MyLogger {
-  def run(spark: SparkSession, trafficDF: DataFrame): Unit = {
+  def run(trafficDF: DataFrame)(implicit spark: SparkSession): Unit = {
     import spark.implicits._
 
     // 1. 按月会话数量、持续时间、上行流量、下行流量统计

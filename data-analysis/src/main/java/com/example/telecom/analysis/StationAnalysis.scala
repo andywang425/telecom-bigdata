@@ -5,7 +5,7 @@ import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object StationAnalysis extends MyLogger {
-  def run(spark: SparkSession, callDF: DataFrame, smsDF: DataFrame, trafficDF: DataFrame): Unit = {
+  def run(callDF: DataFrame, smsDF: DataFrame, trafficDF: DataFrame)(implicit spark: SparkSession): Unit = {
     import spark.implicits._
 
     // 1. 基站的通话和短信故障率
