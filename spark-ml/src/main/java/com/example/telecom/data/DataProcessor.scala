@@ -10,7 +10,7 @@ object DataProcessor {
   }
 
   // 通用聚合方法
-  private def aggregateUsage(spark: SparkSession, dataType: String)(df: DataFrame): DataFrame = {
+  private def aggregateUsage(dataType: String)(df: DataFrame)(implicit spark: SparkSession): DataFrame = {
     import spark.implicits._
 
     val cols = List((6, 12), (12, 20), (20, 6)).zipWithIndex.map {
@@ -31,7 +31,7 @@ object DataProcessor {
       .filter($"callDirection" === "OUTGOING")
       .transform(addTimeBucket("callStartTime"))
       .withColumnRenamed("callerNumber", "phone")
-      .transform(aggregateUsage(spark, "call"))
+      .transform(aggregateUsage("call"))
   }
 
   // 短信数据处理
@@ -42,7 +42,7 @@ object DataProcessor {
       .filter($"sendDirection" === "SENT")
       .transform(addTimeBucket("sendTime"))
       .withColumnRenamed("senderNumber", "phone")
-      .transform(aggregateUsage(spark, "sms"))
+      .transform(aggregateUsage("sms"))
   }
 
   // 流量数据处理（无需过滤）
@@ -50,7 +50,7 @@ object DataProcessor {
     spark.table("telecom_data.traffic")
       .transform(addTimeBucket("sessionStartTime"))
       .withColumnRenamed("userNumber", "phone")
-      .transform(aggregateUsage(spark, "session"))
+      .transform(aggregateUsage("session"))
   }
 
   // 通用数据合并方法

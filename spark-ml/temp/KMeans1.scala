@@ -1,5 +1,3 @@
-package com.example.telecom
-
 import org.apache.spark.ml.clustering.KMeans
 import org.apache.spark.ml.feature.{StandardScaler, VectorAssembler}
 import org.apache.spark.sql.functions._
