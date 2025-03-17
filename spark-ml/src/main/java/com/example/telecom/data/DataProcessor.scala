@@ -1,7 +1,7 @@
 package com.example.telecom.data
 
-import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions._
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object DataProcessor {
   // 通用时间分桶方法
@@ -24,7 +24,7 @@ object DataProcessor {
   }
 
   // 通话数据处理
-  def processCallData(spark: SparkSession): DataFrame = {
+  def processCallData(implicit spark: SparkSession): DataFrame = {
     import spark.implicits._
 
     spark.table("telecom_data.call")
@@ -35,7 +35,7 @@ object DataProcessor {
   }
 
   // 短信数据处理
-  def processSmsData(spark: SparkSession): DataFrame = {
+  def processSmsData(implicit spark: SparkSession): DataFrame = {
     import spark.implicits._
 
     spark.table("telecom_data.sms")
@@ -46,7 +46,7 @@ object DataProcessor {
   }
 
   // 流量数据处理（无需过滤）
-  def processTrafficData(spark: SparkSession): DataFrame = {
+  def processTrafficData(implicit spark: SparkSession): DataFrame = {
     spark.table("telecom_data.traffic")
       .transform(addTimeBucket("sessionStartTime"))
       .withColumnRenamed("userNumber", "phone")

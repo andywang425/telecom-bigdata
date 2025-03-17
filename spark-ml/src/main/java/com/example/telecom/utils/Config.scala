@@ -3,7 +3,6 @@ package com.example.telecom.utils
 object Config {
   val JDBC_URL = "jdbc:mysql://master:3306/telecom"
   val DB_TABLE = "user_cluster"
-  val CSV_PATH = "/user/root/telecom/pca_cluster_results"
 
   // 特征列名统一管理
   val FEATURE_COLUMNS: Array[String] = Array(
@@ -24,12 +23,9 @@ object Config {
   // 列名常量
   val SCALED_FEATURES_COL = "scaledFeatures"
   val CLUSTER_COL = "cluster"
-  val SILHOUETTE_SCORE_COL = "silhouetteScore"
-  val TOP_N_SAMPLES = 5  // 评估时展示的样本数
 
   // PCA相关配置
-  val PCA_FEATURES_COL = "pcaFeatures"  // PCA输出列名
+  val PCA_FEATURES_COL = "pcaFeatures" // PCA输出列名
   val PCA_RESULT_PATH = "/user/root/telecom/pca_cluster_results" // 存储路径
-
 }
 

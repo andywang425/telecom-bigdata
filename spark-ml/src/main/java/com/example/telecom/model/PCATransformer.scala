@@ -2,11 +2,11 @@
 package com.example.telecom.model
 
 import com.example.telecom.utils.Config
-import org.apache.spark.ml.feature.PCA
-import org.apache.spark.sql.{DataFrame, SparkSession}
-import org.apache.spark.sql.functions.col
-import org.apache.spark.ml.linalg.Vector
 import org.apache.log4j.{Level, Logger}
+import org.apache.spark.ml.feature.PCA
+import org.apache.spark.ml.linalg.Vector
+import org.apache.spark.sql.functions.col
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object PCATransformer {
   private val logger = Logger.getLogger(this.getClass)
@@ -14,8 +14,9 @@ object PCATransformer {
 
   /**
    * 执行PCA降维并存储结果
+   *
    * @param data 包含特征向量的DataFrame
-   * @param k 降维后的维度（默认2维）
+   * @param k    降维后的维度（默认2维）
    * @return 包含PCA坐标的DataFrame
    */
   def run(data: DataFrame, k: Int = 2)(implicit spark: SparkSession): DataFrame = {
@@ -27,7 +28,7 @@ object PCATransformer {
     val (pcaModel, pcaDF) = trainPCA(data, k)
 
     // 2. 提取坐标信息
-    val resultDF = extractCoordinates(pcaDF)(spark)
+    val resultDF = extractCoordinates(pcaDF)
 
     // 3. 存储结果
     saveResults(resultDF)
