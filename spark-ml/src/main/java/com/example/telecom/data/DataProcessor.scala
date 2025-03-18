@@ -4,12 +4,22 @@ import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object DataProcessor {
-  // 通用时间分桶方法
+  /**
+   * 添加时间分桶列（小时）
+   *
+   * @param timeCol 时间列（TIMESTAMP）
+   * @param df      DataFrame
+   */
   private def addTimeBucket(timeCol: String)(df: DataFrame): DataFrame = {
     df.withColumn("hour", hour(col(timeCol)))
   }
 
-  // 通用聚合方法
+  /**
+   * 按用户统计各种电信数据在一天中三个时段内的分布
+   *
+   * @param dataType 电信数据类型（call, sms, traffic）
+   * @param df       电信数据 DataFrame
+   */
   private def aggregateUsage(dataType: String)(df: DataFrame)(implicit spark: SparkSession): DataFrame = {
     import spark.implicits._
 
@@ -23,8 +33,10 @@ object DataProcessor {
     df.groupBy("phone").agg(cols.head, cols.tail: _*)
   }
 
-  // 通话数据处理
-  def processCallData(implicit spark: SparkSession): DataFrame = {
+  /**
+   * 通话数据处理
+   */
+  private def processCallData(implicit spark: SparkSession): DataFrame = {
     import spark.implicits._
 
     spark.table("telecom_data.call")
@@ -34,8 +46,10 @@ object DataProcessor {
       .transform(aggregateUsage("call"))
   }
 
-  // 短信数据处理
-  def processSmsData(implicit spark: SparkSession): DataFrame = {
+  /**
+   * 短信数据处理
+   */
+  private def processSmsData(implicit spark: SparkSession): DataFrame = {
     import spark.implicits._
 
     spark.table("telecom_data.sms")
@@ -45,18 +59,35 @@ object DataProcessor {
       .transform(aggregateUsage("sms"))
   }
 
-  // 流量数据处理（无需过滤）
-  def processTrafficData(implicit spark: SparkSession): DataFrame = {
+  /**
+   * 流量数据处理
+   */
+  private def processTrafficData(implicit spark: SparkSession): DataFrame = {
     spark.table("telecom_data.traffic")
       .transform(addTimeBucket("sessionStartTime"))
       .withColumnRenamed("userNumber", "phone")
       .transform(aggregateUsage("session"))
   }
 
-  // 通用数据合并方法
-  def mergeDataFrames(dataFrames: DataFrame*): DataFrame = {
+  /**
+   * 使用 phone 列连接多个 DataFrame
+   */
+  private def mergeDataFrames(dataFrames: DataFrame*): DataFrame = {
     dataFrames.reduce((df1, df2) =>
-      df1.join(df2, Seq("phone"), "outer")
+      df1.join(df2, "phone", "outer")
     ).na.fill(0)
+  }
+
+  /**
+   * 读取并处理通话、短信和流量数据
+   *
+   * @return 合并后的 DataFrame
+   */
+  def run(implicit spark: SparkSession): DataFrame = {
+    val callData = processCallData
+    val smsData = processSmsData
+    val trafficData = processTrafficData
+
+    mergeDataFrames(callData, smsData, trafficData)
   }
 }

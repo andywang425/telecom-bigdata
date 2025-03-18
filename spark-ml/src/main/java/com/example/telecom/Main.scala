@@ -2,7 +2,6 @@ package com.example.telecom
 
 import com.example.telecom.data.{DataProcessor, FeatureEngineer}
 import com.example.telecom.model.{ClusteringModel, PCATransformer}
-import com.example.telecom.utils.{Config, DBUtils}
 import org.apache.spark.sql.SparkSession
 
 object Main {
@@ -13,26 +12,16 @@ object Main {
       .getOrCreate()
 
     // 数据预处理
-    val callDF = DataProcessor.processCallData
-    val smsDF = DataProcessor.processSmsData
-    val trafficDF = DataProcessor.processTrafficData
+    val telecomDF = DataProcessor.run
 
     // 特征工程
-    val featureDF = FeatureEngineer.buildFeatures(callDF, smsDF, trafficDF)
-    val scaledData = FeatureEngineer.scaleFeatures(
-      featureDF,
-      Config.SCALING_WITH_STD,
-      Config.SCALING_WITH_MEAN
-    )
+    val scaledData = FeatureEngineer.run(telecomDF)
 
-    val (model, predictions) = ClusteringModel.trainKMeans(scaledData)
+    // 聚类
+    val predictions = ClusteringModel.run(scaledData)
 
-    // 解释聚类中心（需要传入scalerModel）
-    ClusteringModel.explainClusterCenters(model, FeatureEngineer.scalerModel)
-
-    // 结果处理
+    // 主成分分析
     PCATransformer.run(predictions)
-    DBUtils.saveToDatabase(predictions.select("phone", "cluster"))
 
     spark.stop()
   }

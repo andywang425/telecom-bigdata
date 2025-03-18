@@ -1,37 +1,44 @@
 package com.example.telecom.data
 
-import com.example.telecom.utils.Config
-import org.apache.spark.ml.feature.{StandardScaler, StandardScalerModel, VectorAssembler}
+import com.example.telecom.config.Config
+import org.apache.spark.ml.feature.{StandardScaler, VectorAssembler}
 import org.apache.spark.sql.DataFrame
 
 object FeatureEngineer {
-  var scalerModel: StandardScalerModel = _
+  /**
+   * 构建特征向量并进行标准化
+   */
+  def run(df: DataFrame): DataFrame = {
+    val featureDF = buildFeatures(df)
 
-  // 特征向量组合（保持与原始代码相同逻辑）
-  def buildFeatures(dataFrames: DataFrame*): DataFrame = {
-    // 合并数据表（复用DataProcessor中的合并逻辑）
-    val mergedDF = DataProcessor.mergeDataFrames(dataFrames: _*)
+    scaleFeatures(featureDF)
+  }
 
-    // 创建特征向量
+  /**
+   * 构建特征向量
+   */
+  private def buildFeatures(df: DataFrame): DataFrame = {
     new VectorAssembler()
       .setInputCols(Config.FEATURE_COLUMNS)
       .setOutputCol("features")
-      .transform(mergedDF)
-      .select("phone", "features") // 提前筛选减少后续计算量
+      .transform(df)
+      .select("phone", "features")
   }
 
-  // 特征标准化处理（可配置标准化参数）
-  def scaleFeatures(featureDF: DataFrame, withStd: Boolean = true, withMean: Boolean = true): DataFrame = {
-    scalerModel = new StandardScaler()
+  /**
+   * 特征向量标准化
+   *
+   * @param featureDF 包含特征向量的 DataFrame
+   */
+  private def scaleFeatures(featureDF: DataFrame): DataFrame = {
+    new StandardScaler()
       .setInputCol("features")
       .setOutputCol("scaledFeatures")
-      .setWithStd(withStd)
-      .setWithMean(withMean)
+      .setWithStd(Config.SCALING_WITH_STD)
+      .setWithMean(Config.SCALING_WITH_MEAN)
       .fit(featureDF)
-
-
-    scalerModel.transform(featureDF)
-      .select("phone", "features", "scaledFeatures") // 保留原始特征用于解释
+      .transform(featureDF)
+      .select("phone", "features", "scaledFeatures")
   }
 }
 

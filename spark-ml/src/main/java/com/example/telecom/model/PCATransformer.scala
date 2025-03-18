@@ -1,36 +1,24 @@
-// PCATransformer.scala
 package com.example.telecom.model
 
-import com.example.telecom.utils.Config
-import org.apache.log4j.{Level, Logger}
+import com.example.telecom.config.Config
 import org.apache.spark.ml.feature.PCA
 import org.apache.spark.ml.linalg.Vector
 import org.apache.spark.sql.functions.col
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
 object PCATransformer {
-  private val logger = Logger.getLogger(this.getClass)
-  Logger.getLogger("org").setLevel(Level.WARN)
-
   /**
    * 执行PCA降维并存储结果
    *
-   * @param data 包含特征向量的DataFrame
+   * @param data 包含特征向量的 DataFrame
    * @param k    降维后的维度（默认2维）
-   * @return 包含PCA坐标的DataFrame
+   * @return 包含 PCA 坐标的 DataFrame
    */
   def run(data: DataFrame, k: Int = 2)(implicit spark: SparkSession): DataFrame = {
-    validateInput(data)
+    val pcaDF = trainPCA(data, k)
 
-    logger.info(s"开始PCA降维（k=$k）...")
-
-    // 1. 训练PCA模型
-    val (pcaModel, pcaDF) = trainPCA(data, k)
-
-    // 2. 提取坐标信息
     val resultDF = extractCoordinates(pcaDF)
 
-    // 3. 存储结果
     saveResults(resultDF)
 
     resultDF
@@ -39,15 +27,13 @@ object PCATransformer {
   /**
    * 训练PCA模型
    */
-  private def trainPCA(data: DataFrame, k: Int) = {
-    val pca = new PCA()
+  private def trainPCA(data: DataFrame, k: Int): DataFrame = {
+    new PCA()
       .setInputCol(Config.SCALED_FEATURES_COL)
       .setOutputCol(Config.PCA_FEATURES_COL)
       .setK(k)
-
-    val model = pca.fit(data)
-    val transformed = model.transform(data)
-    (model, transformed)
+      .fit(data)
+      .transform(data)
   }
 
   /**
@@ -57,7 +43,7 @@ object PCATransformer {
     import spark.implicits._
 
     pcaDF.select(
-      col("phone"),
+      $"phone",
       col(Config.CLUSTER_COL),
       col(Config.PCA_FEATURES_COL)
     ).map { row =>
@@ -70,7 +56,7 @@ object PCATransformer {
   }
 
   /**
-   * 存储结果到配置路径
+   * 存储结果至HDFS
    */
   private def saveResults(df: DataFrame): Unit = {
     df.coalesce(1)
@@ -78,18 +64,5 @@ object PCATransformer {
       .option("header", "true")
       .mode("overwrite")
       .csv(Config.PCA_RESULT_PATH)
-
-    logger.info(s"PCA结果已存储到：${Config.PCA_RESULT_PATH}")
-  }
-
-  /**
-   * 输入数据校验
-   */
-  private def validateInput(data: DataFrame): Unit = {
-    require(data.columns.contains(Config.SCALED_FEATURES_COL),
-      s"输入数据必须包含特征列：${Config.SCALED_FEATURES_COL}")
-
-    require(data.columns.contains("phone"),
-      "输入数据必须包含phone列")
   }
 }
