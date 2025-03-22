@@ -4,42 +4,16 @@ import SvgIcon from '@mui/material/SvgIcon';
 export function UsaFlag() {
   return (
     <SvgIcon>
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clipPath="url(#clip0_983_1725)">
           <path fillRule="evenodd" clipRule="evenodd" d="M-4 0H28V24H-4V0Z" fill="#F7FCFF" />
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M-4 14.6667V16.6667H28V14.6667H-4Z"
-            fill="#E31D1C"
-          />
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M-4 18.3333V20.3333H28V18.3333H-4Z"
-            fill="#E31D1C"
-          />
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M-4 7.33325V9.33325H28V7.33325H-4Z"
-            fill="#E31D1C"
-          />
+          <path fillRule="evenodd" clipRule="evenodd" d="M-4 14.6667V16.6667H28V14.6667H-4Z" fill="#E31D1C" />
+          <path fillRule="evenodd" clipRule="evenodd" d="M-4 18.3333V20.3333H28V18.3333H-4Z" fill="#E31D1C" />
+          <path fillRule="evenodd" clipRule="evenodd" d="M-4 7.33325V9.33325H28V7.33325H-4Z" fill="#E31D1C" />
           <path fillRule="evenodd" clipRule="evenodd" d="M-4 22V24H28V22H-4Z" fill="#E31D1C" />
           <path fillRule="evenodd" clipRule="evenodd" d="M-4 11V13H28V11H-4Z" fill="#E31D1C" />
           <path fillRule="evenodd" clipRule="evenodd" d="M-4 0V2H28V0H-4Z" fill="#E31D1C" />
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M-4 3.66675V5.66675H28V3.66675H-4Z"
-            fill="#E31D1C"
-          />
+          <path fillRule="evenodd" clipRule="evenodd" d="M-4 3.66675V5.66675H28V3.66675H-4Z" fill="#E31D1C" />
           <path d="M-4 0H16V13H-4V0Z" fill="#2E42A5" />
           <path
             fillRule="evenodd"
@@ -60,13 +34,7 @@ export function UsaFlag() {
 export function BrazilFlag() {
   return (
     <SvgIcon>
-      <svg
-        width="24"
-        height="25"
-        viewBox="0 0 24 25"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clipPath="url(#clip0_983_1741)">
           <path fillRule="evenodd" clipRule="evenodd" d="M-4 0.5V24.5H28V0.5H-4Z" fill="#009933" />
           <path
@@ -164,13 +132,7 @@ export function BrazilFlag() {
 export function GlobeFlag() {
   return (
     <SvgIcon>
-      <svg
-        width="24"
-        height="25"
-        viewBox="0 0 24 25"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+      <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g clipPath="url(#clip0_986_1789)">
           <circle cx="12" cy="12.5" r="12" fill="#007FFF" />
           <path

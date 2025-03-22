@@ -1,17 +1,13 @@
 import NextAuth from 'next-auth';
-import GitHub from 'next-auth/providers/github';
-import Google from 'next-auth/providers/google';
+import Keycloak from 'next-auth/providers/keycloak';
 import Credentials from 'next-auth/providers/credentials';
 import type { Provider } from 'next-auth/providers';
 
 const providers: Provider[] = [
-  GitHub({
-    clientId: process.env.GITHUB_CLIENT_ID,
-    clientSecret: process.env.GITHUB_CLIENT_SECRET,
-  }),
-  Google({
-    clientId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  Keycloak({
+    clientId: process.env.KEYCLOAK_CLIENT_ID,
+    clientSecret: process.env.KEYCLOAK_CLIENT_SECRET,
+    issuer: process.env.KEYCLOAK_ISSUER,
   }),
   Credentials({
     credentials: {
@@ -19,7 +15,7 @@ const providers: Provider[] = [
       password: { label: 'Password', type: 'password' },
     },
     authorize(c) {
-      if (c.password === '@demo1' && c.email === 'toolpad-demo@mui.com') {
+      if (c.password === 'admin123' && c.email === 'admin@telecom.com') {
         return {
           id: 'test',
           name: 'Toolpad Demo',
@@ -31,7 +27,7 @@ const providers: Provider[] = [
   }),
 ];
 
-export const providerMap = providers.map((provider) => {
+export const providerMap = providers.map(provider => {
   if (typeof provider === 'function') {
     const providerData = provider();
     return { id: providerData.id, name: providerData.name };

@@ -32,16 +32,11 @@ const AUTHENTICATION = {
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const session = await auth();
   return (
-    <html lang="en" data-toolpad-color-scheme="light">
+    <html data-toolpad-color-scheme="light">
       <body>
         <SessionProvider session={session}>
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-            <NextAppProvider
-              theme={theme}
-              navigation={NAVIGATION}
-              session={session}
-              authentication={AUTHENTICATION}
-            >
+            <NextAppProvider theme={theme} navigation={NAVIGATION} session={session} authentication={AUTHENTICATION}>
               {children}
             </NextAppProvider>
           </AppRouterCacheProvider>

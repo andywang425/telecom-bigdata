@@ -44,7 +44,7 @@ interface StyledTextProps {
 }
 
 const StyledText = styled('text', {
-  shouldForwardProp: (prop) => prop !== 'variant',
+  shouldForwardProp: prop => prop !== 'variant',
 })<StyledTextProps>(({ theme }) => ({
   textAnchor: 'middle',
   dominantBaseline: 'central',
@@ -103,19 +103,11 @@ function PieCenterLabel({ primaryText, secondaryText }: PieCenterLabelProps) {
   );
 }
 
-const colors = [
-  'hsl(220, 20%, 65%)',
-  'hsl(220, 20%, 42%)',
-  'hsl(220, 20%, 35%)',
-  'hsl(220, 20%, 25%)',
-];
+const colors = ['hsl(220, 20%, 65%)', 'hsl(220, 20%, 42%)', 'hsl(220, 20%, 35%)', 'hsl(220, 20%, 25%)'];
 
 export default function ChartUserByCountry() {
   return (
-    <Card
-      variant="outlined"
-      sx={{ display: 'flex', flexDirection: 'column', gap: '8px', flexGrow: 1 }}
-    >
+    <Card variant="outlined" sx={{ display: 'flex', flexDirection: 'column', gap: '8px', flexGrow: 1 }}>
       <CardContent>
         <Typography component="h2" variant="subtitle2">
           Users by country

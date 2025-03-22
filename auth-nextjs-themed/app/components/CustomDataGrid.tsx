@@ -9,16 +9,14 @@ export default function CustomizedDataGrid() {
         checkboxSelection
         rows={rows}
         columns={columns}
-        getRowClassName={(params) => (params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd')}
+        getRowClassName={params => (params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd')}
         initialState={{
           pagination: { paginationModel: { pageSize: 20 } },
         }}
-        sx={(theme) => ({
-          borderColor:
-            theme.palette.mode === 'dark' ? theme.palette.grey[700] : theme.palette.grey[200],
+        sx={theme => ({
+          borderColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : theme.palette.grey[200],
           '& .MuiDataGrid-cell': {
-            borderColor:
-              theme.palette.mode === 'dark' ? theme.palette.grey[700] : theme.palette.grey[200],
+            borderColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : theme.palette.grey[200],
           },
         })}
         pageSizeOptions={[10, 20, 50]}

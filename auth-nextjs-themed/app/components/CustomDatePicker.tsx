@@ -6,11 +6,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { UseDateFieldProps } from '@mui/x-date-pickers/DateField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import {
-  BaseSingleInputFieldProps,
-  DateValidationError,
-  FieldSection,
-} from '@mui/x-date-pickers/models';
+import { BaseSingleInputFieldProps, DateValidationError, FieldSection } from '@mui/x-date-pickers/models';
 
 interface ButtonFieldProps
   extends UseDateFieldProps<Dayjs, false>,
@@ -36,7 +32,7 @@ function ButtonField(props: ButtonFieldProps) {
       ref={ref}
       aria-label={ariaLabel}
       size="small"
-      onClick={() => setOpen?.((prev) => !prev)}
+      onClick={() => setOpen?.(prev => !prev)}
       startIcon={<CalendarTodayRoundedIcon fontSize="small" />}
       sx={{ minWidth: 'fit-content' }}
     >
@@ -54,7 +50,7 @@ export default function CustomDatePicker() {
       <DatePicker
         value={value}
         label={value == null ? null : value.format('MMM DD, YYYY')}
-        onChange={(newValue) => setValue(newValue)}
+        onChange={newValue => setValue(newValue)}
         slots={{ field: ButtonField }}
         slotProps={{
           field: { setOpen } as any,
