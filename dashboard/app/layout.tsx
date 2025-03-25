@@ -30,12 +30,10 @@ const BRANDING = {
   title: 'My Toolpad Core Next.js App',
 };
 
-
 const AUTHENTICATION = {
   signIn,
   signOut,
 };
-
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const session = await auth();
@@ -45,7 +43,6 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       <body>
         <SessionProvider session={session}>
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          
             <NextAppProvider
               navigation={NAVIGATION}
               branding={BRANDING}
@@ -55,7 +52,6 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
             >
               {props.children}
             </NextAppProvider>
-            
           </AppRouterCacheProvider>
         </SessionProvider>
       </body>

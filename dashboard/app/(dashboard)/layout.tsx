@@ -8,4 +8,4 @@ export default function Layout(props: { children: React.ReactNode }) {
       <PageContainer>{props.children}</PageContainer>
     </DashboardLayout>
   );
-}  
+}

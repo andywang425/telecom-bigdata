@@ -5,26 +5,29 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write ."
   },
   "dependencies": {
-    "react": "^19",
-    "react-dom": "^19",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "@toolpad/core": "0.13.0",
-    "@mui/material": "^6",
-    "@mui/material-nextjs": "^6",
-    "@mui/icons-material": "^6",
-    "@emotion/react": "^11",
-    "@emotion/styled": "^11",
-    "next": "^15",
+    "@mui/material": "^6.4.8",
+    "@mui/material-nextjs": "^6.4.3",
+    "@mui/icons-material": "^6.4.8",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "next": "^15.2.4",
     "next-auth": "5.0.0-beta.25"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "^15",
-    "@types/node": "^20"
+    "typescript": "^5.8.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^15.2.4",
+    "eslint-config-prettier": "^10.1.1",
+    "prettier": "^3.5.3",
+    "@types/node": "^20.17.27"
   }
 }
