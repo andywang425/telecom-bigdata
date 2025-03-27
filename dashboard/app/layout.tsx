@@ -6,8 +6,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import type { Navigation } from '@toolpad/core/AppProvider';
 import { SessionProvider, signIn, signOut } from 'next-auth/react';
-import { auth } from '../auth';
-import theme from '../theme';
+import { auth } from '@/auth';
+import theme from '@/theme';
 
 const NAVIGATION: Navigation = [
   {
@@ -43,13 +43,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       <body>
         <SessionProvider session={session}>
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-            <NextAppProvider
-              navigation={NAVIGATION}
-              branding={BRANDING}
-              session={session}
-              authentication={AUTHENTICATION}
-              theme={theme}
-            >
+            <NextAppProvider navigation={NAVIGATION} session={session} authentication={AUTHENTICATION} theme={theme}>
               {props.children}
             </NextAppProvider>
           </AppRouterCacheProvider>

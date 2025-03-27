@@ -1,10 +1,21 @@
 import * as React from 'react';
 import { SignInPage } from '@toolpad/core/SignInPage';
 
-import { providerMap } from '../../../auth';
+import { providerMap } from '@/auth';
 
 import signIn from './actions';
 
 export default function SignIn() {
-  return <SignInPage providers={providerMap} signIn={signIn} />;
+  return (
+    <SignInPage
+      providers={providerMap}
+      signIn={signIn}
+      slotProps={{ emailField: { autoFocus: false }, form: { noValidate: true } }}
+      sx={{
+        '& .MuiInputLabel-root': {
+          fontSize: '0.75rem',
+        },
+      }}
+    />
+  );
 }

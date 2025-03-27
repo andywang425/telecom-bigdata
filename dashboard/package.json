@@ -9,25 +9,26 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "@toolpad/core": "0.13.0",
-    "@mui/material": "^6.4.8",
-    "@mui/material-nextjs": "^6.4.3",
-    "@mui/icons-material": "^6.4.8",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.8",
+    "@mui/material": "^6.4.8",
+    "@mui/material-nextjs": "^6.4.3",
+    "@toolpad/core": "0.13.0",
+    "axios": "^1.8.4",
     "next": "^15.2.4",
-    "next-auth": "5.0.0-beta.25"
+    "next-auth": "5.0.0-beta.25",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.8.2",
+    "@types/node": "^20.17.27",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "eslint": "^8.57.1",
     "eslint-config-next": "^15.2.4",
     "eslint-config-prettier": "^10.1.1",
     "prettier": "^3.5.3",
-    "@types/node": "^20.17.27"
+    "typescript": "^5.8.2"
   }
 }

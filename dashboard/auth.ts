@@ -2,6 +2,7 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import Keycloak from 'next-auth/providers/keycloak';
 import type { Provider } from 'next-auth/providers';
+import { AUTH } from '@/api';
 
 const providers: Provider[] = [
   Credentials({
@@ -9,15 +10,21 @@ const providers: Provider[] = [
       email: { label: 'Email Address', type: 'email' },
       password: { label: 'Password', type: 'password' },
     },
-    authorize(c) {
-      if (c.password !== 'password') {
-        return null;
+    async authorize(c) {
+      const res = await AUTH.login(<string>c.email, <string>c.password);
+
+      if (res.code === 0) {
+        const user = res.data
+
+        return {
+          id: `${user.id}`,
+          name: user.email.split('@').shift(),
+          email: user.email,
+          image: (await import('@/public/image/avatar.jpg')).default.src
+        }
       }
-      return {
-        id: 'test',
-        name: 'Test User',
-        email: String(c.email),
-      };
+
+      return null;
     },
   }),
 
@@ -27,16 +34,6 @@ const providers: Provider[] = [
     issuer: process.env.KEYCLOAK_ISSUER,
   }),
 ];
-
-if (!process.env.KEYCLOAK_CLIENT_ID) {
-  console.warn('Missing environment variable "KEYCLOAK_CLIENT_ID"');
-}
-if (!process.env.KEYCLOAK_CLIENT_SECRET) {
-  console.warn('Missing environment variable "KEYCLOAK_CLIENT_SECRET"');
-}
-if (!process.env.KEYCLOAK_ISSUER) {
-  console.warn('Missing environment variable "KEYCLOAK_ISSUER"');
-}
 
 export const providerMap = providers.map(provider => {
   if (typeof provider === 'function') {
@@ -48,7 +45,6 @@ export const providerMap = providers.map(provider => {
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers,
-
   secret: process.env.AUTH_SECRET,
   pages: {
     signIn: '/auth/signin',
