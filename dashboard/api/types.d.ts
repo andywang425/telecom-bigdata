@@ -8,6 +8,6 @@ export namespace AuthResponse {
   interface login {
     id: number;
     email: string;
-    createdAt: string
+    createdAt: string;
   }
 }

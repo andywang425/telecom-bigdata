@@ -14,14 +14,14 @@ const providers: Provider[] = [
       const res = await AUTH.login(<string>c.email, <string>c.password);
 
       if (res.code === 0) {
-        const user = res.data
+        const user = res.data;
 
         return {
           id: `${user.id}`,
           name: user.email.split('@').shift(),
           email: user.email,
-          image: (await import('@/public/image/avatar.jpg')).default.src
-        }
+          image: (await import('@/public/image/avatar.jpg')).default.src,
+        };
       }
 
       return null;
@@ -60,5 +60,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       return false; // Redirect unauthenticated users to login page
     },
+  },
+  session: {
+    strategy: 'jwt',
+    maxAge: 2592000, // 30 days
+    updateAge: 86400, // 1 day
   },
 });
