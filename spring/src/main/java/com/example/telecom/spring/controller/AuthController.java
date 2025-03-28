@@ -21,14 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
-    @PostMapping("/auth/login")
+    @PostMapping("/login")
     public BaseResponse<?> authenticateUser(@RequestBody LoginRequest request) {
         try {
             Authentication authentication = authenticationManager.authenticate(
@@ -48,7 +48,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/auth/register")
+    @PostMapping("/register")
     public BaseResponse<?> registerUser(@RequestBody LoginRequest request) {
         if (userService.getUserByEmail(request.getEmail()) != null) {
             return ResultUtils.error(400, "邮箱已被注册");
