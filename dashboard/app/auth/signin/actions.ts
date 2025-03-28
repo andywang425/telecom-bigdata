@@ -15,12 +15,12 @@ export default async function serverSignIn(provider: AuthProvider, formData: For
     }
     if (error instanceof AuthError) {
       return {
-        error: error.type === 'CredentialsSignin' ? 'Invalid credentials.' : 'An error with Auth.js occurred.',
+        error: error.type === 'CredentialsSignin' ? '邮箱或密码错误' : 'Auth.js 内部错误，请联系管理员',
         type: error.type,
       };
     }
     return {
-      error: 'Something went wrong.',
+      error: '未知错误，请联系管理员',
       type: 'UnknownError',
     };
   }
