@@ -58,7 +58,7 @@ public class AuthController {
             User user = userService.getUserByEmail(userDetails.getUsername());
             user.setAccessToken(jwtToken);
             user.setRefreshToken(refreshToken);
-            user.setExpiresAt(Instant.now().plus(10, ChronoUnit.SECONDS));
+            user.setExpiresAt(Instant.now().plus(1, ChronoUnit.HOURS));
             userService.userRepository.save(user);
 
             UserVO userVO = new UserVO();
@@ -107,7 +107,7 @@ public class AuthController {
 
             user.setAccessToken(jwtToken);
             user.setRefreshToken(refreshToken);
-            user.setExpiresAt(Instant.now().plus(10, ChronoUnit.SECONDS));
+            user.setExpiresAt(Instant.now().plus(1, ChronoUnit.HOURS));
             userService.userRepository.save(user);
 
             UserTokensVO userTokensVO = new UserTokensVO();
