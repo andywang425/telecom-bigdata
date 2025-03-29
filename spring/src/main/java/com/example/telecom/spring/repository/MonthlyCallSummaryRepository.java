@@ -19,6 +19,7 @@ public interface MonthlyCallSummaryRepository extends JpaRepository<MonthlyCallS
 
     interface YearlyCallSummary {
         Integer getYear();
+
         Long getTotalCalls();
     }
 }

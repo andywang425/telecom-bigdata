@@ -5,14 +5,13 @@ import com.example.telecom.spring.common.JwtUtil;
 import com.example.telecom.spring.common.ResultUtils;
 import com.example.telecom.spring.model.dto.LoginRequest;
 import com.example.telecom.spring.model.entity.User;
+import com.example.telecom.spring.model.vo.UserTokensVO;
 import com.example.telecom.spring.model.vo.UserVO;
 import com.example.telecom.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -48,8 +46,6 @@ public class AuthController {
     @PostMapping("/login")
     public BaseResponse<?> authenticateUser(@RequestBody LoginRequest request) {
         try {
-            logger.info("登录: {}", Instant.now());
-
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
@@ -67,8 +63,8 @@ public class AuthController {
 
             UserVO userVO = new UserVO();
             BeanUtils.copyProperties(user, userVO);
-            logger.info("用户登录成功，用户名：{}，token：{}", userDetails.getUsername(), jwtToken);
 
+            logger.info("用户登录成功，{}", user);
 
             return ResultUtils.success(userVO);
         } catch (AuthenticationException e) {
@@ -86,24 +82,25 @@ public class AuthController {
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(user, userVO);
 
+        logger.info("用户注册成功，{}", user);
+
         return ResultUtils.success(userVO);
     }
 
     @PostMapping("/refresh-token")
     public BaseResponse<?> refreshAccessToken(@RequestBody Map<String, String> request) {
-        logger.info("收到刷新令牌请求，refreshToken: {}", request.get("refreshToken"));
         String refreshToken = request.get("refreshToken");
         if (refreshToken == null) {
             return ResultUtils.error(400, "Refresh token required");
         }
 
+        logger.info("用户请求刷新令牌，{}", refreshToken);
+
         Optional<User> userOpt = userService.userRepository.findByRefreshToken(refreshToken);
         if (userOpt.isPresent()) {
             User user = userOpt.get();
 
-//            if (user.getExpiresAt().isBefore(Instant.now())) {
-//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh token expired");
-//            }
+            logger.info("用户即将刷新令牌，{}", user);
 
             String jwtToken = jwtUtil.generateToken(user.getEmail());
             refreshToken = UUID.randomUUID().toString();
@@ -113,11 +110,12 @@ public class AuthController {
             user.setExpiresAt(Instant.now().plus(10, ChronoUnit.SECONDS));
             userService.userRepository.save(user);
 
-            UserVO userVO = new UserVO();
-            BeanUtils.copyProperties(user, userVO);
+            UserTokensVO userTokensVO = new UserTokensVO();
+            BeanUtils.copyProperties(user, userTokensVO);
 
+            logger.info("用户刷新令牌成功，{}", user);
 
-            return ResultUtils.success(userVO);
+            return ResultUtils.success(userTokensVO);
         } else {
             return ResultUtils.error(401, "Invalid refresh token");
         }
