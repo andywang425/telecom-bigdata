@@ -69,7 +69,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return false; // Redirect unauthenticated users to login page
     },
     async jwt({ token, user, trigger }) {
-      console.log('jwt', token, new Date(), user, trigger);
+      console.log('jwt token', token, 'now', new Date(), 'user', user, 'trigger', trigger);
       if (trigger === 'signIn' && user && user.accessToken) {
         token.access_token = user.accessToken;
         token.expires_at = user.expiresAt;

@@ -11,10 +11,7 @@ import theme from '@/theme';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import logo from '@/public/image/logo.svg';
-
-import { LicenseInfo } from '@mui/x-license';
-
-LicenseInfo.setLicenseKey(process.env.MUI_LICENSE_KEY!);
+import MuiXLicense from '@/components/MuiXLicense';
 
 export const metadata: Metadata = {
   title: '电信数据可视化',
@@ -60,7 +57,7 @@ const AUTHENTICATION = {
 
 const BRANDING = {
   title: '电信数据可视化',
-  logo: <Image src={logo} alt={'logo'} width={24} style={{ height: '100%' }} />,
+  logo: <Image src={logo} alt={'logo'} style={{ width: '100%', height: '100%' }} />,
 };
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
@@ -79,6 +76,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
               theme={theme}
             >
               {props.children}
+              <MuiXLicense />
             </NextAppProvider>
           </AppRouterCacheProvider>
         </SessionProvider>
