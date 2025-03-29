@@ -3,6 +3,10 @@ import Credentials from 'next-auth/providers/credentials';
 import Keycloak from 'next-auth/providers/keycloak';
 import type { Provider } from 'next-auth/providers';
 import { AUTH } from '@/api';
+import axios from "@/axios";
+import { DateTime } from 'luxon';
+import type {Session, User} from 'next-auth'
+import type { JWT } from "next-auth/jwt"
 
 const providers: Provider[] = [
   Credentials({
@@ -21,6 +25,9 @@ const providers: Provider[] = [
           name: user.email.split('@').shift(),
           email: user.email,
           image: (await import('@/public/image/avatar.jpg')).default.src,
+          accessToken: user.accessToken,
+          expiresAt: user.expiresAt,
+          refreshToken: user.refreshToken
         };
       }
 
@@ -60,10 +67,64 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       return false; // Redirect unauthenticated users to login page
     },
+    async jwt({ token, user, trigger }) {
+      console.log('jwt', token, new Date(), user, trigger)
+      if (trigger === 'signIn' && user) {
+        token.access_token = user.accessToken;
+        token.expires_at = user.expiresAt;
+        token.refresh_token = user.refreshToken;
+      } else if (token && DateTime.now() > DateTime.fromISO(token.expires_at)) {
+        // refresh token
+        try {
+          const res = await axios.post(`${process.env.BACKEND_URL}/api/auth/refresh-token`, {
+            refreshToken: token.refresh_token
+          });
+
+          console.log('/api/auth/refresh-token res', res.data)
+
+
+          token.access_token = res.data.data.accessToken;
+          token.expires_at = res.data.data.expiresAt;
+          token.refresh_token = res.data.data.refreshToken;
+        } catch (error) {
+          console.error("Error refreshing access_token", error)
+          token.error = "RefreshTokenError"
+        }
+      }
+
+      return token;
+    },
+
+    async session({ session, token }) {
+      session.access_token = token.access_token;
+      session.error = token.error;
+      return session;
+    },
   },
   session: {
-    strategy: 'jwt',
-    maxAge: 2592000, // 30 days
-    updateAge: 86400, // 1 day
+    strategy: 'jwt'
   },
 });
+
+
+declare module "next-auth" {
+  interface Session {
+    error?: "RefreshTokenError"
+    access_token: string
+  }
+
+  interface User {
+    accessToken: string
+    expiresAt: string
+    refreshToken: string
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    access_token: string
+    expires_at: string
+    refresh_token?: string
+    error?: "RefreshTokenError"
+  }
+}

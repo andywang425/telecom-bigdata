@@ -12,6 +12,10 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import logo from '@/public/image/logo.svg';
 
+import { LicenseInfo } from '@mui/x-license';
+
+LicenseInfo.setLicenseKey(process.env.MUI_LICENSE_KEY!);
+
 export const metadata: Metadata = {
   title: '电信数据可视化',
   description: '毕业设计',

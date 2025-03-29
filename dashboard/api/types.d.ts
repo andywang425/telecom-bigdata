@@ -9,5 +9,8 @@ export namespace AuthResponse {
     id: number;
     email: string;
     createdAt: string;
+    accessToken: string;
+    expiresAt: string;
+    refreshToken: string;
   }
 }
