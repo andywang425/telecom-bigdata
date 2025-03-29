@@ -5,10 +5,16 @@ export interface BaseResponse<T> {
 }
 
 export namespace AuthResponse {
-  interface login {
+  interface Login {
     id: number;
     email: string;
     createdAt: string;
+    accessToken: string;
+    expiresAt: string;
+    refreshToken: string;
+  }
+
+  interface RefreshToken {
     accessToken: string;
     expiresAt: string;
     refreshToken: string;

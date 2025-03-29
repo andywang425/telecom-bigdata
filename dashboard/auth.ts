@@ -3,10 +3,11 @@ import Credentials from 'next-auth/providers/credentials';
 import Keycloak from 'next-auth/providers/keycloak';
 import type { Provider } from 'next-auth/providers';
 import { AUTH } from '@/api';
-import axios from "@/axios";
 import { DateTime } from 'luxon';
-import type {Session, User} from 'next-auth'
-import type { JWT } from "next-auth/jwt"
+import type { Session, User } from 'next-auth';
+import type { JWT } from 'next-auth/jwt';
+
+let isRefreshingToken = false;
 
 const providers: Provider[] = [
   Credentials({
@@ -27,7 +28,7 @@ const providers: Provider[] = [
           image: (await import('@/public/image/avatar.jpg')).default.src,
           accessToken: user.accessToken,
           expiresAt: user.expiresAt,
-          refreshToken: user.refreshToken
+          refreshToken: user.refreshToken,
         };
       }
 
@@ -68,28 +69,32 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return false; // Redirect unauthenticated users to login page
     },
     async jwt({ token, user, trigger }) {
-      console.log('jwt', token, new Date(), user, trigger)
-      if (trigger === 'signIn' && user) {
+      console.log('jwt', token, new Date(), user, trigger);
+      if (trigger === 'signIn' && user && user.accessToken) {
         token.access_token = user.accessToken;
         token.expires_at = user.expiresAt;
         token.refresh_token = user.refreshToken;
-      } else if (token && DateTime.now() > DateTime.fromISO(token.expires_at)) {
-        // refresh token
-        try {
-          const res = await axios.post(`${process.env.BACKEND_URL}/api/auth/refresh-token`, {
-            refreshToken: token.refresh_token
-          });
-
-          console.log('/api/auth/refresh-token res', res.data)
-
-
-          token.access_token = res.data.data.accessToken;
-          token.expires_at = res.data.data.expiresAt;
-          token.refresh_token = res.data.data.refreshToken;
-        } catch (error) {
-          console.error("Error refreshing access_token", error)
-          token.error = "RefreshTokenError"
+      } else if (token && token.refresh_token && DateTime.now() > DateTime.fromISO(token.expires_at)) {
+        if (isRefreshingToken) {
+          // 避免重复刷新token
+          return token;
         }
+        isRefreshingToken = true;
+
+        // access_token过期，使用refresh_token刷新
+        const res = await AUTH.refreshToken(token.refresh_token!);
+        console.log('AUTH.refreshToken response', res);
+
+        if (res.code === 0) {
+          token.access_token = res.data.accessToken;
+          token.expires_at = res.data.expiresAt;
+          token.refresh_token = res.data.refreshToken;
+        } else {
+          console.error('Error refreshing access_token', res.message);
+          token.error = 'RefreshTokenError';
+        }
+
+        isRefreshingToken = false;
       }
 
       return token;
@@ -102,29 +107,28 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
   },
   session: {
-    strategy: 'jwt'
+    strategy: 'jwt',
   },
 });
 
-
-declare module "next-auth" {
+declare module 'next-auth' {
   interface Session {
-    error?: "RefreshTokenError"
-    access_token: string
+    error?: 'RefreshTokenError';
+    access_token: string;
   }
 
   interface User {
-    accessToken: string
-    expiresAt: string
-    refreshToken: string
+    accessToken: string;
+    expiresAt: string;
+    refreshToken: string;
   }
 }
 
-declare module "next-auth/jwt" {
+declare module 'next-auth/jwt' {
   interface JWT {
-    access_token: string
-    expires_at: string
-    refresh_token?: string
-    error?: "RefreshTokenError"
+    access_token: string;
+    expires_at: string;
+    refresh_token?: string;
+    error?: 'RefreshTokenError';
   }
 }
