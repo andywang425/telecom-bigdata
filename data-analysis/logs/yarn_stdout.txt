@@ -74,7 +74,7 @@ Tools
 
 2025/03/17 21:53:43 INFO CallAnalysis$: Monthly caller call summary
 +----+-----+-----------+-----------------+--------------------------+
-|year|month|userNumber |caller_call_count|caller_total_call_duration|
+|year|month|user_number |caller_call_count|caller_total_call_duration|
 +----+-----+-----------+-----------------+--------------------------+
 |2020|1    |13032190905|4.0              |871464.0                  |
 |2020|1    |13062882380|2.0              |10782.0                   |
@@ -1105,7 +1105,7 @@ only showing top 1024 rows
 
 2025/03/17 21:53:44 INFO CallAnalysis$: Monthly receiver call summary
 +----+-----+-----------+-------------------+----------------------------+
-|year|month|userNumber |receiver_call_count|receiver_total_call_duration|
+|year|month|user_number |receiver_call_count|receiver_total_call_duration|
 +----+-----+-----------+-------------------+----------------------------+
 |2020|1    |13032190905|1.0                |164439.0                    |
 |2020|1    |13062882380|6.0                |587800.0                    |
@@ -2136,7 +2136,7 @@ only showing top 1024 rows
 
 2025/03/17 21:53:45 INFO CallAnalysis$: Monthly user call summary
 +----+-----+-----------+-----------------+--------------------------+-------------------+----------------------------+----------------+-------------------+
-|year|month|userNumber |caller_call_count|caller_total_call_duration|receiver_call_count|receiver_total_call_duration|total_call_count|total_call_duration|
+|year|month|user_number |caller_call_count|caller_total_call_duration|receiver_call_count|receiver_total_call_duration|total_call_count|total_call_duration|
 +----+-----+-----------+-----------------+--------------------------+-------------------+----------------------------+----------------+-------------------+
 |2022|1    |15026759110|6.0              |203854.0                  |1.0                |0.0                         |7.0             |203854.0           |
 |2021|4    |15891003816|1.0              |6155.0                    |5.0                |572636.0                    |6.0             |578791.0           |
@@ -3167,7 +3167,7 @@ only showing top 1024 rows
 
 2025/03/17 21:53:51 INFO CallAnalysis$: Monthly call status summary
 +----+-----+----------+----------+
-|year|month|callStatus|call_count|
+|year|month|call_status|call_count|
 +----+-----+----------+----------+
 |2020|1    |BUSY      |30        |
 |2020|1    |CONNECTED |234       |
@@ -4511,7 +4511,7 @@ only showing top 1024 rows
 
 2025/03/17 21:53:57 INFO SmsAnalysis$: Monthly SMS sent user summary
 +----+-----+------------+----------------+-----------------+
-|year|month|senderNumber|total_sent_count|total_sent_length|
+|year|month|sender_number|total_sent_count|total_sent_length|
 +----+-----+------------+----------------+-----------------+
 |2020|1    |13032190905 |2               |8                |
 |2020|1    |13194331650 |2               |41               |
@@ -5542,7 +5542,7 @@ only showing top 1024 rows
 
 2025/03/17 21:54:01 INFO SmsAnalysis$: Monthly SMS received user summary
 +----+-----+--------------+--------------------+---------------------+
-|year|month|receiverNumber|total_received_count|total_received_length|
+|year|month|receiver_number|total_received_count|total_received_length|
 +----+-----+--------------+--------------------+---------------------+
 |2020|1    |13032190905   |1                   |12                   |
 |2020|1    |13062882380   |7                   |110                  |
@@ -6573,7 +6573,7 @@ only showing top 1024 rows
 
 2025/03/17 21:54:05 INFO SmsAnalysis$: Monthly SMS status summary
 +----+-----+-----------------+----------------+
-|year|month|sendStatus       |sms_status_count|
+|year|month|send_status       |sms_status_count|
 +----+-----+-----------------+----------------+
 |2020|1    |FAILED_TO_RECEIVE|24              |
 |2020|1    |FAILED_TO_SEND   |10              |
@@ -7856,7 +7856,7 @@ only showing top 1024 rows
 
 2025/03/17 21:54:09 INFO TrafficAnalysis$: Monthly session count, duration and data volume per user summary
 +----+-----+-----------+--------------+--------------+--------------+----------------+
-|year|month|userNumber |total_sessions|total_duration|total_upstream|total_downstream|
+|year|month|user_number |total_sessions|total_duration|total_upstream|total_downstream|
 +----+-----+-----------+--------------+--------------+--------------+----------------+
 |2020|1    |13032190905|4             |59412         |93615         |4487071         |
 |2020|1    |13062882380|6             |219976        |333699        |22892104        |
@@ -8887,7 +8887,7 @@ only showing top 1024 rows
 
 2025/03/17 21:54:12 INFO TrafficAnalysis$: Monthly session count and data volume summary per APP summary
 +----+-----+---------------+-------------+--------------------------+----------------------------+
-|year|month|applicationType|session_count|total_upstream_data_volume|total_downstream_data_volume|
+|year|month|application_type|session_count|total_upstream_data_volume|total_downstream_data_volume|
 +----+-----+---------------+-------------+--------------------------+----------------------------+
 |2020|1    |ONLINE_VIDEO   |60           |1706239                   |78029556                    |
 |2020|1    |SOCIAL_MEDIA   |117          |2947770                   |119238778                   |
@@ -9073,7 +9073,7 @@ only showing top 1024 rows
 
 2025/03/17 21:54:14 INFO TrafficAnalysis$: Monthly session count and data volume per network technology summary
 +----+-----+-----------------+-------------+--------------------------+----------------------------+
-|year|month|networkTechnology|session_count|total_upstream_data_volume|total_downstream_data_volume|
+|year|month|network_technology|session_count|total_upstream_data_volume|total_downstream_data_volume|
 +----+-----+-----------------+-------------+--------------------------+----------------------------+
 |2020|1    |4G               |76           |2262599                   |106803619                   |
 |2020|1    |5G               |184          |4899573                   |212465588                   |
@@ -10231,7 +10231,7 @@ only showing top 1024 rows
 2025/03/17 21:54:17 INFO Main$: Starting Station Analysis...
 2025/03/17 21:54:17 INFO StationAnalysis$: Base Station Call Failure Rate Summary
 +----+-----+---------+----------+-----------+--------------------+
-|year|month|stationId|total_call|failed_call|call_failure_rate   |
+|year|month|station_id|total_call|failed_call|call_failure_rate   |
 +----+-----+---------+----------+-----------+--------------------+
 |2020|1    |11938455 |42        |3          |0.07142857142857142 |
 |2020|1    |13042    |44        |3          |0.06818181818181818 |
@@ -10777,7 +10777,7 @@ only showing top 1024 rows
 
 2025/03/17 21:54:18 INFO StationAnalysis$: Base Station SMS Failure Rate Summary
 +----+-----+---------+---------+----------+--------------------+
-|year|month|stationId|total_sms|failed_sms|sms_failure_rate    |
+|year|month|station_id|total_sms|failed_sms|sms_failure_rate    |
 +----+-----+---------+---------+----------+--------------------+
 |2020|1    |11938455 |50       |4         |0.08                |
 |2020|1    |13042    |56       |3         |0.05357142857142857 |
@@ -11323,7 +11323,7 @@ only showing top 1024 rows
 
 2025/03/17 21:54:20 INFO StationAnalysis$: Base Station Call Summary
 +----+-----+---------+----------+--------------------------+
-|year|month|stationId|call_count|total_call_duration_millis|
+|year|month|station_id|call_count|total_call_duration_millis|
 +----+-----+---------+----------+--------------------------+
 |2020|1    |11938455 |42        |4214743                   |
 |2020|1    |13042    |44        |4465934                   |
@@ -11869,7 +11869,7 @@ only showing top 1024 rows
 
 2025/03/17 21:54:21 INFO StationAnalysis$: Base Station SMS Summary
 +----+-----+---------+---------+------------------------+
-|year|month|stationId|sms_count|total_sms_content_length|
+|year|month|station_id|sms_count|total_sms_content_length|
 +----+-----+---------+---------+------------------------+
 |2020|1    |11938455 |50       |673                     |
 |2020|1    |13042    |56       |932                     |
@@ -12415,7 +12415,7 @@ only showing top 1024 rows
 
 2025/03/17 21:54:22 INFO StationAnalysis$: Base Station Traffic Summary
 +----+-----+---------+------------+--------------------------+----------------------------+
-|year|month|stationId|sessionCount|total_upstream_data_volume|total_downstream_data_volume|
+|year|month|station_id|session_count|total_upstream_data_volume|total_downstream_data_volume|
 +----+-----+---------+------------+--------------------------+----------------------------+
 |2020|1    |11938455 |23          |592073                    |25080566                    |
 |2020|1    |13042    |37          |1273227                   |61018173                    |

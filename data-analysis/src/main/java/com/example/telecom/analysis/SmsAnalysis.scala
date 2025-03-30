@@ -13,45 +13,45 @@ object SmsAnalysis extends MyLogger {
       .groupBy($"year", $"month")
       .agg(
         count($"smsId").alias("total_count"),
-        sum(length($"smsContent")).alias("total_length")
+        sum(length($"sms_content")).alias("total_length")
       )
       .orderBy($"year", $"month")
     info("Monthly SMS summary")
     monthlySmsSummery.show(1024, truncate = false)
-    SparkUtils.saveToMySQL(monthlySmsSummery, "monthly_sms_summary")
+    SparkUtils.saveToMySQL(monthlySmsSummery, "sms_summary")
     monthlySmsSummery.unpersist()
 
     // 2. 按月按用户短信发送/接收条数和长度统计
     // 按用户短信发送条数和长度统计
     val monthlySmsSentPerUser = smsDF
-      .filter($"sendDirection" === "SENT")
-      .groupBy($"year", $"month", $"senderNumber")
-      .agg(count($"smsId").alias("total_sent_count"), sum(length($"smsContent")).alias("total_sent_length"))
-      .orderBy($"year", $"month", $"senderNumber")
+      .filter($"send_direction" === "SENT")
+      .groupBy($"year", $"month", $"sender_number")
+      .agg(count($"smsId").alias("total_sent_count"), sum(length($"sms_content")).alias("total_sent_length"))
+      .orderBy($"year", $"month", $"sender_number")
     info("Monthly SMS sent user summary")
     monthlySmsSentPerUser.show(1024, truncate = false)
-    SparkUtils.saveToMySQL(monthlySmsSentPerUser, "monthly_sms_sent_user_summary")
+    SparkUtils.saveToMySQL(monthlySmsSentPerUser, "sms_sent_user")
     monthlySmsSentPerUser.unpersist()
 
     // 按用户短信接收条数和长度统计
     val monthlySmsReceivedPerUser = smsDF
-      .filter($"sendDirection" === "RECEIVED")
-      .groupBy($"year", $"month", $"receiverNumber")
-      .agg(count($"smsId").alias("total_received_count"), sum(length($"smsContent")).alias("total_received_length"))
-      .orderBy($"year", $"month", $"receiverNumber")
+      .filter($"send_direction" === "RECEIVED")
+      .groupBy($"year", $"month", $"receiver_number")
+      .agg(count($"smsId").alias("total_received_count"), sum(length($"sms_content")).alias("total_received_length"))
+      .orderBy($"year", $"month", $"receiver_number")
     info("Monthly SMS received user summary")
     monthlySmsReceivedPerUser.show(1024, truncate = false)
-    SparkUtils.saveToMySQL(monthlySmsReceivedPerUser, "monthly_sms_received_user_summary")
+    SparkUtils.saveToMySQL(monthlySmsReceivedPerUser, "sms_received_user")
     monthlySmsReceivedPerUser.unpersist()
 
     // 3. 按月短信状态统计
     val monthlySmsStatus = smsDF
-      .groupBy($"year", $"month", $"sendStatus")
+      .groupBy($"year", $"month", $"send_status")
       .agg(count($"smsId").alias("sms_status_count"))
-      .orderBy($"year", $"month", $"sendStatus")
+      .orderBy($"year", $"month", $"send_status")
     info("Monthly SMS status summary")
     monthlySmsStatus.show(1024, truncate = false)
-    SparkUtils.saveToMySQL(monthlySmsStatus, "monthly_sms_status_summary")
+    SparkUtils.saveToMySQL(monthlySmsStatus, "sms_status")
     monthlySmsStatus.unpersist()
 
     // 4. 按月每日小时短信分布统计
@@ -61,7 +61,7 @@ object SmsAnalysis extends MyLogger {
       .orderBy($"year", $"month", $"hour")
     info("Monthly (and hourly) SMS day distribution summary")
     hourlySmsDistribution.show(1024, truncate = false)
-    SparkUtils.saveToMySQL(hourlySmsDistribution, "monthly_sms_day_distribution_summary")
+    SparkUtils.saveToMySQL(hourlySmsDistribution, "sms_day_distribution")
     hourlySmsDistribution.unpersist()
   }
 }

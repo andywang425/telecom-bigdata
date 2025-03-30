@@ -12,72 +12,72 @@ object TrafficAnalysis extends MyLogger {
     val monthlySessionSummary = trafficDF
       .groupBy($"year", $"month")
       .agg(
-        count($"sessionId").alias("total_sessions"),
-        sum($"sessionDurationMillis").alias("total_duration"),
-        sum($"upstreamDataVolume").alias("total_upstream"),
-        sum($"downstreamDataVolume").alias("total_downstream")
+        count($"session_id").alias("total_sessions"),
+        sum($"session_duration_millis").alias("total_duration"),
+        sum($"upstream_data_volume").alias("total_upstream"),
+        sum($"downstream_data_volume").alias("total_downstream")
       )
       .orderBy($"year", $"month")
     info("Monthly session count, duration and data volume summary")
     monthlySessionSummary.show(1024, truncate = false)
-    SparkUtils.saveToMySQL(monthlySessionSummary, "monthly_session_summary")
+    SparkUtils.saveToMySQL(monthlySessionSummary, "session_summary")
     monthlySessionSummary.unpersist()
 
     // 2. 按月按用户会话数量、持续时间、上行流量、下行流量统计
     val monthlyUserTrafficSummary = trafficDF
-      .groupBy($"year", $"month", $"userNumber")
+      .groupBy($"year", $"month", $"user_number")
       .agg(
-        count($"sessionId").alias("total_sessions"),
-        sum($"sessionDurationMillis").alias("total_duration"),
-        sum($"upstreamDataVolume").alias("total_upstream"),
-        sum($"downstreamDataVolume").alias("total_downstream")
+        count($"session_id").alias("total_sessions"),
+        sum($"session_duration_millis").alias("total_duration"),
+        sum($"upstream_data_volume").alias("total_upstream"),
+        sum($"downstream_data_volume").alias("total_downstream")
       )
-      .orderBy($"year", $"month", $"userNumber")
+      .orderBy($"year", $"month", $"user_number")
     info("Monthly session count, duration and data volume per user summary")
     monthlyUserTrafficSummary.show(1024, truncate = false)
-    SparkUtils.saveToMySQL(monthlyUserTrafficSummary, "monthly_user_session_summary")
+    SparkUtils.saveToMySQL(monthlyUserTrafficSummary, "session_user")
     monthlyUserTrafficSummary.unpersist()
 
     // 3. 按月统计不同种类应用的会话数量和上行/下行流量
     val monthlyDataVolumeByAppType = trafficDF
-      .groupBy($"year", $"month", $"applicationType")
+      .groupBy($"year", $"month", $"application_type")
       .agg(
-        count($"sessionId").alias("session_count"),
-        sum($"upstreamDataVolume").alias("total_upstream_data_volume"),
-        sum($"downstreamDataVolume").alias("total_downstream_data_volume")
+        count($"session_id").alias("session_count"),
+        sum($"upstream_data_volume").alias("total_upstream_data_volume"),
+        sum($"downstream_data_volume").alias("total_downstream_data_volume")
       )
-      .orderBy($"year", $"month", $"applicationType")
+      .orderBy($"year", $"month", $"application_type")
     info("Monthly session count and data volume summary per APP summary")
     monthlyDataVolumeByAppType.show(1024, truncate = false)
-    SparkUtils.saveToMySQL(monthlyDataVolumeByAppType, "monthly_data_volume_by_app_summary")
+    SparkUtils.saveToMySQL(monthlyDataVolumeByAppType, "session_traffic_by_app")
     monthlyDataVolumeByAppType.unpersist()
 
     // 4. 按月统计不同网络技术上的会话数量和上行/下行流量
     val trafficByNetworkTech = trafficDF
-      .groupBy($"year", $"month", $"networkTechnology")
+      .groupBy($"year", $"month", $"network_technology")
       .agg(
-        count($"sessionId").alias("session_count"),
-        sum($"upstreamDataVolume").alias("total_upstream_data_volume"),
-        sum($"downstreamDataVolume").alias("total_downstream_data_volume")
+        count($"session_id").alias("session_count"),
+        sum($"upstream_data_volume").alias("total_upstream_data_volume"),
+        sum($"downstream_data_volume").alias("total_downstream_data_volume")
       )
-      .orderBy($"year", $"month", $"networkTechnology")
+      .orderBy($"year", $"month", $"network_technology")
     info("Monthly session count and data volume per network technology summary")
     trafficByNetworkTech.show(1024, truncate = false)
-    SparkUtils.saveToMySQL(trafficByNetworkTech, "monthly_traffic_by_network_tech_summary")
+    SparkUtils.saveToMySQL(trafficByNetworkTech, "session_traffic_by_network_tech")
     trafficByNetworkTech.unpersist()
 
     // 5. 计算每个月，一天中每个小时的会话数量和总上行/下行流量（流量在一天内的分布情况）
     val hourlyTrafficDistribution = trafficDF
       .groupBy($"year", $"month", $"hour")
       .agg(
-        count($"sessionId").alias("session_count"),
-        sum($"upstreamDataVolume").alias("total_upstream_data_volume"),
-        sum($"downstreamDataVolume").alias("total_downstream_data_volume")
+        count($"session_id").alias("session_count"),
+        sum($"upstream_data_volume").alias("total_upstream_data_volume"),
+        sum($"downstream_data_volume").alias("total_downstream_data_volume")
       )
       .orderBy($"year", $"month", $"hour")
     info("Monthly (and hourly) traffic day distribution")
     hourlyTrafficDistribution.show(1024, truncate = false)
-    SparkUtils.saveToMySQL(hourlyTrafficDistribution, "monthly_traffic_day_distribution_summary")
+    SparkUtils.saveToMySQL(hourlyTrafficDistribution, "traffic_day_distribution")
     hourlyTrafficDistribution.unpersist()
   }
 }

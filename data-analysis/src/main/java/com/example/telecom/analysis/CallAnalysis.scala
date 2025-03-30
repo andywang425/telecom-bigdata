@@ -12,73 +12,73 @@ object CallAnalysis extends MyLogger {
     val monthlyCallSummary = callDF
       .groupBy($"year", $"month")
       .agg(
-        sum($"callDurationMillis").alias("total_duration_millis"),
-        count($"callId").alias("total_calls")
+        sum($"call_duration_millis").alias("total_duration_millis"),
+        count($"call_id").alias("total_calls")
       )
       .orderBy($"year", $"month")
 
     info("Monthly call summary")
     monthlyCallSummary.show(1024, truncate = false)
-    SparkUtils.saveToMySQL(monthlyCallSummary, "monthly_call_summary")
+    SparkUtils.saveToMySQL(monthlyCallSummary, "call_summary")
     monthlyCallSummary.unpersist()
 
     // 2. 每月用户通话时长和数量（包含主被叫双方）
     val monthlyCallerCallSummary = callDF
-      .withColumn("userNumber", $"callerNumber")
-      .groupBy($"year", $"month", $"userNumber")
+      .withColumn("user_number", $"caller_number")
+      .groupBy($"year", $"month", $"user_number")
       .agg(
-        count($"callId").divide(2).alias("caller_call_count"),
-        sum($"callDurationMillis").divide(2).alias("caller_total_call_duration")
+        count($"call_id").divide(2).alias("caller_call_count"),
+        sum($"call_duration_millis").divide(2).alias("caller_total_call_duration")
       )
-      .orderBy($"year", $"month", $"userNumber")
+      .orderBy($"year", $"month", $"user_number")
 
     info("Monthly caller call summary")
     monthlyCallerCallSummary.show(1024, truncate = false)
 
     val monthlyReceiverCallSummary = callDF
-      .withColumn("userNumber", $"receiverNumber")
-      .groupBy($"year", $"month", $"userNumber")
+      .withColumn("user_number", $"receiver_number")
+      .groupBy($"year", $"month", $"user_number")
       .agg(
-        count($"callId").divide(2).alias("receiver_call_count"),
-        sum($"callDurationMillis").divide(2).alias("receiver_total_call_duration")
+        count($"call_id").divide(2).alias("receiver_call_count"),
+        sum($"call_duration_millis").divide(2).alias("receiver_total_call_duration")
       )
-      .orderBy($"year", $"month", $"userNumber")
+      .orderBy($"year", $"month", $"user_number")
 
     info("Monthly receiver call summary")
     monthlyReceiverCallSummary.show(1024, truncate = false)
 
     val monthlyUserCallSummary = monthlyCallerCallSummary
-      .join(monthlyReceiverCallSummary, Seq("year", "month", "userNumber"))
+      .join(monthlyReceiverCallSummary, Seq("year", "month", "user_number"))
       .withColumn("total_call_count", $"caller_call_count" + $"receiver_call_count")
       .withColumn("total_call_duration", $"caller_total_call_duration" + $"receiver_total_call_duration")
 
     info("Monthly user call summary")
     monthlyUserCallSummary.show(1024, truncate = false)
-    SparkUtils.saveToMySQL(monthlyUserCallSummary, "monthly_user_call_summary")
+    SparkUtils.saveToMySQL(monthlyUserCallSummary, "call_user")
     monthlyCallerCallSummary.unpersist()
     monthlyReceiverCallSummary.unpersist()
     monthlyUserCallSummary.unpersist()
 
     // 3. 每月通话状态统计
     val monthlyCallStatus = callDF
-      .groupBy($"year", $"month", $"callStatus")
-      .agg(count($"callId").alias("call_count"))
-      .orderBy($"year", $"month", $"callStatus")
+      .groupBy($"year", $"month", $"call_status")
+      .agg(count($"call_id").alias("call_count"))
+      .orderBy($"year", $"month", $"call_status")
 
     info("Monthly call status summary")
     monthlyCallStatus.show(1024, truncate = false)
-    SparkUtils.saveToMySQL(monthlyCallStatus, "monthly_call_status_summary")
+    SparkUtils.saveToMySQL(monthlyCallStatus, "call_status")
     monthlyCallStatus.unpersist()
 
     // 4. 按月每日小时通话分布统计
     val hourlyCallDistribution = callDF
       .groupBy($"year", $"month", $"hour")
-      .agg(count($"callId").alias("call_count"))
+      .agg(count($"call_id").alias("call_count"))
       .orderBy($"year", $"month", $"hour")
 
     info("Monthly (and hourly) call day distribution summary")
     hourlyCallDistribution.show(1024, truncate = false)
-    SparkUtils.saveToMySQL(hourlyCallDistribution, "monthly_call_day_distribution_summary")
+    SparkUtils.saveToMySQL(hourlyCallDistribution, "call_day_distribution")
     hourlyCallDistribution.unpersist()
   }
 }
