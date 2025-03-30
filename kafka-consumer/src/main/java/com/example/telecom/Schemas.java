@@ -7,38 +7,38 @@ import org.apache.spark.sql.types.StructType;
 
 public class Schemas {
     public static final StructType CALL = new StructType(new StructField[]{
-            new StructField("callId", DataTypes.StringType, true, Metadata.empty()),
-            new StructField("callerNumber", DataTypes.StringType, true, Metadata.empty()),
-            new StructField("receiverNumber", DataTypes.StringType, true, Metadata.empty()),
-            new StructField("callStartTime", DataTypes.TimestampType, true, Metadata.empty()),
-            new StructField("callEndTime", DataTypes.TimestampType, true, Metadata.empty()),
-            new StructField("callDurationMillis", DataTypes.LongType, true, Metadata.empty()),
-            new StructField("callDirection", DataTypes.StringType, true, Metadata.empty()),
-            new StructField("callStatus", DataTypes.StringType, true, Metadata.empty()),
-            new StructField("stationId", DataTypes.StringType, true, Metadata.empty())
+            new StructField("call_id", DataTypes.StringType, true, Metadata.empty()),
+            new StructField("caller_number", DataTypes.StringType, true, Metadata.empty()),
+            new StructField("receiver_number", DataTypes.StringType, true, Metadata.empty()),
+            new StructField("call_start_time", DataTypes.TimestampType, true, Metadata.empty()),
+            new StructField("call_end_time", DataTypes.TimestampType, true, Metadata.empty()),
+            new StructField("call_duration_millis", DataTypes.LongType, true, Metadata.empty()),
+            new StructField("call_direction", DataTypes.StringType, true, Metadata.empty()),
+            new StructField("call_status", DataTypes.StringType, true, Metadata.empty()),
+            new StructField("station_id", DataTypes.StringType, true, Metadata.empty())
     });
 
     public static final StructType SMS = new StructType(new StructField[]{
-            new StructField("smsId", DataTypes.StringType, true, Metadata.empty()),
-            new StructField("senderNumber", DataTypes.StringType, true, Metadata.empty()),
-            new StructField("receiverNumber", DataTypes.StringType, true, Metadata.empty()),
-            new StructField("smsContent", DataTypes.StringType, true, Metadata.empty()),
-            new StructField("sendTime", DataTypes.TimestampType, true, Metadata.empty()),
-            new StructField("sendDirection", DataTypes.StringType, true, Metadata.empty()),
-            new StructField("sendStatus", DataTypes.StringType, true, Metadata.empty()),
-            new StructField("stationId", DataTypes.StringType, true, Metadata.empty())
+            new StructField("sms_id", DataTypes.StringType, true, Metadata.empty()),
+            new StructField("sender_number", DataTypes.StringType, true, Metadata.empty()),
+            new StructField("receiver_number", DataTypes.StringType, true, Metadata.empty()),
+            new StructField("sms_content", DataTypes.StringType, true, Metadata.empty()),
+            new StructField("send_time", DataTypes.TimestampType, true, Metadata.empty()),
+            new StructField("send_direction", DataTypes.StringType, true, Metadata.empty()),
+            new StructField("send_status", DataTypes.StringType, true, Metadata.empty()),
+            new StructField("station_id", DataTypes.StringType, true, Metadata.empty())
     });
 
     public static final StructType TRAFFIC = new StructType(new StructField[]{
-            new StructField("sessionId", DataTypes.StringType, true, Metadata.empty()),
-            new StructField("userNumber", DataTypes.StringType, true, Metadata.empty()),
-            new StructField("sessionStartTime", DataTypes.TimestampType, true, Metadata.empty()),
-            new StructField("sessionEndTime", DataTypes.TimestampType, true, Metadata.empty()),
-            new StructField("sessionDurationMillis", DataTypes.LongType, true, Metadata.empty()),
-            new StructField("applicationType", DataTypes.StringType, true, Metadata.empty()),
-            new StructField("upstreamDataVolume", DataTypes.LongType, true, Metadata.empty()),
-            new StructField("downstreamDataVolume", DataTypes.LongType, true, Metadata.empty()),
-            new StructField("networkTechnology", DataTypes.StringType, true, Metadata.empty()),
-            new StructField("stationId", DataTypes.StringType, true, Metadata.empty())
+            new StructField("session_id", DataTypes.StringType, true, Metadata.empty()),
+            new StructField("user_number", DataTypes.StringType, true, Metadata.empty()),
+            new StructField("session_start_time", DataTypes.TimestampType, true, Metadata.empty()),
+            new StructField("session_end_time", DataTypes.TimestampType, true, Metadata.empty()),
+            new StructField("session_duration_millis", DataTypes.LongType, true, Metadata.empty()),
+            new StructField("application_type", DataTypes.StringType, true, Metadata.empty()),
+            new StructField("upstream_data_volume", DataTypes.LongType, true, Metadata.empty()),
+            new StructField("downstream_data_volume", DataTypes.LongType, true, Metadata.empty()),
+            new StructField("network_technology", DataTypes.StringType, true, Metadata.empty()),
+            new StructField("station_id", DataTypes.StringType, true, Metadata.empty())
     });
 }
