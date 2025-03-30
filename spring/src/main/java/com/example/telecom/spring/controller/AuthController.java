@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -56,13 +54,12 @@ public class AuthController {
             String refreshToken = UUID.randomUUID().toString();
 
             User user = userService.getUserByEmail(userDetails.getUsername());
-            user.setAccessToken(jwtToken);
             user.setRefreshToken(refreshToken);
-            user.setExpiresAt(Instant.now().plus(1, ChronoUnit.HOURS));
             userService.userRepository.save(user);
 
             UserVO userVO = new UserVO();
-            BeanUtils.copyProperties(user, userVO);
+            userVO.setRefreshToken(refreshToken);
+            userVO.setAccessToken(jwtToken);
 
             logger.info("用户登录成功，{}", user);
 
@@ -105,13 +102,12 @@ public class AuthController {
             String jwtToken = jwtUtil.generateToken(user.getEmail());
             refreshToken = UUID.randomUUID().toString();
 
-            user.setAccessToken(jwtToken);
             user.setRefreshToken(refreshToken);
-            user.setExpiresAt(Instant.now().plus(1, ChronoUnit.HOURS));
             userService.userRepository.save(user);
 
             UserTokensVO userTokensVO = new UserTokensVO();
-            BeanUtils.copyProperties(user, userTokensVO);
+            userTokensVO.setAccessToken(jwtToken);
+            userTokensVO.setRefreshToken(refreshToken);
 
             logger.info("用户刷新令牌成功，{}", user);
 

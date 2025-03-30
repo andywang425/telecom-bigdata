@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 
 @Entity
 @Table(name = "users")
@@ -27,12 +26,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private Timestamp createdAt;
 
-    private String accessToken;
-    @Column(name = "access_token_expires_at")
-    private Instant expiresAt;
     private String refreshToken;
 }
