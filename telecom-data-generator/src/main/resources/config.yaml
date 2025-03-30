@@ -501,34 +501,34 @@ output:
     call: ./output/call.csv
     sms: ./output/sms.csv
     traffic: ./output/traffic.csv
-  csvHeader:
-    call:
-      - callId
-      - callerNumber
-      - receiverNumber
-      - callStartTime
-      - callEndTime
-      - callDurationMillis
-      - callDirection
-      - callStatus
-      - stationId
-    sms:
-      - smsId
-      - senderNumber
-      - receiverNumber
-      - smsContent
-      - sendTime
-      - sendDirection
-      - sendStatus
-      - stationId
-    traffic:
-      - sessionId
-      - userNumber
-      - sessionStartTime
-      - sessionEndTime
-      - sessionDurationMillis
-      - applicationType
-      - upstreamDataVolume
-      - downstreamDataVolume
-      - networkTechnology
-      - stationId
+csvHeader:
+  call:
+    - call_id
+    - caller_number
+    - receiver_number
+    - call_start_time
+    - call_end_time
+    - call_duration_millis
+    - call_direction
+    - call_status
+    - station_id
+  sms:
+    - sms_id
+    - sender_number
+    - receiver_number
+    - sms_content
+    - send_time
+    - send_direction
+    - send_status
+    - station_id
+  traffic:
+    - session_id
+    - user_number
+    - session_start_time
+    - session_end_time
+    - session_duration_millis
+    - application_type
+    - upstream_data_volume
+    - downstream_data_volume
+    - network_technology
+    - station_id
