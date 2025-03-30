@@ -6,42 +6,41 @@ USE `telecom_data`;
 -- 通话记录表
 CREATE TABLE IF NOT EXISTS `call`
 (
-    callId             STRING,
-    callerNumber       STRING,
-    receiverNumber     STRING,
-    callStartTime      TIMESTAMP,
-    callEndTime        TIMESTAMP,
-    callDurationMillis BIGINT,
-    callDirection      STRING,
-    callStatus         STRING,
-    stationId          STRING
+    call_id              STRING,
+    caller_number        STRING,
+    receiver_number      STRING,
+    call_start_time      TIMESTAMP,
+    call_end_time        TIMESTAMP,
+    call_duration_millis BIGINT,
+    call_direction       STRING,
+    call_status          STRING,
+    station_id           STRING
 ) STORED AS ORC;
 
 -- 短信记录表
 CREATE TABLE IF NOT EXISTS `sms`
 (
-    smsId          STRING,
-    senderNumber   STRING,
-    receiverNumber STRING,
-    smsContent     STRING,
-    sendTime       TIMESTAMP,
-    sendDirection  STRING,
-    sendStatus     STRING,
-    stationId      STRING
-)
-STORED AS ORC;
+    sms_id          STRING,
+    sender_number   STRING,
+    receiver_number STRING,
+    sms_content     STRING,
+    send_time       TIMESTAMP,
+    send_direction  STRING,
+    send_status     STRING,
+    station_id      STRING
+) STORED AS ORC;
 
 -- 流量记录表
 CREATE TABLE IF NOT EXISTS `traffic`
 (
-    sessionId             STRING,
-    userNumber            STRING,
-    sessionStartTime      TIMESTAMP,
-    sessionEndTime        TIMESTAMP,
-    sessionDurationMillis BIGINT,
-    applicationType       STRING,
-    upstreamDataVolume    BIGINT,
-    downstreamDataVolume  BIGINT,
-    networkTechnology     STRING,
-    stationId             STRING
+    session_id              STRING,
+    user_number             STRING,
+    session_start_time      TIMESTAMP,
+    session_end_time        TIMESTAMP,
+    session_duration_millis BIGINT,
+    application_type        STRING,
+    upstream_data_volume    BIGINT,
+    downstream_data_volume  BIGINT,
+    network_technology      STRING,
+    station_id              STRING
 ) STORED AS ORC;
