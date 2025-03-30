@@ -40,9 +40,9 @@ object DataProcessor {
     import spark.implicits._
 
     spark.table("telecom_data.call")
-      .filter($"callDirection" === "OUTGOING")
-      .transform(addTimeBucket("callStartTime"))
-      .withColumnRenamed("callerNumber", "phone")
+      .filter($"call_direction" === "OUTGOING")
+      .transform(addTimeBucket("call_start_time"))
+      .withColumnRenamed("caller_number", "phone")
       .transform(aggregateUsage("call"))
   }
 
@@ -53,9 +53,9 @@ object DataProcessor {
     import spark.implicits._
 
     spark.table("telecom_data.sms")
-      .filter($"sendDirection" === "SENT")
-      .transform(addTimeBucket("sendTime"))
-      .withColumnRenamed("senderNumber", "phone")
+      .filter($"send_direction" === "SENT")
+      .transform(addTimeBucket("send_time"))
+      .withColumnRenamed("sender_number", "phone")
       .transform(aggregateUsage("sms"))
   }
 
@@ -64,8 +64,8 @@ object DataProcessor {
    */
   private def processTrafficData(implicit spark: SparkSession): DataFrame = {
     spark.table("telecom_data.traffic")
-      .transform(addTimeBucket("sessionStartTime"))
-      .withColumnRenamed("userNumber", "phone")
+      .transform(addTimeBucket("session_start_time"))
+      .withColumnRenamed("user_number", "phone")
       .transform(aggregateUsage("session"))
   }
 
