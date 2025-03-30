@@ -27,7 +27,7 @@ object StationAnalysis extends MyLogger {
     val smsFailures = smsDF
       .groupBy($"year", $"month", $"station_id")
       .agg(
-        count($"smsId").alias("total_sms"),
+        count($"sms_id").alias("total_sms"),
         sum(when($"send_status".isin("FAILED_TO_SEND", "FAILED_TO_RECEIVE"), 1).otherwise(0)).alias("failed_sms")
       )
       .withColumn("sms_failure_rate", $"failed_sms" / $"total_sms")
@@ -54,7 +54,7 @@ object StationAnalysis extends MyLogger {
     val baseStationSmsStats = smsDF
       .groupBy($"year", $"month", $"station_id")
       .agg(
-        count($"smsId").alias("sms_count"),
+        count($"sms_id").alias("sms_count"),
         sum(length($"sms_content")).alias("total_sms_content_length")
       )
       .orderBy($"year", $"month", $"station_id")

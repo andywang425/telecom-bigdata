@@ -12,7 +12,7 @@ object SmsAnalysis extends MyLogger {
     val monthlySmsSummery = smsDF
       .groupBy($"year", $"month")
       .agg(
-        count($"smsId").alias("total_count"),
+        count($"sms_id").alias("total_count"),
         sum(length($"sms_content")).alias("total_length")
       )
       .orderBy($"year", $"month")
@@ -26,7 +26,7 @@ object SmsAnalysis extends MyLogger {
     val monthlySmsSentPerUser = smsDF
       .filter($"send_direction" === "SENT")
       .groupBy($"year", $"month", $"sender_number")
-      .agg(count($"smsId").alias("total_sent_count"), sum(length($"sms_content")).alias("total_sent_length"))
+      .agg(count($"sms_id").alias("total_sent_count"), sum(length($"sms_content")).alias("total_sent_length"))
       .orderBy($"year", $"month", $"sender_number")
     info("Monthly SMS sent user summary")
     monthlySmsSentPerUser.show(1024, truncate = false)
@@ -37,7 +37,7 @@ object SmsAnalysis extends MyLogger {
     val monthlySmsReceivedPerUser = smsDF
       .filter($"send_direction" === "RECEIVED")
       .groupBy($"year", $"month", $"receiver_number")
-      .agg(count($"smsId").alias("total_received_count"), sum(length($"sms_content")).alias("total_received_length"))
+      .agg(count($"sms_id").alias("total_received_count"), sum(length($"sms_content")).alias("total_received_length"))
       .orderBy($"year", $"month", $"receiver_number")
     info("Monthly SMS received user summary")
     monthlySmsReceivedPerUser.show(1024, truncate = false)
@@ -47,7 +47,7 @@ object SmsAnalysis extends MyLogger {
     // 3. 按月短信状态统计
     val monthlySmsStatus = smsDF
       .groupBy($"year", $"month", $"send_status")
-      .agg(count($"smsId").alias("sms_status_count"))
+      .agg(count($"sms_id").alias("sms_status_count"))
       .orderBy($"year", $"month", $"send_status")
     info("Monthly SMS status summary")
     monthlySmsStatus.show(1024, truncate = false)
@@ -57,7 +57,7 @@ object SmsAnalysis extends MyLogger {
     // 4. 按月每日小时短信分布统计
     val hourlySmsDistribution = smsDF
       .groupBy($"year", $"month", $"hour")
-      .agg(count($"smsId").alias("sms_count"))
+      .agg(count($"sms_id").alias("sms_count"))
       .orderBy($"year", $"month", $"hour")
     info("Monthly (and hourly) SMS day distribution summary")
     hourlySmsDistribution.show(1024, truncate = false)
