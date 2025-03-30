@@ -28,10 +28,10 @@ public class Main {
     private static final Map<String, Class<?>> FIELD_TYPE_MAP = new HashMap<>();
 
     static {
-        FIELD_TYPE_MAP.put("callDurationMillis", Long.class);
-        FIELD_TYPE_MAP.put("sessionDurationMillis", Long.class);
-        FIELD_TYPE_MAP.put("upstreamDataVolume", Long.class);
-        FIELD_TYPE_MAP.put("downstreamDataVolume", Long.class);
+        FIELD_TYPE_MAP.put("call_duration_millis", Long.class);
+        FIELD_TYPE_MAP.put("session_duration_millis", Long.class);
+        FIELD_TYPE_MAP.put("upstream_data_volume", Long.class);
+        FIELD_TYPE_MAP.put("downstream_data_volume", Long.class);
     }
 
     public static void main(String[] args) {
