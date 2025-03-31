@@ -1,14 +1,13 @@
 package com.example.telecom.spring.repository;
 
 import com.example.telecom.spring.model.entity.MonthlyCallSummary;
-import com.example.telecom.spring.model.entity.MonthlyCallSummaryId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface MonthlyCallSummaryRepository extends JpaRepository<MonthlyCallSummary, MonthlyCallSummaryId> {
+public interface MonthlyCallSummaryRepository extends JpaRepository<MonthlyCallSummary, MonthlyCallSummary.Id> {
 
     @Query("SELECT m.id.year AS year, SUM(m.totalCalls) AS totalCalls " +
             "FROM MonthlyCallSummary m " +
