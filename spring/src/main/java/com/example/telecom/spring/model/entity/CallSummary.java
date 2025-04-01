@@ -9,8 +9,8 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "monthly_call_summary")
-public class MonthlyCallSummary {
+@Table(name = "call_summary")
+public class CallSummary {
     @EmbeddedId
     private Id id;
 

@@ -12,9 +12,9 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "42e67666cc73b909820d26e56449519a";
+    private final static String SECRET_KEY = "42e67666cc73b909820d26e56449519a";
 
-    public String generateToken(String email) {
+    public static String generateToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
@@ -23,7 +23,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String extractUserEmail(String token) {
+    public static String extractUserEmail(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY.getBytes())
                 .build()
@@ -32,7 +32,7 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    public boolean validateToken(String token, String email) {
+    public static boolean validateToken(String token, String email) {
         final String userEmail = extractUserEmail(token);
         return userEmail.equals(email);
     }

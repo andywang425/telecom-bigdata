@@ -11,7 +11,6 @@ import com.example.telecom.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -38,9 +37,6 @@ public class AuthController {
 
     private final Logger logger = org.slf4j.LoggerFactory.getLogger(AuthController.class);
 
-    @Autowired
-    private JwtUtil jwtUtil;
-
     @PostMapping("/login")
     public BaseResponse<?> authenticateUser(@RequestBody LoginRequest request) {
         try {
@@ -50,7 +46,7 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String jwtToken = jwtUtil.generateToken(userDetails.getUsername());
+            String jwtToken = JwtUtil.generateToken(userDetails.getUsername());
             String refreshToken = UUID.randomUUID().toString();
 
             User user = userService.getUserByEmail(userDetails.getUsername());
@@ -99,7 +95,7 @@ public class AuthController {
 
             logger.info("用户即将刷新令牌，{}", user);
 
-            String jwtToken = jwtUtil.generateToken(user.getEmail());
+            String jwtToken = JwtUtil.generateToken(user.getEmail());
             refreshToken = UUID.randomUUID().toString();
 
             user.setRefreshToken(refreshToken);
