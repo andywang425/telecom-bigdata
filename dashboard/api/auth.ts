@@ -1,5 +1,5 @@
 import axios from '@/axios';
-import { AuthResponse, BaseResponse } from './types';
+import { BaseResponse, AuthResponse } from './types';
 
 const AUTH = {
   async login(email: string, password: string) {
@@ -18,4 +18,4 @@ const AUTH = {
   },
 };
 
-export { AUTH };
+export default AUTH;

@@ -20,3 +20,10 @@ export namespace AuthResponse {
     refreshToken: string;
   }
 }
+
+export namespace CallResponse {
+  interface YearlyCalls {
+    year: number;
+    totalCalls: number;
+  }
+}

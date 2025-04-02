@@ -2,7 +2,7 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import Keycloak from 'next-auth/providers/keycloak';
 import type { Provider } from 'next-auth/providers';
-import { AUTH } from '@/api';
+import AUTH from '@/api/auth';
 import { DateTime } from 'luxon';
 import type { Session, User } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
@@ -62,14 +62,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const isLoggedIn = !!session?.user;
       const isPublicPage = nextUrl.pathname.startsWith('/public');
 
-      if (isPublicPage || isLoggedIn) {
+      if (isPublicPage || (isLoggedIn && !session.error)) {
         return true;
       }
 
       return false; // Redirect unauthenticated users to login page
     },
     async jwt({ token, user, trigger }) {
-      console.log('jwt token', token, 'now', new Date(), 'user', user, 'trigger', trigger);
+      // console.log('jwt token', token, 'now', new Date(), 'user', user, 'trigger', trigger);
       if (trigger === 'signIn' && user && user.accessToken) {
         token.access_token = user.accessToken;
         token.expires_at = user.expiresAt;

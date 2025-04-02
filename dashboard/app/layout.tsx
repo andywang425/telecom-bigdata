@@ -57,7 +57,7 @@ const AUTHENTICATION = {
 
 const BRANDING = {
   title: '电信数据可视化',
-  logo: <Image src={logo} alt={'logo'} style={{ width: '100%', height: '100%' }} />,
+  logo: <Image src={logo} alt={'logo'} width={24} style={{ height: '100%' }} />,
 };
 
 export default async function RootLayout(props: { children: React.ReactNode }) {

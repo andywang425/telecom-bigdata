@@ -1,12 +1,10 @@
 import * as React from 'react';
-import Typography from '@mui/material/Typography';
-import BasicDateRangePicker from '@/app/(dashboard)/call/BasicDateRangePicker';
+import YearlyCallsChart from '@/components/YearlyCallsChart';
 
-export default async function OrdersPage() {
+export default async function CallPage() {
   return (
     <>
-      <Typography>Welcome to the Toolpad orders!</Typography>
-      <BasicDateRangePicker />
+      <YearlyCallsChart />
     </>
   );
 }
