@@ -1,4 +1,4 @@
-package com.example.telecom.spring.common;
+package com.example.telecom.spring.jwt;
 
 import com.example.telecom.spring.service.UserService;
 import jakarta.servlet.FilterChain;
@@ -20,7 +20,6 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final UserService userService;
-    private final JwtUtil jwtUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -35,7 +34,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
             try {
-                username = jwtUtil.extractUserEmail(jwt);
+                username = JwtUtil.extractUserEmail(jwt);
             } catch (Exception e) {
                 logger.error("Invalid JWT token", e);
             }
@@ -44,7 +43,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userService.loadUserByUsername(username);
 
-            if (jwtUtil.validateToken(jwt, userDetails.getUsername())) {
+            if (JwtUtil.validateToken(jwt, userDetails.getUsername())) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 

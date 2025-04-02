@@ -1,6 +1,6 @@
 package com.example.telecom.spring.config;
 
-import com.example.telecom.spring.common.JwtRequestFilter;
+import com.example.telecom.spring.jwt.JwtRequestFilter;
 import com.example.telecom.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

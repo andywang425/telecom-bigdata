@@ -1,15 +1,13 @@
-package com.example.telecom.spring.common;
+package com.example.telecom.spring.jwt;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
-@Component
 public class JwtUtil {
 
     private final static String SECRET_KEY = "42e67666cc73b909820d26e56449519a";

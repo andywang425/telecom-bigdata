@@ -1,7 +1,7 @@
 package com.example.telecom.spring.controller;
 
 import com.example.telecom.spring.common.BaseResponse;
-import com.example.telecom.spring.common.JwtUtil;
+import com.example.telecom.spring.jwt.JwtUtil;
 import com.example.telecom.spring.common.ResultUtils;
 import com.example.telecom.spring.model.dto.LoginRequest;
 import com.example.telecom.spring.model.entity.User;
