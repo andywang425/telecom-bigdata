@@ -1,8 +1,8 @@
 package com.example.telecom.spring.controller;
 
 import com.example.telecom.spring.common.BaseResponse;
-import com.example.telecom.spring.jwt.JwtUtil;
 import com.example.telecom.spring.common.ResultUtils;
+import com.example.telecom.spring.jwt.JwtUtil;
 import com.example.telecom.spring.model.dto.LoginRequest;
 import com.example.telecom.spring.model.entity.User;
 import com.example.telecom.spring.model.vo.UserTokensVO;
@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,7 +49,8 @@ public class AuthController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String jwtToken = JwtUtil.generateToken(userDetails.getUsername());
+            Instant expiration = Instant.now().plus(1, ChronoUnit.HOURS);
+            String jwtToken = JwtUtil.generateToken(userDetails.getUsername(), Date.from(expiration));
             String refreshToken = UUID.randomUUID().toString();
 
             User user = userService.getUserByEmail(userDetails.getUsername());
@@ -54,8 +58,9 @@ public class AuthController {
             userService.userRepository.save(user);
 
             UserVO userVO = new UserVO();
-            userVO.setRefreshToken(refreshToken);
+            BeanUtils.copyProperties(user, userVO);
             userVO.setAccessToken(jwtToken);
+            userVO.setExpiresAt(expiration);
 
             logger.info("用户登录成功，{}", user);
 
@@ -95,7 +100,8 @@ public class AuthController {
 
             logger.info("用户即将刷新令牌，{}", user);
 
-            String jwtToken = JwtUtil.generateToken(user.getEmail());
+            Date expiration = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
+            String jwtToken = JwtUtil.generateToken(user.getEmail(), expiration);
             refreshToken = UUID.randomUUID().toString();
 
             user.setRefreshToken(refreshToken);
