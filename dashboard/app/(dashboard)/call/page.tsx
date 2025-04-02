@@ -1,10 +1,6 @@
 import * as React from 'react';
-import YearlyCallsChart from '@/components/YearlyCallsChart';
+import CallContent from './CallContent';
 
-export default async function CallPage() {
-  return (
-    <>
-      <YearlyCallsChart />
-    </>
-  );
+export default function CallPage() {
+  return <CallContent />;
 }

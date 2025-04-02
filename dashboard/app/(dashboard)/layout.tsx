@@ -5,7 +5,7 @@ import { PageContainer } from '@toolpad/core/PageContainer';
 export default function Layout(props: { children: React.ReactNode }) {
   return (
     <DashboardLayout>
-      <PageContainer maxWidth={'xl'}>{props.children}</PageContainer>
+      <PageContainer maxWidth={false}>{props.children}</PageContainer>
     </DashboardLayout>
   );
 }
