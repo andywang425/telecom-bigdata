@@ -1,7 +1,7 @@
 package com.example.telecom.spring.controller;
 
 import com.example.telecom.spring.common.BaseResponse;
-import com.example.telecom.spring.common.ResultUtils;
+import com.example.telecom.spring.common.ResponseUtils;
 import com.example.telecom.spring.repository.CallRepository;
 import com.example.telecom.spring.service.CallService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class CallController {
             @RequestParam int endYear) {
 
         List<CallRepository.YearlyCallSummary> results = service.getCallsPerYear(startYear, endYear);
-        return ResultUtils.success(results);
+        return ResponseUtils.success(results);
     }
 }
 

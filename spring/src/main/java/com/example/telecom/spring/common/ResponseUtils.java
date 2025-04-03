@@ -1,6 +1,8 @@
 package com.example.telecom.spring.common;
 
-public class ResultUtils {
+import javax.lang.model.type.NullType;
+
+public class ResponseUtils {
 
     /**
      * 成功
@@ -12,7 +14,7 @@ public class ResultUtils {
     /**
      * 失败
      */
-    public static BaseResponse error(int code, String message) {
-        return new BaseResponse(code, null, message);
+    public static BaseResponse<NullType> error(int code, String message) {
+        return new BaseResponse<>(code, null, message);
     }
 }

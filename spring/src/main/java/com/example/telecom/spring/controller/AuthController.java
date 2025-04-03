@@ -1,7 +1,7 @@
 package com.example.telecom.spring.controller;
 
 import com.example.telecom.spring.common.BaseResponse;
-import com.example.telecom.spring.common.ResultUtils;
+import com.example.telecom.spring.common.ResponseUtils;
 import com.example.telecom.spring.jwt.JwtUtil;
 import com.example.telecom.spring.model.dto.LoginRequest;
 import com.example.telecom.spring.model.entity.User;
@@ -64,16 +64,16 @@ public class AuthController {
 
             logger.info("用户登录成功，{}", user);
 
-            return ResultUtils.success(userVO);
+            return ResponseUtils.success(userVO);
         } catch (AuthenticationException e) {
-            return ResultUtils.error(401, "用户名或密码错误");
+            return ResponseUtils.error(401, "用户名或密码错误");
         }
     }
 
     @PostMapping("/register")
     public BaseResponse<?> registerUser(@RequestBody LoginRequest request) {
         if (userService.getUserByEmail(request.getEmail()) != null) {
-            return ResultUtils.error(400, "邮箱已被注册");
+            return ResponseUtils.error(400, "邮箱已被注册");
         }
 
         User user = userService.registerUser(request.getEmail(), request.getPassword(), passwordEncoder);
@@ -82,14 +82,14 @@ public class AuthController {
 
         logger.info("用户注册成功，{}", user);
 
-        return ResultUtils.success(userVO);
+        return ResponseUtils.success(userVO);
     }
 
     @PostMapping("/refresh-token")
     public BaseResponse<?> refreshAccessToken(@RequestBody Map<String, String> request) {
         String refreshToken = request.get("refreshToken");
         if (refreshToken == null) {
-            return ResultUtils.error(400, "Refresh token required");
+            return ResponseUtils.error(400, "Refresh token required");
         }
 
         logger.info("用户请求刷新令牌，{}", refreshToken);
@@ -113,9 +113,9 @@ public class AuthController {
 
             logger.info("用户刷新令牌成功，{}", user);
 
-            return ResultUtils.success(userTokensVO);
+            return ResponseUtils.success(userTokensVO);
         } else {
-            return ResultUtils.error(401, "Invalid refresh token");
+            return ResponseUtils.error(401, "Invalid refresh token");
         }
     }
 }
