@@ -7,13 +7,16 @@ interface YearlyCallsChartProps {
 }
 
 export default function YearlyCallsChart({ data }: YearlyCallsChartProps) {
-  const years = data.map(item => item.year);
-  const totalCalls = data.map(item => item.totalCalls);
+  const valueFormatter = (value: number) => `${value}`;
 
   return (
     <BarChart
-      xAxis={[{ scaleType: 'band', data: years }]}
-      series={[{ data: totalCalls, label: '通话数量' }]}
+      dataset={data}
+      xAxis={[{ scaleType: 'band', dataKey: 'year', label: '年份', valueFormatter }]}
+      series={[
+        { dataKey: 'totalCalls', label: '通话数量' },
+        { dataKey: 'totalCallDuration', label: '通话时长（分钟）' },
+      ]}
       height={400}
     />
   );

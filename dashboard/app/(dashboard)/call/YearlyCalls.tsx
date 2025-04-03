@@ -15,6 +15,7 @@ export default function YearlyCalls() {
   useEffect(() => {
     async function fetchData() {
       const res = await getYearlyCalls(startYear!, endYear!);
+      console.log(res, startYear, endYear);
       if (res.code === 0) {
         setCallYearlyData(res.data);
       }
@@ -28,7 +29,7 @@ export default function YearlyCalls() {
   return (
     <Card variant="outlined" sx={{ p: 2 }}>
       <Typography variant="h6" gutterBottom>
-        年通话数量
+        年通话数据
       </Typography>
       <CardContent>
         <YearlyCallsChart data={callYearlyData} />

@@ -22,8 +22,9 @@ export namespace AuthResponse {
 }
 
 export namespace CallResponse {
-  interface YearlyCalls {
+  interface YearlyCalls extends Record<string, number> {
     year: number;
     totalCalls: number;
+    totalCallDuration: number;
   }
 }
