@@ -1,32 +1,19 @@
 package com.example.telecom.spring.model.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 @Data
 @Entity
 @Table(name = "call_summary")
 public class CallSummary {
     @EmbeddedId
-    private Id id;
+    private YearMonth id;
 
-    @Column(name = "total_duration_millis")
     private Long totalDurationMillis;
 
-    @Column(name = "total_calls")
     private Long totalCalls;
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Embeddable
-    public class Id implements Serializable {
-        private Integer year;
-        private Integer month;
-    }
 }
 
