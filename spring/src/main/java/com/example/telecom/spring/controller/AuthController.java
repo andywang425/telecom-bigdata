@@ -43,20 +43,24 @@ public class AuthController {
     @PostMapping("/login")
     public BaseResponse<?> authenticateUser(@RequestBody LoginRequest request) {
         try {
+            // 身份验证
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            // 生成JWT和刷新令牌
             Instant expiration = Instant.now().plus(1, ChronoUnit.HOURS);
             String jwtToken = JwtUtil.generateToken(userDetails.getUsername(), Date.from(expiration));
             String refreshToken = UUID.randomUUID().toString();
 
+            // 保存刷新令牌到数据库
             User user = userService.getUserByEmail(userDetails.getUsername());
             user.setRefreshToken(refreshToken);
             userService.userRepository.save(user);
 
+            // 构建响应，返回用户信息和令牌信息
             UserVO userVO = new UserVO();
             BeanUtils.copyProperties(user, userVO);
             userVO.setAccessToken(jwtToken);
@@ -100,16 +104,20 @@ public class AuthController {
 
             logger.info("用户即将刷新令牌，{}", user);
 
-            Date expiration = Date.from(Instant.now().plus(1, ChronoUnit.HOURS));
-            String jwtToken = JwtUtil.generateToken(user.getEmail(), expiration);
+            // 生成新的JWT和刷新令牌
+            Instant expiration = Instant.now().plus(1, ChronoUnit.HOURS);
+            String jwtToken = JwtUtil.generateToken(user.getEmail(), Date.from(expiration));
             refreshToken = UUID.randomUUID().toString();
 
+            // 保存新的刷新令牌到数据库
             user.setRefreshToken(refreshToken);
             userService.userRepository.save(user);
 
+            // 构建响应，返回新的令牌信息
             UserTokensVO userTokensVO = new UserTokensVO();
             userTokensVO.setAccessToken(jwtToken);
             userTokensVO.setRefreshToken(refreshToken);
+            userTokensVO.setExpiresAt(expiration);
 
             logger.info("用户刷新令牌成功，{}", user);
 
