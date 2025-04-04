@@ -1,7 +1,7 @@
 package com.example.telecom.spring.service;
 
-
-import com.example.telecom.spring.repository.CallRepository;
+import com.example.telecom.spring.repository.CallStatusRepository;
+import com.example.telecom.spring.repository.CallSummaryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +11,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CallService {
 
-    private final CallRepository repository;
+    private final CallSummaryRepository callSummaryRepository;
 
-    public List<CallRepository.YearlyCallSummary> getCallsPerYear(int startYear, int endYear) {
-        return repository.findTotalCallsPerYear(startYear, endYear);
+    private final CallStatusRepository callStatusRepository;
+
+    public List<CallSummaryRepository.YearlyCallSummary> getCallsPerYear(int startYear, int endYear) {
+        return callSummaryRepository.findTotalCallsPerYear(startYear, endYear);
     }
 
-    public List<CallRepository.MonthlyCallSummary> getCallsPerMonth(int year) {
-        return repository.findTotalCallsPerMonth(year);
+    public List<CallSummaryRepository.MonthlyCallSummary> getCallsPerMonth(int year) {
+        return callSummaryRepository.findTotalCallsPerMonth(year);
+    }
+
+    public List<CallStatusRepository.CallStatus> getStatusByYearMonth(int year, int month) {
+        return callStatusRepository.findCallStatusByYearAndMonth(year, month);
     }
 }
 

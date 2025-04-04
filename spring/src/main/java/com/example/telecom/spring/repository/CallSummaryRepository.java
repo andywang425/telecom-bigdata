@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface CallRepository extends JpaRepository<CallSummary, YearMonth> {
+public interface CallSummaryRepository extends JpaRepository<CallSummary, YearMonth> {
 
     @Query("SELECT m.id.year AS year, SUM(m.totalCalls) AS totalCalls, ROUND(SUM(m.totalDurationMillis) / 60000) AS totalCallDuration " +
             "FROM CallSummary m " +

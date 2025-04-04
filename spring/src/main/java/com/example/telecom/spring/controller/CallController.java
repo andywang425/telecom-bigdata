@@ -2,7 +2,8 @@ package com.example.telecom.spring.controller;
 
 import com.example.telecom.spring.common.BaseResponse;
 import com.example.telecom.spring.common.ResponseUtils;
-import com.example.telecom.spring.repository.CallRepository;
+import com.example.telecom.spring.repository.CallStatusRepository;
+import com.example.telecom.spring.repository.CallSummaryRepository;
 import com.example.telecom.spring.service.CallService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,19 +21,27 @@ public class CallController {
     private final CallService service;
 
     @GetMapping("/summary/yearly")
-    public BaseResponse<List<CallRepository.YearlyCallSummary>> getYearlyCalls(
+    public BaseResponse<List<CallSummaryRepository.YearlyCallSummary>> getYearlyCalls(
             @RequestParam int startYear,
             @RequestParam int endYear) {
 
-        List<CallRepository.YearlyCallSummary> results = service.getCallsPerYear(startYear, endYear);
+        List<CallSummaryRepository.YearlyCallSummary> results = service.getCallsPerYear(startYear, endYear);
         return ResponseUtils.success(results);
     }
 
     @GetMapping("/summary/monthly")
-    public BaseResponse<List<CallRepository.MonthlyCallSummary>> getMonthlyCalls(
+    public BaseResponse<List<CallSummaryRepository.MonthlyCallSummary>> getMonthlyCalls(
             @RequestParam int year) {
 
-        List<CallRepository.MonthlyCallSummary> results = service.getCallsPerMonth(year);
+        List<CallSummaryRepository.MonthlyCallSummary> results = service.getCallsPerMonth(year);
+        return ResponseUtils.success(results);
+    }
+
+    @GetMapping("/status")
+    public BaseResponse<List<CallStatusRepository.CallStatus>> getCallStatus(
+            @RequestParam int year, @RequestParam int month) {
+
+        List<CallStatusRepository.CallStatus> results = service.getStatusByYearMonth(year, month);
         return ResponseUtils.success(results);
     }
 }
