@@ -1,4 +1,4 @@
-import axios from '@/axios';
+import axios from '@/api/axios';
 import { BaseResponse, AuthResponse } from './types';
 
 const AUTH = {

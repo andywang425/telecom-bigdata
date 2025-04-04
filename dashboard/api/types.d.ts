@@ -27,4 +27,10 @@ export namespace CallResponse {
     totalCalls: number;
     totalCallDuration: number;
   }
+
+  interface MonthlyCalls extends Record<string, number> {
+    month: number;
+    totalCalls: number;
+    totalCallDuration: number;
+  }
 }

@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Box, Paper } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import YearlyCalls from '@/app/(dashboard)/call/YearlyCalls';
+import MonthlyCalls from '@/app/(dashboard)/call/MonthlyCalls';
 
 export default function CallContent() {
   return (
@@ -13,7 +14,7 @@ export default function CallContent() {
           <YearlyCalls />
         </Grid>
         <Grid size={6}>
-          <Paper sx={{ p: 2, height: 300 }}>Chart B</Paper>
+          <MonthlyCalls />
         </Grid>
 
         {/* Row 2 */}

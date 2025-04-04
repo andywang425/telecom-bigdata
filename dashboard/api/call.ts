@@ -1,4 +1,4 @@
-import axios from '@/axios';
+import axios from '@/api/axios';
 import { BaseResponse, CallResponse } from './types';
 
 const CALL = {
@@ -7,6 +7,15 @@ const CALL = {
       params: {
         startYear,
         endYear,
+      },
+    });
+    return res.data;
+  },
+
+  async getMonthlyCalls(year: number) {
+    const res = await axios.get<BaseResponse<CallResponse.MonthlyCalls[]>>(`/api/call/summary/monthly`, {
+      params: {
+        year,
       },
     });
     return res.data;

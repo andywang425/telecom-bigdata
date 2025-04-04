@@ -15,7 +15,6 @@ export default function YearlyCalls() {
   useEffect(() => {
     async function fetchData() {
       const res = await getYearlyCalls(startYear!, endYear!);
-      console.log(res, startYear, endYear);
       if (res.code === 0) {
         setCallYearlyData(res.data);
       }

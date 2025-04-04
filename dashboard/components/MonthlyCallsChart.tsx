@@ -2,17 +2,17 @@ import React from 'react';
 import { BarChart } from '@mui/x-charts-pro';
 import { CallResponse } from '@/api/types';
 
-interface YearlyCallsChartProps {
-  data: CallResponse.YearlyCalls[];
+interface MonthlyCallsChartProps {
+  data: CallResponse.MonthlyCalls[];
 }
 
-export default function YearlyCallsChart({ data }: YearlyCallsChartProps) {
-  const valueFormatter = (value: number) => `${value}年`;
+export default function MonthlyCallsChart({ data }: MonthlyCallsChartProps) {
+  const valueFormatter = (value: number) => `${value}月`;
 
   return (
     <BarChart
       dataset={data}
-      xAxis={[{ scaleType: 'band', dataKey: 'year', label: '年份', valueFormatter }]}
+      xAxis={[{ scaleType: 'band', dataKey: 'month', label: '月份', valueFormatter }]}
       series={[
         { dataKey: 'totalCalls', label: '通话数量' },
         { dataKey: 'totalCallDuration', label: '通话时长（分钟）' },
