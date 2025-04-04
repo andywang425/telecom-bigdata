@@ -27,5 +27,13 @@ public class CallController {
         List<CallRepository.YearlyCallSummary> results = service.getCallsPerYear(startYear, endYear);
         return ResponseUtils.success(results);
     }
+
+    @GetMapping("/summary/monthly")
+    public BaseResponse<List<CallRepository.MonthlyCallSummary>> getMonthlyCalls(
+            @RequestParam int year) {
+
+        List<CallRepository.MonthlyCallSummary> results = service.getCallsPerMonth(year);
+        return ResponseUtils.success(results);
+    }
 }
 

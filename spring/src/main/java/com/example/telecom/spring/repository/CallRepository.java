@@ -17,10 +17,10 @@ public interface CallRepository extends JpaRepository<CallSummary, YearMonth> {
     List<YearlyCallSummary> findTotalCallsPerYear(@Param("startYear") int startYear,
                                                   @Param("endYear") int endYear);
 
-    @Query("SELECT m.id.month AS month, SUM(m.totalCalls) AS totalCalls " +
+    @Query("SELECT m.id.month AS month, m.totalCalls AS totalCalls, ROUND(m.totalDurationMillis / 60000) AS totalCallDuration " +
             "FROM CallSummary m " +
             "WHERE m.id.year = :year " +
-            "GROUP BY m.id.month ORDER BY m.id.month")
+            "ORDER BY m.id.month")
     List<MonthlyCallSummary> findTotalCallsPerMonth(@Param("year") int year);
 
     interface YearlyCallSummary {
@@ -35,6 +35,8 @@ public interface CallRepository extends JpaRepository<CallSummary, YearMonth> {
         Integer getMonth();
 
         Long getTotalCalls();
+
+        Long getTotalCallDuration();
     }
 }
 

@@ -16,5 +16,9 @@ public class CallService {
     public List<CallRepository.YearlyCallSummary> getCallsPerYear(int startYear, int endYear) {
         return repository.findTotalCallsPerYear(startYear, endYear);
     }
+
+    public List<CallRepository.MonthlyCallSummary> getCallsPerMonth(int year) {
+        return repository.findTotalCallsPerMonth(year);
+    }
 }
 
