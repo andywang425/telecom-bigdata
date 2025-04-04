@@ -33,4 +33,9 @@ export namespace CallResponse {
     totalCalls: number;
     totalCallDuration: number;
   }
+
+  interface CallStatus extends Record<string, number | string> {
+    callCount: number;
+    callStatus: string;
+  }
 }

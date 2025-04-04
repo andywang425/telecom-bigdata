@@ -20,6 +20,16 @@ const CALL = {
     });
     return res.data;
   },
+
+  async getCallStatus(year: number, month: number) {
+    const res = await axios.get<BaseResponse<CallResponse.CallStatus[]>>(`/api/call/status`, {
+      params: {
+        year,
+        month,
+      },
+    });
+    return res.data;
+  },
 };
 
 export default CALL;

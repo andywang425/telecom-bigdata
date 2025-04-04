@@ -3,47 +3,46 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { CallResponse } from '@/api/types';
-import { getMonthlyCalls } from '@/app/(dashboard)/call/actions';
-import MonthlyCallsChart from '@/components/MonthlyCallsChart';
+import { getCallStatus } from '@/app/(dashboard)/call/actions';
+import CallStatusChart from '@/components/CallStatusChart';
 import { DatePicker } from '@mui/x-date-pickers-pro';
 import { DateTime } from 'luxon';
 
 export default function MonthlyCalls() {
-  const [year, setYear] = React.useState<number | null>(2022);
-  const [callMonthlyData, setCallMonthlyData] = React.useState<CallResponse.MonthlyCalls[]>([]);
+  const [date, setDate] = React.useState<DateTime | null>(DateTime.fromObject({ year: 2021, month: 1 }));
+  const [callStatusData, setCallStatusData] = React.useState<CallResponse.CallStatus[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      const res = await getMonthlyCalls(year!);
+      const res = await getCallStatus(date!.year, date!.month);
       if (res.code === 0) {
-        setCallMonthlyData(res.data);
+        setCallStatusData(res.data);
       }
     }
 
-    if (year) {
+    if (date) {
       fetchData();
     }
-  }, [year]);
+  }, [date]);
 
-  const handleYearChange = (newYear: DateTime<boolean> | null) => {
-    const year = newYear ? newYear.year : null;
-    setYear(year);
+  const handleDateChange = (newDate: DateTime | null) => {
+    setDate(newDate);
   };
 
   return (
     <Card variant="outlined" sx={{ p: 2 }}>
       <Typography variant="h6" gutterBottom>
-        月通话数据
+        通话状态
       </Typography>
       <CardContent>
-        <MonthlyCallsChart data={callMonthlyData} />
+        <CallStatusChart data={callStatusData} />
       </CardContent>
       <CardActions>
         <DatePicker
-          label={'年份'}
-          views={['year']}
-          value={year ? DateTime.fromObject({ year }) : null}
-          onChange={handleYearChange}
+          label={'月份 年份'}
+          views={['year', 'month']}
+          value={date}
+          onChange={handleDateChange}
           minDate={DateTime.fromObject({ year: 2000 })}
           disableFuture
         />
