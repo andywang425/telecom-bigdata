@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface SmsStatusRepository extends JpaRepository<SmsStatus, YearMonthSendStatus> {
 
-    @Query("SELECT m.id.year AS year, m.id.sendStatus AS sendStatus, m.smsCount AS smsCount " +
+    @Query("SELECT m.id.sendStatus AS sendStatus, m.smsCount AS smsCount " +
             "FROM SmsStatus m " +
             "WHERE m.id.year = :year AND m.id.month = :month")
     List<SmsStatus> findSmsStatusByYearAndMonth(int year, int month);

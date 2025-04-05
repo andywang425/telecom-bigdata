@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CallStatusRepository extends JpaRepository<CallStatus, YearMonthCallStatus> {
 
-    @Query("SELECT m.id.year AS year, m.id.callStatus AS callStatus, m.callCount AS callCount " +
+    @Query("SELECT m.id.callStatus AS callStatus, m.callCount AS callCount " +
             "FROM CallStatus m " +
             "WHERE m.id.year = :year AND m.id.month = :month")
     List<CallStatus> findCallStatusByYearAndMonth(int year, int month);

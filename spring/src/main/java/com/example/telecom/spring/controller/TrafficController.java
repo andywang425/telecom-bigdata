@@ -3,6 +3,7 @@ package com.example.telecom.spring.controller;
 import com.example.telecom.spring.common.BaseResponse;
 import com.example.telecom.spring.common.ResponseUtils;
 import com.example.telecom.spring.repository.SessionSummaryRepository;
+import com.example.telecom.spring.repository.SessionTrafficByAppRepository;
 import com.example.telecom.spring.service.TrafficService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,13 +36,13 @@ public class TrafficController {
         return ResponseUtils.success(results);
     }
 
-//    @GetMapping("/status")
-//    public BaseResponse<List<SmsStatusRepository.SmsStatus>> getSmsStatus(
-//            @RequestParam int year, @RequestParam int month) {
-//
-//        List<SmsStatusRepository.SmsStatus> results = service.getStatusByYearMonth(year, month);
-//        return ResponseUtils.success(results);
-//    }
+    @GetMapping("/app")
+    public BaseResponse<List<SessionTrafficByAppRepository.TrafficApplicationType>> getTrafficApplicationType(
+            @RequestParam int year, @RequestParam int month) {
+
+        List<SessionTrafficByAppRepository.TrafficApplicationType> results = service.getApplicationTypeByYearMonth(year, month);
+        return ResponseUtils.success(results);
+    }
 //
 //    @GetMapping("/distribution")
 //    public BaseResponse<List<SmsDayDistributionRepository.SmsDayDistribution>> getSmsDayDistribution(

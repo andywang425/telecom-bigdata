@@ -1,6 +1,7 @@
 package com.example.telecom.spring.service;
 
 import com.example.telecom.spring.repository.SessionSummaryRepository;
+import com.example.telecom.spring.repository.SessionTrafficByAppRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class TrafficService {
     private final SessionSummaryRepository sessionSummaryRepository;
 
-//    private final SmsStatusRepository smsStatusRepository;
+    private final SessionTrafficByAppRepository sessionTrafficByAppRepository;
 //
 //    private final SmsDayDistributionRepository smsDayDistributionRepository;
 
@@ -23,9 +24,9 @@ public class TrafficService {
         return sessionSummaryRepository.findTotalTrafficPerMonth(year);
     }
 
-//    public List<SmsStatusRepository.SmsStatus> getStatusByYearMonth(int year, int month) {
-//        return smsStatusRepository.findSmsStatusByYearAndMonth(year, month);
-//    }
+    public List<SessionTrafficByAppRepository.TrafficApplicationType> getApplicationTypeByYearMonth(int year, int month) {
+        return sessionTrafficByAppRepository.findByYearMonth(year, month);
+    }
 //
 //    public List<SmsDayDistributionRepository.SmsDayDistribution> getSmsDayDistributionByMonth(int year, int month) {
 //        return smsDayDistributionRepository.findSmsDayDistributionByMonth(year, month);
