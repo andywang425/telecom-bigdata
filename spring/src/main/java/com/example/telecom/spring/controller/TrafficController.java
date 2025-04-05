@@ -4,6 +4,7 @@ import com.example.telecom.spring.common.BaseResponse;
 import com.example.telecom.spring.common.ResponseUtils;
 import com.example.telecom.spring.repository.SessionSummaryRepository;
 import com.example.telecom.spring.repository.SessionTrafficByAppRepository;
+import com.example.telecom.spring.repository.SessionTrafficByNetworkTechnologyRepository;
 import com.example.telecom.spring.service.TrafficService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +42,14 @@ public class TrafficController {
             @RequestParam int year, @RequestParam int month) {
 
         List<SessionTrafficByAppRepository.TrafficApplicationType> results = service.getApplicationTypeByYearMonth(year, month);
+        return ResponseUtils.success(results);
+    }
+
+    @GetMapping("/technology")
+    public BaseResponse<List<SessionTrafficByNetworkTechnologyRepository.TrafficNetworkTechnology>> getTrafficNetworkTechnology(
+            @RequestParam int year, @RequestParam int month) {
+
+        List<SessionTrafficByNetworkTechnologyRepository.TrafficNetworkTechnology> results = service.getNetworkTechnologyByYearMonth(year, month);
         return ResponseUtils.success(results);
     }
 //
