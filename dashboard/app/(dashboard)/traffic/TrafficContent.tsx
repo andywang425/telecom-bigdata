@@ -6,6 +6,7 @@ import { AdapterLuxon } from '@mui/x-date-pickers-pro/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
 import YearlyTrafficCard from '@/app/(dashboard)/traffic/YearlyTrafficCard';
 import MonthlyTrafficCard from '@/app/(dashboard)/traffic/MonthlyTrafficCard';
+import TrafficApplicationTypeCard from '@/app/(dashboard)/traffic/TrafficApplicationTypeCard';
 
 export default function TrafficContent() {
   return (
@@ -19,8 +20,10 @@ export default function TrafficContent() {
             <MonthlyTrafficCard />
           </Grid>
 
-          <Grid size={4}></Grid>
-          <Grid size={8}></Grid>
+          <Grid size={6}>
+            <TrafficApplicationTypeCard />
+          </Grid>
+          <Grid size={6}></Grid>
         </Grid>
       </Box>
     </LocalizationProvider>

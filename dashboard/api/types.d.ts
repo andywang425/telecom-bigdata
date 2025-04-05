@@ -86,10 +86,12 @@ export namespace TrafficResponse {
     totalDownstream: number;
   }
 
-  // interface SmsStatus extends Record<string, number | string> {
-  //   sendStatus: number;
-  //   smsCount: number;
-  // }
+  interface ApplicationType extends Record<string, number | string> {
+    applicationType: string;
+    sessionCount: number;
+    totalUpstreamDataVolume: number;
+    totalDownstreamDataVolume: number;
+  }
   //
   // interface SmsDistribution extends Record<string, number> {
   //   hour: number;

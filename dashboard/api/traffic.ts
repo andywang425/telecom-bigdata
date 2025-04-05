@@ -21,15 +21,15 @@ const TRAFFIC = {
     return res.data;
   },
 
-  // async getSmsStatus(year: number, month: number) {
-  //   const res = await axios.get<BaseResponse<SmsResponse.SmsStatus[]>>(`/api/sms/status`, {
-  //     params: {
-  //       year,
-  //       month,
-  //     },
-  //   });
-  //   return res.data;
-  // },
+  async getApplicationType(year: number, month: number) {
+    const res = await axios.get<BaseResponse<TrafficResponse.ApplicationType[]>>(`/api/traffic/app`, {
+      params: {
+        year,
+        month,
+      },
+    });
+    return res.data;
+  },
   //
   // async getSmsDistribution(year: number, month: number) {
   //   const res = await axios.get<BaseResponse<SmsResponse.SmsDistribution[]>>(`/api/sms/distribution`, {
