@@ -1,12 +1,13 @@
 'use client';
 import * as React from 'react';
-import { Box, Paper } from '@mui/material';
+import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import YearlyCalls from '@/app/(dashboard)/call/YearlyCalls';
 import MonthlyCalls from '@/app/(dashboard)/call/MonthlyCalls';
 import CallStatus from '@/app/(dashboard)/call/CallStatus';
 import { AdapterLuxon } from '@mui/x-date-pickers-pro/AdapterLuxon';
 import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
+import CallDayDistribution from '@/app/(dashboard)/call/CallDayDistribution';
 
 export default function CallContent() {
   return (
@@ -23,11 +24,8 @@ export default function CallContent() {
           <Grid size={4}>
             <CallStatus />
           </Grid>
-          <Grid size={4}>
-            <Paper sx={{ p: 2, height: 250 }}>Chart D</Paper>
-          </Grid>
-          <Grid size={4}>
-            <Paper sx={{ p: 2, height: 250 }}>Chart E</Paper>
+          <Grid size={8}>
+            <CallDayDistribution />
           </Grid>
         </Grid>
       </Box>

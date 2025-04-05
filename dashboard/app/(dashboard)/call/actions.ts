@@ -11,3 +11,7 @@ export async function getMonthlyCalls(year: number) {
 export async function getCallStatus(year: number, month: number) {
   return CALL.getCallStatus(year, month);
 }
+
+export async function getCallDistribution(year: number, month: number) {
+  return CALL.getCallDistribution(year, month);
+}

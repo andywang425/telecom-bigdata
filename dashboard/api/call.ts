@@ -30,6 +30,16 @@ const CALL = {
     });
     return res.data;
   },
+
+  async getCallDistribution(year: number, month: number) {
+    const res = await axios.get<BaseResponse<CallResponse.CallDistribution[]>>(`/api/call/distribution`, {
+      params: {
+        year,
+        month,
+      },
+    });
+    return res.data;
+  },
 };
 
 export default CALL;

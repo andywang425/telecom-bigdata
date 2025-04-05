@@ -2,7 +2,10 @@ import * as React from 'react';
 import { NextAppProvider } from '@toolpad/core/nextjs';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import CallIcon from '@mui/icons-material/Call';
+import SmsIcon from '@mui/icons-material/Sms';
+import FiveGIcon from '@mui/icons-material/FiveG';
+import CellTowerIcon from '@mui/icons-material/CellTower';
 
 import type { Navigation } from '@toolpad/core/AppProvider';
 import { SessionProvider, signIn, signOut } from 'next-auth/react';
@@ -31,22 +34,22 @@ const NAVIGATION: Navigation = [
   {
     segment: 'call',
     title: '通话数据',
-    icon: <DashboardIcon />,
+    icon: <CallIcon />,
   },
   {
     segment: 'sms',
     title: '短信数据',
-    icon: <ShoppingCartIcon />,
+    icon: <SmsIcon />,
   },
   {
     segment: 'traffic',
     title: '流量数据',
-    icon: <DashboardIcon />,
+    icon: <FiveGIcon />,
   },
   {
     segment: 'station',
     title: '基站数据',
-    icon: <ShoppingCartIcon />,
+    icon: <CellTowerIcon />,
   },
 ];
 

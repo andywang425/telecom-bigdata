@@ -38,4 +38,9 @@ export namespace CallResponse {
     callCount: number;
     callStatus: string;
   }
+
+  interface CallDistribution extends Record<string, number> {
+    hour: number;
+    callCount: number;
+  }
 }
