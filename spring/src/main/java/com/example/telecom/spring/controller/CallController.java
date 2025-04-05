@@ -2,6 +2,7 @@ package com.example.telecom.spring.controller;
 
 import com.example.telecom.spring.common.BaseResponse;
 import com.example.telecom.spring.common.ResponseUtils;
+import com.example.telecom.spring.repository.CallDayDistributionRepository;
 import com.example.telecom.spring.repository.CallStatusRepository;
 import com.example.telecom.spring.repository.CallSummaryRepository;
 import com.example.telecom.spring.service.CallService;
@@ -17,7 +18,6 @@ import java.util.List;
 @RequestMapping("/api/call")
 @RequiredArgsConstructor
 public class CallController {
-
     private final CallService service;
 
     @GetMapping("/summary/yearly")
@@ -42,6 +42,14 @@ public class CallController {
             @RequestParam int year, @RequestParam int month) {
 
         List<CallStatusRepository.CallStatus> results = service.getStatusByYearMonth(year, month);
+        return ResponseUtils.success(results);
+    }
+
+    @GetMapping("/distribution")
+    public BaseResponse<List<CallDayDistributionRepository.CallDayDistribution>> getCallDayDistribution(
+            @RequestParam int year, @RequestParam int month) {
+
+        List<CallDayDistributionRepository.CallDayDistribution> results = service.getCallDayDistributionByMonth(year, month);
         return ResponseUtils.success(results);
     }
 }
