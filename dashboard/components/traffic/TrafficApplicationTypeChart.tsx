@@ -8,7 +8,7 @@ export interface TrafficApplicationTypeChartProps {
 }
 
 export default function TrafficApplicationTypeChart({ data, valueField }: TrafficApplicationTypeChartProps) {
-  const statusToText: Record<string, string> = {
+  const typeToText: Record<string, string> = {
     ONLINE_VIDEO: '在线视频',
     SOCIAL_MEDIA: '社交媒体',
     WEB_BROWSING: '网上冲浪',
@@ -17,7 +17,7 @@ export default function TrafficApplicationTypeChart({ data, valueField }: Traffi
   const chartData: PieValueType[] = data.map(item => ({
     id: item.applicationType,
     value: item[valueField],
-    label: statusToText[item.applicationType] ?? item.applicationType,
+    label: typeToText[item.applicationType] ?? item.applicationType,
   }));
 
   return (

@@ -7,6 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvid
 import YearlyTrafficCard from '@/app/(dashboard)/traffic/YearlyTrafficCard';
 import MonthlyTrafficCard from '@/app/(dashboard)/traffic/MonthlyTrafficCard';
 import TrafficApplicationTypeCard from '@/app/(dashboard)/traffic/TrafficApplicationTypeCard';
+import TrafficNetworkTechnologyCard from '@/app/(dashboard)/traffic/TrafficNetworkTechnologyCard';
 
 export default function TrafficContent() {
   return (
@@ -23,7 +24,9 @@ export default function TrafficContent() {
           <Grid size={6}>
             <TrafficApplicationTypeCard />
           </Grid>
-          <Grid size={6}></Grid>
+          <Grid size={6}>
+            <TrafficNetworkTechnologyCard />
+          </Grid>
         </Grid>
       </Box>
     </LocalizationProvider>

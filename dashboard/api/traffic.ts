@@ -30,6 +30,16 @@ const TRAFFIC = {
     });
     return res.data;
   },
+
+  async getNetworkTechnology(year: number, month: number) {
+    const res = await axios.get<BaseResponse<TrafficResponse.NetworkTechnology[]>>(`/api/traffic/technology`, {
+      params: {
+        year,
+        month,
+      },
+    });
+    return res.data;
+  },
   //
   // async getSmsDistribution(year: number, month: number) {
   //   const res = await axios.get<BaseResponse<SmsResponse.SmsDistribution[]>>(`/api/sms/distribution`, {

@@ -92,6 +92,13 @@ export namespace TrafficResponse {
     totalUpstreamDataVolume: number;
     totalDownstreamDataVolume: number;
   }
+
+  interface NetworkTechnology extends Record<string, number | string> {
+    networkTechnology: string;
+    sessionCount: number;
+    totalUpstreamDataVolume: number;
+    totalDownstreamDataVolume: number;
+  }
   //
   // interface SmsDistribution extends Record<string, number> {
   //   hour: number;
