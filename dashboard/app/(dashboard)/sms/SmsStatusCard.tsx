@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { SmsResponse } from '@/api/types';
 import { DatePicker } from '@mui/x-date-pickers-pro';
 import { DateTime } from 'luxon';
-import SmsStatusChart from '@/components/SmsStatusChart';
+import SmsStatusChart from '@/components/sms/SmsStatusChart';
 import { getSmsStatus } from '@/app/(dashboard)/sms/actions';
 
 export default function SmsStatusCard() {

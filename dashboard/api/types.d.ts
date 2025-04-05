@@ -68,3 +68,31 @@ export namespace SmsResponse {
     smsCount: number;
   }
 }
+
+export namespace TrafficResponse {
+  interface YearlyTraffic extends Record<string, number> {
+    year: number;
+    totalSessions: number;
+    totalDuration: number;
+    totalUpstream: number;
+    totalDownstream: number;
+  }
+
+  interface MonthlyTraffic extends Record<string, number> {
+    month: number;
+    totalSessions: number;
+    totalDuration: number;
+    totalUpstream: number;
+    totalDownstream: number;
+  }
+
+  // interface SmsStatus extends Record<string, number | string> {
+  //   sendStatus: number;
+  //   smsCount: number;
+  // }
+  //
+  // interface SmsDistribution extends Record<string, number> {
+  //   hour: number;
+  //   smsCount: number;
+  // }
+}

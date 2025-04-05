@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { SmsResponse } from '@/api/types';
 import { DatePicker } from '@mui/x-date-pickers-pro';
 import { DateTime } from 'luxon';
-import MonthlySmsChart from '@/components/MonthlySmsChart';
+import MonthlySmsChart from '@/components/sms/MonthlySmsChart';
 import { getMonthlySms } from '@/app/(dashboard)/sms/actions';
 
 export default function MonthlySmsCard() {

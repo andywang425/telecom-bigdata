@@ -6,7 +6,7 @@ import { SmsResponse } from '@/api/types';
 import { DatePicker } from '@mui/x-date-pickers-pro';
 import { DateTime } from 'luxon';
 import { getSmsDistribution } from '@/app/(dashboard)/sms/actions';
-import SmsDayDistributionChart from '@/components/SmsDayDistributionChart';
+import SmsDayDistributionChart from '@/components/sms/SmsDayDistributionChart';
 
 export default function SmsDayDistributionCard() {
   const [date, setDate] = React.useState<DateTime | null>(DateTime.fromObject({ year: 2021, month: 1 }));

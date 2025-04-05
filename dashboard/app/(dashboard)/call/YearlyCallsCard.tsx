@@ -1,6 +1,6 @@
 import { Card, CardActions, CardContent } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import YearlyCallsChart from '@/components/YearlyCallsChart';
+import YearlyCallsChart from '@/components/call/YearlyCallsChart';
 import YearRangePicker from '@/components/YearRangePicker';
 import * as React from 'react';
 import { CallResponse } from '@/api/types';

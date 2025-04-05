@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { CallResponse } from '@/api/types';
 import { getCallStatus } from '@/app/(dashboard)/call/actions';
-import CallStatusChart from '@/components/CallStatusChart';
+import CallStatusChart from '@/components/call/CallStatusChart';
 import { DatePicker } from '@mui/x-date-pickers-pro';
 import { DateTime } from 'luxon';
 

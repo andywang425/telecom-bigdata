@@ -2,21 +2,21 @@ import { Card, CardActions, CardContent } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useEffect } from 'react';
-import { CallResponse } from '@/api/types';
-import { getMonthlyCalls } from '@/app/(dashboard)/call/actions';
-import MonthlyCallsChart from '@/components/call/MonthlyCallsChart';
+import { TrafficResponse } from '@/api/types';
 import { DatePicker } from '@mui/x-date-pickers-pro';
 import { DateTime } from 'luxon';
+import { getMonthlyTraffic } from '@/app/(dashboard)/traffic/actions';
+import MonthlyTrafficChart from '@/components/traffic/MonthlyTrafficChart';
 
-export default function MonthlyCallsCard() {
+export default function MonthlyTrafficCard() {
   const [year, setYear] = React.useState<number | null>(2022);
-  const [callMonthlyData, setCallMonthlyData] = React.useState<CallResponse.MonthlyCalls[]>([]);
+  const [trafficMonthlyData, setTrafficMonthlyData] = React.useState<TrafficResponse.MonthlyTraffic[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      const res = await getMonthlyCalls(year!);
+      const res = await getMonthlyTraffic(year!);
       if (res.code === 0) {
-        setCallMonthlyData(res.data);
+        setTrafficMonthlyData(res.data);
       }
     }
 
@@ -33,10 +33,10 @@ export default function MonthlyCallsCard() {
   return (
     <Card variant="outlined" sx={{ p: 2 }}>
       <Typography variant="h6" gutterBottom>
-        月通话数据
+        月流量数据
       </Typography>
       <CardContent>
-        <MonthlyCallsChart data={callMonthlyData} />
+        <MonthlyTrafficChart data={trafficMonthlyData} />
       </CardContent>
       <CardActions>
         <DatePicker

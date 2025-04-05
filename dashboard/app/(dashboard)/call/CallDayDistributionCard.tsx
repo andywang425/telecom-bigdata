@@ -6,7 +6,7 @@ import { CallResponse } from '@/api/types';
 import { getCallDistribution } from '@/app/(dashboard)/call/actions';
 import { DatePicker } from '@mui/x-date-pickers-pro';
 import { DateTime } from 'luxon';
-import CallDayDistributionChart from '@/components/CallDayDistributionChart';
+import CallDayDistributionChart from '@/components/call/CallDayDistributionChart';
 
 export default function CallDayDistributionCard() {
   const [date, setDate] = React.useState<DateTime | null>(DateTime.fromObject({ year: 2021, month: 1 }));
