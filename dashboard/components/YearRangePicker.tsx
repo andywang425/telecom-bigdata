@@ -24,7 +24,7 @@ export default function YearRangePicker({ startYear, endYear, onChangeAction }: 
   };
 
   return (
-    <Box display={'flex'} sx={{ gap: 2, alignItems: 'center', mb: 2 }}>
+    <Box display={'flex'} sx={{ gap: 2, alignItems: 'center' }}>
       <DatePicker
         label={'起始年份'}
         views={['year']}

@@ -2,21 +2,21 @@ import { Card, CardActions, CardContent } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useEffect } from 'react';
-import { CallResponse } from '@/api/types';
-import { getCallDistribution } from '@/app/(dashboard)/call/actions';
+import { SmsResponse } from '@/api/types';
 import { DatePicker } from '@mui/x-date-pickers-pro';
 import { DateTime } from 'luxon';
-import CallDayDistributionChart from '@/components/CallDayDistributionChart';
+import { getSmsDistribution } from '@/app/(dashboard)/sms/actions';
+import SmsDayDistributionChart from '@/components/SmsDayDistributionChart';
 
-export default function CallDayDistribution() {
+export default function SmsDayDistributionCard() {
   const [date, setDate] = React.useState<DateTime | null>(DateTime.fromObject({ year: 2021, month: 1 }));
-  const [callDistribution, setCallDistribution] = React.useState<CallResponse.CallDistribution[]>([]);
+  const [smsDistribution, setSmsDistribution] = React.useState<SmsResponse.SmsDistribution[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      const res = await getCallDistribution(date!.year, date!.month);
+      const res = await getSmsDistribution(date!.year, date!.month);
       if (res.code === 0) {
-        setCallDistribution(res.data);
+        setSmsDistribution(res.data);
       }
     }
 
@@ -32,10 +32,10 @@ export default function CallDayDistribution() {
   return (
     <Card variant="outlined" sx={{ p: 2 }}>
       <Typography variant="h6" gutterBottom>
-        通话日分布
+        短信日分布
       </Typography>
       <CardContent>
-        <CallDayDistributionChart data={callDistribution} />
+        <SmsDayDistributionChart data={smsDistribution} />
       </CardContent>
       <CardActions>
         <DatePicker

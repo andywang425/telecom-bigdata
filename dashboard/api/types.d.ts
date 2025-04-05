@@ -44,3 +44,27 @@ export namespace CallResponse {
     callCount: number;
   }
 }
+
+export namespace SmsResponse {
+  interface YearlySms extends Record<string, number> {
+    year: number;
+    totalCount: number;
+    totalLength: number;
+  }
+
+  interface MonthlySms extends Record<string, number> {
+    month: number;
+    totalCount: number;
+    totalLength: number;
+  }
+
+  interface SmsStatus extends Record<string, number | string> {
+    sendStatus: number;
+    smsCount: number;
+  }
+
+  interface SmsDistribution extends Record<string, number> {
+    hour: number;
+    smsCount: number;
+  }
+}

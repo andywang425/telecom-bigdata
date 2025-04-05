@@ -3,20 +3,20 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { CallResponse } from '@/api/types';
-import { getCallStatus } from '@/app/(dashboard)/call/actions';
-import CallStatusChart from '@/components/CallStatusChart';
+import { getCallDistribution } from '@/app/(dashboard)/call/actions';
 import { DatePicker } from '@mui/x-date-pickers-pro';
 import { DateTime } from 'luxon';
+import CallDayDistributionChart from '@/components/CallDayDistributionChart';
 
-export default function MonthlyCalls() {
+export default function CallDayDistributionCard() {
   const [date, setDate] = React.useState<DateTime | null>(DateTime.fromObject({ year: 2021, month: 1 }));
-  const [callStatusData, setCallStatusData] = React.useState<CallResponse.CallStatus[]>([]);
+  const [callDistribution, setCallDistribution] = React.useState<CallResponse.CallDistribution[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      const res = await getCallStatus(date!.year, date!.month);
+      const res = await getCallDistribution(date!.year, date!.month);
       if (res.code === 0) {
-        setCallStatusData(res.data);
+        setCallDistribution(res.data);
       }
     }
 
@@ -32,10 +32,10 @@ export default function MonthlyCalls() {
   return (
     <Card variant="outlined" sx={{ p: 2 }}>
       <Typography variant="h6" gutterBottom>
-        通话状态
+        通话日分布
       </Typography>
       <CardContent>
-        <CallStatusChart data={callStatusData} />
+        <CallDayDistributionChart data={callDistribution} />
       </CardContent>
       <CardActions>
         <DatePicker

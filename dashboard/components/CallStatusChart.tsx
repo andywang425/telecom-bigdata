@@ -2,11 +2,11 @@ import React from 'react';
 import { PieChart, PieValueType } from '@mui/x-charts-pro';
 import { CallResponse } from '@/api/types';
 
-interface CallStatusCharProps {
+interface CallStatusChartProps {
   data: CallResponse.CallStatus[];
 }
 
-export default function CallStatusChart({ data }: CallStatusCharProps) {
+export default function CallStatusChart({ data }: CallStatusChartProps) {
   const statusToText: Record<string, string> = {
     BUSY: '忙线',
     CONNECTED: '接通',

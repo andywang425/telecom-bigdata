@@ -2,21 +2,21 @@ import { Card, CardActions, CardContent } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useEffect } from 'react';
-import { CallResponse } from '@/api/types';
-import { getMonthlyCalls } from '@/app/(dashboard)/call/actions';
-import MonthlyCallsChart from '@/components/MonthlyCallsChart';
+import { SmsResponse } from '@/api/types';
 import { DatePicker } from '@mui/x-date-pickers-pro';
 import { DateTime } from 'luxon';
+import MonthlySmsChart from '@/components/MonthlySmsChart';
+import { getMonthlySms } from '@/app/(dashboard)/sms/actions';
 
-export default function MonthlyCalls() {
+export default function MonthlySmsCard() {
   const [year, setYear] = React.useState<number | null>(2022);
-  const [callMonthlyData, setCallMonthlyData] = React.useState<CallResponse.MonthlyCalls[]>([]);
+  const [smsMonthlyData, setSmsMonthlyData] = React.useState<SmsResponse.MonthlySms[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      const res = await getMonthlyCalls(year!);
+      const res = await getMonthlySms(year!);
       if (res.code === 0) {
-        setCallMonthlyData(res.data);
+        setSmsMonthlyData(res.data);
       }
     }
 
@@ -33,10 +33,10 @@ export default function MonthlyCalls() {
   return (
     <Card variant="outlined" sx={{ p: 2 }}>
       <Typography variant="h6" gutterBottom>
-        月通话数据
+        月短信数据
       </Typography>
       <CardContent>
-        <MonthlyCallsChart data={callMonthlyData} />
+        <MonthlySmsChart data={smsMonthlyData} />
       </CardContent>
       <CardActions>
         <DatePicker

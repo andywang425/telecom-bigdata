@@ -1,22 +1,22 @@
 import { Card, CardActions, CardContent } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import YearlyCallsChart from '@/components/YearlyCallsChart';
 import YearRangePicker from '@/components/YearRangePicker';
 import * as React from 'react';
-import { CallResponse } from '@/api/types';
 import { useEffect } from 'react';
-import { getYearlyCalls } from '@/app/(dashboard)/call/actions';
+import { SmsResponse } from '@/api/types';
+import YearlySmsChart from '@/components/YearlySmsChart';
+import { getYearlySms } from '@/app/(dashboard)/sms/actions';
 
-export default function YearlyCalls() {
+export default function YearlySmsCard() {
   const [startYear, setStartYear] = React.useState<number | null>(2021);
   const [endYear, setEndYear] = React.useState<number | null>(2024);
-  const [callYearlyData, setCallYearlyData] = React.useState<CallResponse.YearlyCalls[]>([]);
+  const [smsYearlyData, setSmsYearlyData] = React.useState<SmsResponse.YearlySms[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      const res = await getYearlyCalls(startYear!, endYear!);
+      const res = await getYearlySms(startYear!, endYear!);
       if (res.code === 0) {
-        setCallYearlyData(res.data);
+        setSmsYearlyData(res.data);
       }
     }
 
@@ -28,10 +28,10 @@ export default function YearlyCalls() {
   return (
     <Card variant="outlined" sx={{ p: 2 }}>
       <Typography variant="h6" gutterBottom>
-        年通话数据
+        年短信数据
       </Typography>
       <CardContent>
-        <YearlyCallsChart data={callYearlyData} />
+        <YearlySmsChart data={smsYearlyData} />
       </CardContent>
       <CardActions>
         <YearRangePicker
