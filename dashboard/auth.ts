@@ -106,6 +106,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       session.error = token.error;
       return session;
     },
+
+    // async signIn({ user }) {
+    //   const notifications = useNotifications();
+    //   notifications.show(`欢迎回来，${user.name}`, {
+    //     severity: 'success',
+    //   });
+    //
+    //   return true
+    // },
   },
   session: {
     strategy: 'jwt',

@@ -68,6 +68,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
   return (
     <html lang="en" data-toolpad-color-scheme="light" suppressHydrationWarning>
+      <MuiXLicense />
       <body>
         <SessionProvider session={session}>
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
@@ -79,7 +80,6 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
               theme={theme}
             >
               {props.children}
-              <MuiXLicense />
             </NextAppProvider>
           </AppRouterCacheProvider>
         </SessionProvider>

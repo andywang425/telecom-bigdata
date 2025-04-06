@@ -107,3 +107,17 @@ export namespace TrafficResponse {
     totalDownstream: number;
   }
 }
+
+export namespace StationResponse {
+  interface YearlyFailureRate extends Record<string, number> {
+    year: number;
+    callFailureRate: number;
+    smsFailureRate: number;
+  }
+
+  interface MonthlyFailureRate extends Record<string, number> {
+    month: number;
+    callFailureRate: number;
+    smsFailureRate: number;
+  }
+}
