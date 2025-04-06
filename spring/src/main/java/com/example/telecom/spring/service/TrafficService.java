@@ -3,6 +3,7 @@ package com.example.telecom.spring.service;
 import com.example.telecom.spring.repository.SessionSummaryRepository;
 import com.example.telecom.spring.repository.SessionTrafficByAppRepository;
 import com.example.telecom.spring.repository.SessionTrafficByNetworkTechnologyRepository;
+import com.example.telecom.spring.repository.TrafficDayDistributionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ public class TrafficService {
     private final SessionTrafficByAppRepository sessionTrafficByAppRepository;
 
     private final SessionTrafficByNetworkTechnologyRepository sessionTrafficByNetworkTechnologyRepository;
+
+    private final TrafficDayDistributionRepository trafficDayDistributionRepository;
 
     public List<SessionSummaryRepository.YearlyTrafficSummary> getTrafficPerYear(int startYear, int endYear) {
         return sessionSummaryRepository.findTotalTrafficPerYear(startYear, endYear);
@@ -32,9 +35,9 @@ public class TrafficService {
     public List<SessionTrafficByNetworkTechnologyRepository.TrafficNetworkTechnology> getNetworkTechnologyByYearMonth(int year, int month) {
         return sessionTrafficByNetworkTechnologyRepository.findByYearMonth(year, month);
     }
-//
-//    public List<SmsDayDistributionRepository.SmsDayDistribution> getSmsDayDistributionByMonth(int year, int month) {
-//        return smsDayDistributionRepository.findSmsDayDistributionByMonth(year, month);
-//    }
+
+    public List<TrafficDayDistributionRepository.TrafficDayDistribution> getTrafficDayDistributionByMonth(int year, int month) {
+        return trafficDayDistributionRepository.findTrafficDayDistributionByMonth(year, month);
+    }
 }
 
