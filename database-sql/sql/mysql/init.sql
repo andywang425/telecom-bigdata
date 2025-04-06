@@ -2,12 +2,79 @@ USE `telecom`;
 
 CREATE TABLE users
 (
-    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    email      VARCHAR(255) UNIQUE NOT NULL,
-    password   VARCHAR(255)        NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    email         VARCHAR(255) UNIQUE NOT NULL,
+    password      VARCHAR(255)        NOT NULL,
+    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     refresh_token VARCHAR(255)
 );
 
-# INSERT INTO `users` (username, email, password)
-# VALUES ('admin', 'admin@telecom.com', 'admin123');
+CREATE TABLE base_stations
+(
+    id VARCHAR(255) PRIMARY KEY # 基站ID
+);
+
+INSERT INTO base_stations
+VALUES ('302112789'),
+       ('526884987'),
+       ('26560772'),
+       ('8569877'),
+       ('11938455'),
+       ('7605890'),
+       ('13042'),
+       ('9169'),
+       ('59394');
+
+CREATE TABLE telecom_users
+(
+    id VARCHAR(255) PRIMARY KEY # 手机号
+);
+
+INSERT INTO telecom_users
+VALUES ('13754877767'),
+       ('13062882380'),
+       ('13661622918'),
+       ('17301796468'),
+       ('19542913515'),
+       ('15717980849'),
+       ('13917072497'),
+       ('13956500985'),
+       ('18123282108'),
+       ('15739638816'),
+       ('13601928404'),
+       ('13194331650'),
+       ('19996074757'),
+       ('13409772481'),
+       ('15821797003'),
+       ('17821492697'),
+       ('13482349989'),
+       ('18086828711'),
+       ('17743323775'),
+       ('18987449819'),
+       ('13917392253'),
+       ('15317201767'),
+       ('13032190905'),
+       ('15901749228'),
+       ('15821142850'),
+       ('17339794582'),
+       ('15000894068'),
+       ('13391354206'),
+       ('17717533632'),
+       ('13237333067'),
+       ('19155376123'),
+       ('18738775104'),
+       ('13639367113'),
+       ('18238191178'),
+       ('17717684336'),
+       ('17717547533'),
+       ('15026759110'),
+       ('15891003816'),
+       ('18694017993'),
+       ('18017621540'),
+       ('15037910328'),
+       ('18017217679'),
+       ('13120613035'),
+       ('13121404752'),
+       ('18297857225'),
+       ('13381771972'),
+       ('18870730521');
