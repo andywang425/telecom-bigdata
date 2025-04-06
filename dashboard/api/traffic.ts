@@ -40,16 +40,16 @@ const TRAFFIC = {
     });
     return res.data;
   },
-  //
-  // async getSmsDistribution(year: number, month: number) {
-  //   const res = await axios.get<BaseResponse<SmsResponse.SmsDistribution[]>>(`/api/sms/distribution`, {
-  //     params: {
-  //       year,
-  //       month,
-  //     },
-  //   });
-  //   return res.data;
-  // },
+
+  async getTrafficDistribution(year: number, month: number) {
+    const res = await axios.get<BaseResponse<TrafficResponse.TrafficDistribution[]>>(`/api/traffic/distribution`, {
+      params: {
+        year,
+        month,
+      },
+    });
+    return res.data;
+  },
 };
 
 export default TRAFFIC;

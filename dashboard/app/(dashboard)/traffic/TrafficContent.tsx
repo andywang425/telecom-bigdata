@@ -8,6 +8,7 @@ import YearlyTrafficCard from '@/app/(dashboard)/traffic/YearlyTrafficCard';
 import MonthlyTrafficCard from '@/app/(dashboard)/traffic/MonthlyTrafficCard';
 import TrafficApplicationTypeCard from '@/app/(dashboard)/traffic/TrafficApplicationTypeCard';
 import TrafficNetworkTechnologyCard from '@/app/(dashboard)/traffic/TrafficNetworkTechnologyCard';
+import TrafficDayDistributionCard from '@/app/(dashboard)/traffic/TrafficDayDistributionCard';
 
 export default function TrafficContent() {
   return (
@@ -26,6 +27,10 @@ export default function TrafficContent() {
           </Grid>
           <Grid size={6}>
             <TrafficNetworkTechnologyCard />
+          </Grid>
+
+          <Grid size={12}>
+            <TrafficDayDistributionCard />
           </Grid>
         </Grid>
       </Box>

@@ -99,9 +99,11 @@ export namespace TrafficResponse {
     totalUpstreamDataVolume: number;
     totalDownstreamDataVolume: number;
   }
-  //
-  // interface SmsDistribution extends Record<string, number> {
-  //   hour: number;
-  //   smsCount: number;
-  // }
+
+  interface TrafficDistribution extends Record<string, number> {
+    hour: number;
+    sessionCount: number;
+    totalUpstream: number;
+    totalDownstream: number;
+  }
 }

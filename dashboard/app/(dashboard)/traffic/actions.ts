@@ -17,7 +17,6 @@ export async function getNetworkTechnology(year: number, month: number) {
   return TRAFFIC.getNetworkTechnology(year, month);
 }
 
-//
-// export async function getSmsDistribution(year: number, month: number) {
-//   return SMS.getSmsDistribution(year, month);
-// }
+export async function getTrafficDistribution(year: number, month: number) {
+  return TRAFFIC.getTrafficDistribution(year, month);
+}

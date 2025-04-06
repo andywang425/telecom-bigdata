@@ -66,7 +66,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return true;
       }
 
-      return false; // Redirect unauthenticated users to login page
+      return false; // 把未授权用户导航到登录页
     },
     async jwt({ token, user, trigger }) {
       // console.log('jwt token', token, 'now', new Date(), 'user', user, 'trigger', trigger);
@@ -82,6 +82,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         isRefreshingToken = true;
 
         // access_token过期，使用refresh_token刷新
+        console.log('AUTH.refreshToken request', token.refresh_token);
         const res = await AUTH.refreshToken(token.refresh_token!);
         console.log('AUTH.refreshToken response', res);
 
