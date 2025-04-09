@@ -12,7 +12,7 @@ export default function SmsDayDistributionChart({ data }: SmsDayDistributionChar
   return (
     <LineChart
       dataset={data}
-      xAxis={[{ dataKey: 'hour', label: '小时', valueFormatter }]}
+      xAxis={[{ dataKey: 'hour', label: '小时', scaleType: 'point', valueFormatter }]}
       series={[
         {
           label: '短信数量',

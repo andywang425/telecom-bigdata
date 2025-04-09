@@ -36,7 +36,7 @@ export default function TrafficDayDistributionChart({ data, valueField }: Traffi
   return (
     <LineChart
       dataset={data}
-      xAxis={[{ dataKey: 'hour', label: '小时', valueFormatter }]}
+      xAxis={[{ dataKey: 'hour', label: '小时', scaleType: 'point', valueFormatter }]}
       yAxis={yAxis}
       rightAxis={rightAxis}
       series={series}
