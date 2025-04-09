@@ -4,6 +4,7 @@ import com.example.telecom.spring.common.BaseResponse;
 import com.example.telecom.spring.common.ResponseUtils;
 import com.example.telecom.spring.jwt.JwtUtil;
 import com.example.telecom.spring.model.dto.LoginRequest;
+import com.example.telecom.spring.model.dto.RefreshTokenRequest;
 import com.example.telecom.spring.model.entity.User;
 import com.example.telecom.spring.model.vo.UserTokensVO;
 import com.example.telecom.spring.model.vo.UserVO;
@@ -26,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -56,7 +56,8 @@ public class AuthController {
             String refreshToken = UUID.randomUUID().toString();
 
             // 保存刷新令牌到数据库
-            User user = userService.getUserByEmail(userDetails.getUsername());
+            Optional<User> userOpt = userService.getUserByEmail(userDetails.getUsername());
+            User user = userOpt.orElseThrow();
             user.setRefreshToken(refreshToken);
             userService.userRepository.save(user);
 
@@ -76,7 +77,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public BaseResponse<?> registerUser(@RequestBody LoginRequest request) {
-        if (userService.getUserByEmail(request.getEmail()) != null) {
+        if (userService.getUserByEmail(request.getEmail()).isPresent()) {
             return ResponseUtils.error(400, "邮箱已被注册");
         }
 
@@ -90,15 +91,15 @@ public class AuthController {
     }
 
     @PostMapping("/refresh-token")
-    public BaseResponse<?> refreshAccessToken(@RequestBody Map<String, String> request) {
-        String refreshToken = request.get("refreshToken");
+    public BaseResponse<?> refreshAccessToken(@RequestBody RefreshTokenRequest request) {
+        String refreshToken = request.getRefreshToken();
         if (refreshToken == null) {
             return ResponseUtils.error(400, "Refresh token required");
         }
 
         logger.info("用户请求刷新令牌，{}", refreshToken);
 
-        Optional<User> userOpt = userService.userRepository.findByRefreshToken(refreshToken);
+        Optional<User> userOpt = userService.getUserByRefreshToken(refreshToken);
         if (userOpt.isPresent()) {
             User user = userOpt.get();
 

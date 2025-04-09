@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,9 +29,12 @@ public class UserService implements UserDetailsService {
         );
     }
 
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElse(null);
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public Optional<User> getUserByRefreshToken(String refreshToken) {
+        return userRepository.findByRefreshToken(refreshToken);
     }
 
     public User registerUser(String email, String rawPassword, PasswordEncoder encoder) {
