@@ -17,7 +17,7 @@
     "@mui/x-charts-pro": "^7.28.0",
     "@mui/x-date-pickers-pro": "^7.28.0",
     "@mui/x-license": "^7.28.0",
-    "@toolpad/core": "0.13.0",
+    "@toolpad/core": "^0.13.0",
     "axios": "^1.8.4",
     "luxon": "^3.6.1",
     "next": "^15.2.4",
