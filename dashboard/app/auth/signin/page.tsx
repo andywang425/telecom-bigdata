@@ -13,7 +13,6 @@ function Title() {
       sx={{
         my: 1,
         fontWeight: theme.typography.fontWeightBold,
-        color: theme.palette.text.primary,
       }}
     >
       电信数据可视化

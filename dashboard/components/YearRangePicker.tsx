@@ -3,7 +3,6 @@ import * as React from 'react';
 import { DatePicker } from '@mui/x-date-pickers-pro';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
-import theme from '@/theme';
 import { DateTime } from 'luxon';
 
 interface YearRangePickerProps {
@@ -33,7 +32,7 @@ export default function YearRangePicker({ startYear, endYear, onChangeAction }: 
         minDate={DateTime.fromObject({ year: 2000 })}
         maxDate={endYear ? DateTime.fromObject({ year: endYear }) : undefined}
       />
-      <Typography sx={{ color: theme.palette.text.primary }}> – </Typography>
+      <Typography variant={'body1'}> – </Typography>
       <DatePicker
         label={'终止年份'}
         views={['year']}

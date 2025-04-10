@@ -67,7 +67,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const session = await auth();
 
   return (
-    <html lang="en" data-toolpad-color-scheme="light" suppressHydrationWarning>
+    <html lang="zh" data-toolpad-color-scheme="light" suppressHydrationWarning>
       <MuiXLicense />
       <body>
         <SessionProvider session={session}>
