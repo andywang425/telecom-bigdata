@@ -22,14 +22,31 @@ public class App {
         AppConfig config = ResourceLoader.loadYaml("config.yaml", AppConfig.class);
 
         RecordNumber recordNumber = config.getRecordNumber();
-        DateRange dateRange = config.getDateRange();
-        log.info("配置已读取，将输出{}条数据，日期范围{} ~ {}", recordNumber.getCall() * 2 + recordNumber.getSms() * 2 + recordNumber.getTraffic(), dateRange.getStart(), dateRange.getEnd());
+        log.info("配置已读取，将输出{}条数据", recordNumber.getCall() * 2 + recordNumber.getSms() * 2 + recordNumber.getTraffic());
 
         List<String> phoneNumbers = ResourceLoader.loadTextLines("phone_numbers.txt");
         List<String> baseStations = ResourceLoader.loadTextLines("base_stations.txt");
         List<String> smsMessages = ResourceLoader.loadTextLines("sms_messages.txt");
 
         log.info("手机号共{}个，基站共{}个", phoneNumbers.size(), baseStations.size());
+
+        // 数据的日期权重
+        DateWeight dateWeight = config.getDateWeight();
+
+        // 年份
+        Map<String, Double> yearWeight = dateWeight.getYear();
+        List<Pair<String, Double>> yearPMF = new ArrayList<>();
+
+        for (Map.Entry<String, Double> entry : yearWeight.entrySet()) {
+            yearPMF.add(new Pair<>(entry.getKey(), entry.getValue()));
+        }
+
+        // 月份
+        Map<String, Double> monthWeight = dateWeight.getMonth();
+        List<Pair<String, Double>> monthPMF = new ArrayList<>();
+        for (Map.Entry<String, Double> entry : monthWeight.entrySet()) {
+            monthPMF.add(new Pair<>(entry.getKey(), entry.getValue()));
+        }
 
         // 给用户分配模式
         List<UserPattern> userPatterns = config.getPatterns().getUser();
@@ -80,7 +97,7 @@ public class App {
         log.info("开始生成随机电信数据");
 
         // 生成随机电信数据并写入CSV
-        RandomTelecomDataGenerator generator = new RandomTelecomDataGenerator(dateRange, userProfiles, baseStationInfos, smsMessages);
+        RandomTelecomDataGenerator generator = new RandomTelecomDataGenerator(yearPMF, monthPMF, userProfiles, baseStationInfos, smsMessages);
 
         CsvWriterFactory csvWriterFactory = new CsvWriterFactory();
         Output output = config.getOutput();

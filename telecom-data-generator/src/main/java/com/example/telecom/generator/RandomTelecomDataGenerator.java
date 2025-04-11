@@ -1,6 +1,9 @@
 package com.example.telecom.generator;
 
-import com.example.telecom.config.*;
+import com.example.telecom.config.CallStatusWeight;
+import com.example.telecom.config.Distribution;
+import com.example.telecom.config.UserPattern;
+import com.example.telecom.config.UserPreference;
 import com.example.telecom.enums.*;
 import com.example.telecom.model.CallRecord;
 import com.example.telecom.model.SmsRecord;
@@ -17,17 +20,17 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class RandomTelecomDataGenerator {
-    private final LocalDate startDate;
-    private final LocalDate endDate;
+    private final List<Pair<String, Double>> yearPMF;
+    private final List<Pair<String, Double>> monthPMF;
     private final List<String> phoneNumbers;
     private final List<String> baseStations;
     private final Map<String, UserPattern> userProfiles;
     private final Map<String, StationInfo> baseStationInfos;
     private final List<String> smsMessages;
 
-    public RandomTelecomDataGenerator(DateRange dateRange, Map<String, UserPattern> userProfiles, Map<String, StationInfo> baseStationInfos, List<String> smsMessages) {
-        this.startDate = LocalDate.parse(dateRange.getStart());
-        this.endDate = LocalDate.parse(dateRange.getEnd());
+    public RandomTelecomDataGenerator(List<Pair<String, Double>> yearPMF, List<Pair<String, Double>> monthPMF, Map<String, UserPattern> userProfiles, Map<String, StationInfo> baseStationInfos, List<String> smsMessages) {
+        this.yearPMF = yearPMF;
+        this.monthPMF = monthPMF;
         this.phoneNumbers = new ArrayList<>(userProfiles.keySet());
         this.baseStations = new ArrayList<>(baseStationInfos.keySet());
         this.userProfiles = userProfiles;
@@ -261,7 +264,7 @@ public class RandomTelecomDataGenerator {
         Distribution distribution = userProfiles.get(phoneNumber).getCall().getStartTime();
         double hour = RandomTools.getDistributionRandom(distribution);
         LocalTime localTime = DateTimeUtils.hourToLocalTime(hour);
-        LocalDate localDate = DateTimeUtils.getRandomDate(startDate, endDate);
+        LocalDate localDate = DateTimeUtils.getRandomDate(yearPMF, monthPMF);
         return LocalDateTime.of(localDate, localTime);
     }
 
@@ -274,7 +277,7 @@ public class RandomTelecomDataGenerator {
         Distribution distribution = userProfiles.get(phoneNumber).getSms().getStartTime();
         double hour = RandomTools.getDistributionRandom(distribution);
         LocalTime localTime = DateTimeUtils.hourToLocalTime(hour);
-        LocalDate localDate = DateTimeUtils.getRandomDate(startDate, endDate);
+        LocalDate localDate = DateTimeUtils.getRandomDate(yearPMF, monthPMF);
         return LocalDateTime.of(localDate, localTime);
     }
 
@@ -287,7 +290,7 @@ public class RandomTelecomDataGenerator {
         Distribution distribution = userProfiles.get(phoneNumber).getTraffic().getStartTime();
         double hour = RandomTools.getDistributionRandom(distribution);
         LocalTime localTime = DateTimeUtils.hourToLocalTime(hour);
-        LocalDate localDate = DateTimeUtils.getRandomDate(startDate, endDate);
+        LocalDate localDate = DateTimeUtils.getRandomDate(yearPMF, monthPMF);
         return LocalDateTime.of(localDate, localTime);
     }
 

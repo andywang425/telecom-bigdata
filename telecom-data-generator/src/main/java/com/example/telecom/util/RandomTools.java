@@ -44,10 +44,11 @@ public class RandomTools {
 
     /**
      * 获取符合高斯分布（正态分布）的随机数
-     * @param mean 均值
+     *
+     * @param mean   均值
      * @param stdDev 标准差
-     * @param min 最小值，如果小于该值则重新生成
-     * @param max 最大值，如果大于该值则重新生成
+     * @param min    最小值，如果小于该值则重新生成
+     * @param max    最大值，如果大于等于该值则重新生成
      */
     public static double getGaussian(double mean, double stdDev, double min, double max) {
         double random = generator.nextGaussian(mean, stdDev);
@@ -61,6 +62,7 @@ public class RandomTools {
 
     /**
      * 获取一个在指定范围内均匀分布的随机数
+     *
      * @param min 最小值
      * @param max 最大值
      */
@@ -70,6 +72,7 @@ public class RandomTools {
 
     /**
      * 获取一个在指定范围内均匀分布的随机数
+     *
      * @param min 最小值
      * @param max 最大值
      */
@@ -86,6 +89,7 @@ public class RandomTools {
 
     /**
      * 获取一个加权随机数
+     *
      * @param pmf 概率质量函数，每个Pair的value是权重
      */
     public static <T> T weightedRandom(List<Pair<T, Double>> pmf) {
