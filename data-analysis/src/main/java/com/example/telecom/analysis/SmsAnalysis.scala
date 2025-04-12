@@ -47,7 +47,7 @@ object SmsAnalysis extends MyLogger {
     // 3. 按月短信状态统计
     val monthlySmsStatus = smsDF
       .groupBy($"year", $"month", $"send_status")
-      .agg(count($"sms_id").alias("sms_status_count"))
+      .agg(count($"sms_id").alias("sms_count"))
       .orderBy($"year", $"month", $"send_status")
     info("Monthly SMS status summary")
     monthlySmsStatus.show(1024, truncate = false)
