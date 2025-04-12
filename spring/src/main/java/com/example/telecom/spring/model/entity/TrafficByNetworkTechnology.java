@@ -8,8 +8,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "session_traffic_by_network_tech")
-public class SessionTrafficByNetworkTechnology {
+@Table(name = "traffic_by_network_tech")
+public class TrafficByNetworkTechnology {
     @EmbeddedId
     private YearMonthNetworkTechnology id;
 
@@ -19,5 +19,4 @@ public class SessionTrafficByNetworkTechnology {
     private Long totalUpstreamDataVolume;
 
     private Long totalDownstreamDataVolume;
-
 }

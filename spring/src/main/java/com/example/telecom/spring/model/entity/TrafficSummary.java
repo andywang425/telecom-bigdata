@@ -8,16 +8,17 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "session_traffic_by_app")
-public class SessionTrafficByApp {
+@Table(name = "traffic_summary")
+public class TrafficSummary {
     @EmbeddedId
-    private YearMonthApplicationType id;
+    private YearMonth id;
 
     @Column(nullable = false)
-    private Long sessionCount;
+    private Long totalSessions;
 
-    private Long totalUpstreamDataVolume;
+    private Long totalDuration;
 
-    private Long totalDownstreamDataVolume;
+    private Long totalUpstream;
 
+    private Long totalDownstream;
 }

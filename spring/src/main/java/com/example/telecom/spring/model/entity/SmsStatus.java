@@ -14,6 +14,6 @@ public class SmsStatus {
     @EmbeddedId
     private YearMonthSendStatus id;
 
-    @Column(name = "sms_status_count", nullable = false)
+    @Column(nullable = false)
     private Long smsCount;
 }

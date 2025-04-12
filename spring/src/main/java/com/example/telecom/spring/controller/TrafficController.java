@@ -2,9 +2,9 @@ package com.example.telecom.spring.controller;
 
 import com.example.telecom.spring.common.BaseResponse;
 import com.example.telecom.spring.common.ResponseUtils;
-import com.example.telecom.spring.repository.SessionSummaryRepository;
-import com.example.telecom.spring.repository.SessionTrafficByAppRepository;
-import com.example.telecom.spring.repository.SessionTrafficByNetworkTechnologyRepository;
+import com.example.telecom.spring.repository.TrafficSummaryRepository;
+import com.example.telecom.spring.repository.TrafficByAppRepository;
+import com.example.telecom.spring.repository.TrafficByNetworkTechnologyRepository;
 import com.example.telecom.spring.repository.TrafficDayDistributionRepository;
 import com.example.telecom.spring.service.TrafficService;
 import lombok.RequiredArgsConstructor;
@@ -22,35 +22,35 @@ public class TrafficController {
     private final TrafficService service;
 
     @GetMapping("/summary/yearly")
-    public BaseResponse<List<SessionSummaryRepository.YearlyTrafficSummary>> getYearlyTraffic(
+    public BaseResponse<List<TrafficSummaryRepository.YearlyTrafficSummary>> getYearlyTraffic(
             @RequestParam int startYear,
             @RequestParam int endYear) {
 
-        List<SessionSummaryRepository.YearlyTrafficSummary> results = service.getTrafficPerYear(startYear, endYear);
+        List<TrafficSummaryRepository.YearlyTrafficSummary> results = service.getTrafficPerYear(startYear, endYear);
         return ResponseUtils.success(results);
     }
 
     @GetMapping("/summary/monthly")
-    public BaseResponse<List<SessionSummaryRepository.MonthlyTrafficSummary>> getMonthlyTraffic(
+    public BaseResponse<List<TrafficSummaryRepository.MonthlyTrafficSummary>> getMonthlyTraffic(
             @RequestParam int year) {
 
-        List<SessionSummaryRepository.MonthlyTrafficSummary> results = service.getTrafficPerMonth(year);
+        List<TrafficSummaryRepository.MonthlyTrafficSummary> results = service.getTrafficPerMonth(year);
         return ResponseUtils.success(results);
     }
 
     @GetMapping("/app")
-    public BaseResponse<List<SessionTrafficByAppRepository.TrafficApplicationType>> getTrafficApplicationType(
+    public BaseResponse<List<TrafficByAppRepository.TrafficApplicationType>> getTrafficApplicationType(
             @RequestParam int year, @RequestParam int month) {
 
-        List<SessionTrafficByAppRepository.TrafficApplicationType> results = service.getApplicationTypeByYearMonth(year, month);
+        List<TrafficByAppRepository.TrafficApplicationType> results = service.getApplicationTypeByYearMonth(year, month);
         return ResponseUtils.success(results);
     }
 
     @GetMapping("/technology")
-    public BaseResponse<List<SessionTrafficByNetworkTechnologyRepository.TrafficNetworkTechnology>> getTrafficNetworkTechnology(
+    public BaseResponse<List<TrafficByNetworkTechnologyRepository.TrafficNetworkTechnology>> getTrafficNetworkTechnology(
             @RequestParam int year, @RequestParam int month) {
 
-        List<SessionTrafficByNetworkTechnologyRepository.TrafficNetworkTechnology> results = service.getNetworkTechnologyByYearMonth(year, month);
+        List<TrafficByNetworkTechnologyRepository.TrafficNetworkTechnology> results = service.getNetworkTechnologyByYearMonth(year, month);
         return ResponseUtils.success(results);
     }
 
