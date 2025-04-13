@@ -56,13 +56,28 @@ object PCATransformer {
   }
 
   /**
-   * 存储结果至HDFS
+   * 存储结果至HDFS和MySQL
    */
   private def saveResults(df: DataFrame): Unit = {
-    df.coalesce(1)
+    val coalescedDF = df.coalesce(1)
+
+    // HDFS
+    coalescedDF
       .write
       .option("header", "true")
       .mode("overwrite")
       .csv(Config.PCA_RESULT_PATH)
+
+    // MySQL
+    coalescedDF
+      .write
+      .format("jdbc")
+      .option("url", Config.JDBC_URL)
+      .option("dbtable", Config.DB_TABLE)
+      .option("user", Config.DB_USER)
+      .option("password", Config.DB_PASSWORD)
+      .option("driver", Config.DB_DRIVER)
+      .mode("overwrite")
+      .save()
   }
 }

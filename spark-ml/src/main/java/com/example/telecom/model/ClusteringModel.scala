@@ -12,19 +12,6 @@ object ClusteringModel {
    * @return 聚类结果
    */
   def run(scaledData: DataFrame): DataFrame = {
-    val predictions = trainKMeans(scaledData)
-
-    saveResults(predictions)
-
-    predictions
-  }
-
-  /**
-   * 训练KMeans模型并返回预测结果
-   *
-   * @param scaledData 已标准化的特征数据
-   */
-  private def trainKMeans(scaledData: DataFrame): DataFrame = {
     new KMeans()
       .setK(Config.K)
       .setSeed(Config.RANDOM_SEED)
@@ -33,21 +20,5 @@ object ClusteringModel {
       .setMaxIter(Config.MAX_ITER)
       .fit(scaledData)
       .transform(scaledData)
-  }
-
-  /**
-   * 保存聚类结果到 MySQL
-   */
-  private def saveResults(df: DataFrame): Unit = {
-    df.select("phone", "cluster")
-      .write
-      .format("jdbc")
-      .option("url", Config.JDBC_URL)
-      .option("dbtable", Config.DB_TABLE)
-      .option("user", Config.DB_USER)
-      .option("password", Config.DB_PASSWORD)
-      .option("driver", Config.DB_DRIVER)
-      .mode("overwrite")
-      .save()
   }
 }
