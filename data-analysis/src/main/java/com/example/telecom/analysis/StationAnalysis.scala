@@ -19,7 +19,7 @@ object StationAnalysis extends MyLogger {
       .withColumn("call_failure_rate", $"failed_call" / $"total_call")
       .orderBy($"year", $"month", $"station_id")
     info("Base Station Call Failure Rate Summary")
-    callFailures.show(1024, truncate = false)
+    callFailures.show(64, truncate = false)
     SparkUtils.saveToMySQL(callFailures, "station_call_failure_rate")
     callFailures.unpersist()
 
@@ -33,7 +33,7 @@ object StationAnalysis extends MyLogger {
       .withColumn("sms_failure_rate", $"failed_sms" / $"total_sms")
       .orderBy($"year", $"month", $"station_id")
     info("Base Station SMS Failure Rate Summary")
-    smsFailures.show(1024, truncate = false)
+    smsFailures.show(64, truncate = false)
     SparkUtils.saveToMySQL(smsFailures, "station_sms_failure_rate")
     smsFailures.unpersist()
 
@@ -46,7 +46,7 @@ object StationAnalysis extends MyLogger {
       )
       .orderBy($"year", $"month", $"station_id")
     info("Base Station Call Summary")
-    baseStationCallStats.show(1024, truncate = false)
+    baseStationCallStats.show(64, truncate = false)
     SparkUtils.saveToMySQL(baseStationCallStats, "station_call_stats")
     baseStationCallStats.unpersist()
 
@@ -59,7 +59,7 @@ object StationAnalysis extends MyLogger {
       )
       .orderBy($"year", $"month", $"station_id")
     info("Base Station SMS Summary")
-    baseStationSmsStats.show(1024, truncate = false)
+    baseStationSmsStats.show(64, truncate = false)
     SparkUtils.saveToMySQL(baseStationSmsStats, "station_sms_stats")
     baseStationSmsStats.unpersist()
 
@@ -73,7 +73,7 @@ object StationAnalysis extends MyLogger {
       )
       .orderBy($"year", $"month", $"station_id")
     info("Base Station Traffic Summary")
-    baseStationTrafficStats.show(1024, truncate = false)
+    baseStationTrafficStats.show(64, truncate = false)
     SparkUtils.saveToMySQL(baseStationTrafficStats, "station_traffic_stats")
     baseStationTrafficStats.unpersist()
   }

@@ -19,7 +19,7 @@ object TrafficAnalysis extends MyLogger {
       )
       .orderBy($"year", $"month")
     info("Monthly session count, duration and data volume summary")
-    monthlyTrafficSummary.show(1024, truncate = false)
+    monthlyTrafficSummary.show(64, truncate = false)
     SparkUtils.saveToMySQL(monthlyTrafficSummary, "traffic_summary")
     monthlyTrafficSummary.unpersist()
 
@@ -34,7 +34,7 @@ object TrafficAnalysis extends MyLogger {
       )
       .orderBy($"year", $"month", $"user_number")
     info("Monthly session count, duration and data volume per user summary")
-    monthlyUserTrafficSummary.show(1024, truncate = false)
+    monthlyUserTrafficSummary.show(64, truncate = false)
     SparkUtils.saveToMySQL(monthlyUserTrafficSummary, "traffic_user")
     monthlyUserTrafficSummary.unpersist()
 
@@ -48,7 +48,7 @@ object TrafficAnalysis extends MyLogger {
       )
       .orderBy($"year", $"month", $"application_type")
     info("Monthly session count and data volume summary per APP summary")
-    monthlyTafficByAppType.show(1024, truncate = false)
+    monthlyTafficByAppType.show(64, truncate = false)
     SparkUtils.saveToMySQL(monthlyTafficByAppType, "traffic_by_app")
     monthlyTafficByAppType.unpersist()
 
@@ -62,7 +62,7 @@ object TrafficAnalysis extends MyLogger {
       )
       .orderBy($"year", $"month", $"network_technology")
     info("Monthly session count and data volume per network technology summary")
-    trafficByNetworkTech.show(1024, truncate = false)
+    trafficByNetworkTech.show(64, truncate = false)
     SparkUtils.saveToMySQL(trafficByNetworkTech, "traffic_by_network_tech")
     trafficByNetworkTech.unpersist()
 
@@ -76,7 +76,7 @@ object TrafficAnalysis extends MyLogger {
       )
       .orderBy($"year", $"month", $"hour")
     info("Monthly (and hourly) traffic day distribution")
-    hourlyTrafficDistribution.show(1024, truncate = false)
+    hourlyTrafficDistribution.show(64, truncate = false)
     SparkUtils.saveToMySQL(hourlyTrafficDistribution, "traffic_day_distribution")
     hourlyTrafficDistribution.unpersist()
   }
