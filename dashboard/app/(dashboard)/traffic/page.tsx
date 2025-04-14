@@ -1,6 +1,6 @@
 import * as React from 'react';
 import TrafficContent from './TrafficContent';
 
-export default function CallPage() {
+export default function TrafficPage() {
   return <TrafficContent />;
 }

@@ -121,3 +121,12 @@ export namespace StationResponse {
     smsFailureRate: number;
   }
 }
+
+export namespace UserResponse {
+  interface UserCluster extends Record<string, string | number> {
+    phone: string;
+    cluster: number;
+    pcaX: number;
+    pcaY: number;
+  }
+}

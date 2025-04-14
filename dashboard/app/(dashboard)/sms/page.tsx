@@ -1,6 +1,6 @@
 import * as React from 'react';
 import SmsContent from './SmsContent';
 
-export default function CallPage() {
+export default function SmsPage() {
   return <SmsContent />;
 }

@@ -6,6 +6,7 @@ import CallIcon from '@mui/icons-material/Call';
 import SmsIcon from '@mui/icons-material/Sms';
 import FiveGIcon from '@mui/icons-material/FiveG';
 import CellTowerIcon from '@mui/icons-material/CellTower';
+import FaceIcon from '@mui/icons-material/Face';
 
 import type { Navigation } from '@toolpad/core/AppProvider';
 import { SessionProvider, signIn, signOut } from 'next-auth/react';
@@ -50,6 +51,11 @@ const NAVIGATION: Navigation = [
     segment: 'station',
     title: '基站数据',
     icon: <CellTowerIcon />,
+  },
+  {
+    segment: 'user',
+    title: '用户数据',
+    icon: <FaceIcon />,
   },
 ];
 
