@@ -1,7 +1,6 @@
 package com.example.telecom.spring.config;
 
 import com.example.telecom.spring.jwt.JwtRequestFilter;
-import com.example.telecom.spring.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtRequestFilter jwtRequestFilter;
-    private final UserService userService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
