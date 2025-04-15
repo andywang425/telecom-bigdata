@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScatterChart } from '@mui/x-charts-pro';
+import { ScatterChartPro } from '@mui/x-charts-pro';
 import { UserResponse } from '@/api/types';
 
 interface UserClusterChartProps {
@@ -30,14 +30,14 @@ export default function UserClusterChart({ data }: UserClusterChartProps) {
   );
 
   return (
-    <ScatterChart
+    <ScatterChartPro
       dataset={dataset}
       series={[
         { datasetKeys: { id: 'phone', x: 'pcaX0', y: 'pcaY0' }, label: '夜猫子' },
         { datasetKeys: { id: 'phone', x: 'pcaX1', y: 'pcaY1' }, label: '正常人' },
       ]}
-      xAxis={[{ label: 'PCA X' }]}
-      yAxis={[{ label: 'PCA Y' }]}
+      xAxis={[{ label: 'PCA X', zoom: true }]}
+      yAxis={[{ label: 'PCA Y', zoom: true }]}
       height={400}
     />
   );

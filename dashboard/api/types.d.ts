@@ -129,4 +129,10 @@ export namespace UserResponse {
     pcaX: number;
     pcaY: number;
   }
+
+  interface UserClusterCount extends Record<string, number> {
+    cluster: number;
+    count: number;
+    percentage: number;
+  }
 }

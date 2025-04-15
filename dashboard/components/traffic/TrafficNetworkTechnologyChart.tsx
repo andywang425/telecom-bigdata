@@ -18,6 +18,7 @@ export default function TrafficNetworkTechnologyChart({ data, valueField }: Traf
     <PieChart
       series={[
         {
+          highlightScope: { fade: 'global', highlight: 'item' },
           data: chartData,
         },
       ]}

@@ -32,6 +32,7 @@ export default function CallStatusChart({ data }: CallStatusChartProps) {
     <PieChart
       series={[
         {
+          highlightScope: { fade: 'global', highlight: 'item' },
           data: chartData,
         },
       ]}

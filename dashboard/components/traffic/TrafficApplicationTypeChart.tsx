@@ -24,6 +24,7 @@ export default function TrafficApplicationTypeChart({ data, valueField }: Traffi
     <PieChart
       series={[
         {
+          highlightScope: { fade: 'global', highlight: 'item' },
           data: chartData,
         },
       ]}

@@ -30,6 +30,7 @@ export default function SmsStatusChart({ data }: SmsStatusChartProps) {
     <PieChart
       series={[
         {
+          highlightScope: { fade: 'global', highlight: 'item' },
           data: chartData,
         },
       ]}
