@@ -26,7 +26,7 @@ dateWeight:
 
 patterns:
   user:
-    - name: 正太分布的规律作息1
+    - name: 正态分布的规律作息1
       weight: 0.2
       call:
         startTime:
@@ -130,7 +130,7 @@ patterns:
             weight: 0.5
           - name: WEB_BROWSING
             weight: 0.3
-    - name: 正太分布的规律作息2
+    - name: 正态分布的规律作息2
       weight: 0.2
       call:
         startTime:
@@ -230,7 +230,7 @@ patterns:
             weight: 0.7
           - name: WEB_BROWSING
             weight: 0.1
-    - name: 正太分布的夜猫子
+    - name: 正态分布的夜猫子
       weight: 0.3
       call:
         startTime:
