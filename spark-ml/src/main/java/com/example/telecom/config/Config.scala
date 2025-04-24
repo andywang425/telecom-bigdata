@@ -16,8 +16,8 @@ object Config {
   )
 
   // 标准化参数
-  val SCALING_WITH_STD = true // 是否将数据标准化为单位标准差
-  val SCALING_WITH_MEAN = true // 在缩放之前是否使用平均值来中心化数据（不适合稀疏数据）
+  val SCALING_WITH_STD = true // 是否将特征的标准差缩放到单位标准差（即标准差为1）
+  val SCALING_WITH_MEAN = true // 是否将特征的均值调整为0（不适合稀疏数据）
 
   // 聚类配置
   val K = 2 // 聚类数量
