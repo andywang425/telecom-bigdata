@@ -7,7 +7,7 @@ export interface YearlyFailureRateChartProps {
 }
 
 export default function YearlyFailureRateChart({ data }: YearlyFailureRateChartProps) {
-  const xAxisValueFormatter = (value: number) => `${value}月`;
+  const xAxisValueFormatter = (value: number) => `${value}年`;
   const seriesValueFormatter = (value: number | null) => `${value}%`;
 
   return (
