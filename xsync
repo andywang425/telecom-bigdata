@@ -1,0 +1,112 @@
+#!/bin/bash
+
+# xsync.sh
+# This script synchronizes file or directory from the NameNode to multiple DataNodes using rsync.
+
+# --------------------------- Configuration Section --------------------------- #
+
+# Define the list of DataNodes. Replace these with your actual DataNode hostnames or IPs.
+DATANODES=("slave1" "slave2" "slave3")
+
+# SSH username for DataNodes
+USER=$(whoami)
+
+# Source path (file or directory) on NameNode
+# By default, this is the current working directory.
+SOURCE_PATH="$(pwd)/"
+
+# Destination directory on DataNodes
+# By default, this is the same as SOURCE_PATH.
+DEST_DIR=""
+
+IS_SOURCE_PATH_SET=0
+
+# --------------------------- End Configuration --------------------------- #
+
+# Function to display usage
+usage() {
+  echo "Usage: $0 [-s source_path] [-d destination_directory] [-u username] [-h]"
+  echo "  -s    Source path (file or directory) on NameNode (default: current directory)"
+  echo "  -d    Destination directory on DataNodes (default: same as source_path)"
+  echo "  -u    SSH username for DataNodes (default: current username)"
+  echo "  -h    Display this help message"
+}
+
+# Parse command-line options
+while getopts ":s:d:u:h" opt; do
+  case ${opt} in
+  s)
+     # If SOURCE_PATH is an relative path, prepend the current working directory
+    SOURCE_PATH=$OPTARG
+    if [[ "$SOURCE_PATH" != /* ]]; then
+      SOURCE_PATH="$(pwd)/$SOURCE_PATH"
+    fi
+    IS_SOURCE_PATH_SET=1
+    ;;
+  d)
+    DEST_DIR=$OPTARG
+    ;;
+  u)
+    USER=$OPTARG
+    ;;
+  h)
+    usage
+    exit 0
+    ;;
+  \?)
+    echo "Invalid Option: -$OPTARG" 1>&2
+    usage
+    exit 1
+    ;;
+  :)
+    echo "Invalid Option: -$OPTARG requires an argument" 1>&2
+    usage
+    exit 1
+    ;;
+  esac
+done
+
+if [ -z "$DEST_DIR" ]; then
+  DEST_DIR="$SOURCE_PATH"
+fi
+
+if [ "$IS_SOURCE_PATH_SET" -eq 0 ]; then
+  echo "Source path not set."
+  echo -n "Continue with current directory ($SOURCE_PATH)? (y/N) "
+  read -r choice
+  if [[ "$choice" != [yY] ]]; then
+    echo "Exiting script."
+    exit 1
+  fi
+fi
+
+# Check if the source path exists
+if [ ! -e "$SOURCE_PATH" ]; then
+  echo "Error: Source file or directory '$SOURCE_PATH' does not exist."
+  exit 1
+fi
+
+# Function to perform synchronization
+sync_to_datanodes() {
+  local node=$1
+
+  echo "Syncing '$SOURCE_PATH' to $node:$DEST_DIR"
+
+  # Perform rsync
+  if rsync -az --delete "${SOURCE_PATH}" "$USER@$node:${DEST_DIR}"; then
+    echo "Successfully synced to $node."
+  else
+    echo "Failed to sync to $node."
+  fi
+}
+
+echo "=== Sync Configuration Started at $(date) ==="
+
+# Iterate over each DataNode and perform rsync
+for NODE in "${DATANODES[@]}"; do
+  sync_to_datanodes "$NODE" &
+done
+
+wait
+
+echo "=== Sync Configuration Completed at $(date) ==="
